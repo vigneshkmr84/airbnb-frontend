@@ -32,16 +32,21 @@ const Signup = () => {
         signup(userData)
     }
 
+    const isEnabled = (userData.first_name !== "") && (userData.last_name !== "")
+    && (userData.email_id !== "") && (userData.phone_no !== "") && (userData.password !== "")
+    && (userData.id_type !== "") && (userData.id_details !== "")
+
+
   return (
    
     <div>
-        <form className='form-group container' id='signup-container'>
+        <form className='form-group container was-validated' id='signup-container' noValidate>
             <h2 className="fw-bold mb-2" style={{marginTop: '20%', paddingTop: '7%'}}>Sign up</h2>
             <div className='form-group'>
                 <label className='form-label control-label'>First name</label>
                 <input type="text" 
                     className='form-control form-control-md' 
-                    placeholder='First name'
+                    placeholder='First name' required
                     name="first_name"
                     onChange={handleChange}
                     ></input>
@@ -51,7 +56,7 @@ const Signup = () => {
                 <label className='form-label'>Last name</label>
                 <input type="text" 
                     className='form-control form-control-md' 
-                    placeholder='Last name' 
+                    placeholder='Last name' required
                     name='last_name'
                     onChange={handleChange}
                     ></input>
@@ -60,7 +65,7 @@ const Signup = () => {
                 <label className='form-label'>Email-id </label>
                     <input type="text" 
                         className='form-control form-control-md' 
-                        placeholder='Email-id' 
+                        placeholder='Email-id' required
                         name="email_id"
                         onChange={handleChange}
                         ></input>
@@ -69,7 +74,7 @@ const Signup = () => {
                 <label className='form-label'>Phone no </label>
                     <input type="tel"
                         className='form-control form-control-md'
-                        placeholder='Phone no'
+                        placeholder='Phone no' required
                         name="phone_no"
                         onChange={handleChange}
                         ></input>
@@ -78,15 +83,16 @@ const Signup = () => {
                 <label className='form-label'>Password </label>
                     <input type="Password"
                         className='form-control form-control-md'
-                        placeholder='Password'
+                        placeholder='Password' required
                         name="password"
                         onChange={handleChange}
-                        required></input>
+                        ></input>
             </div>
             <div className="form-group">
                 <label className='form-label'>Select Id type </label>
-                    <select className="form-select" aria-label="Select ID type"
-                        name="id_type"
+                    <select className="form-select" 
+                        aria-label="Select ID type"
+                        name="id_type" required
                         onChange={handleChange}>
                         <option defaultValue={""}>Open this select menu</option>
                         <option value="passport">Passport</option>
@@ -98,13 +104,17 @@ const Signup = () => {
                 <label className='form-label'>Id no </label> 
                     <input type="text"
                         className='form-control form-control-md'
-                        placeholder='Valid Id no'
+                        placeholder='Valid Id no' required
                         name="id_details"
                         onChange={handleChange}
-                        required></input>
+                        ></input>
             </div>
             <div className="form-group" style={{textAlign: 'center', marginTop: '10%'}}>
-                <button type="button" className="btn btn-primary btn-md" onClick={onFormSubmit} style={{width: 120}}>Submit</button>
+                <button type="button" 
+                        className="btn btn-primary btn-md" 
+                        onClick={onFormSubmit} 
+                        disabled={!isEnabled}
+                        style={{width: 120}}>Submit</button>
             </div>
 
             <br></br>
