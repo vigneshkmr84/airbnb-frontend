@@ -30,16 +30,16 @@ function App() {
       <Login/>
       {/* <Signup/> */}
       <ToastContainer
-                position="top-right"
-                autoClose={3500}
-                hideProgressBar
-                newestOnTop={true}
-                closeOnClick
-                rtl={false}
-                // pauseOnFocusLoss
-                draggable
-                pauseOnHover
-        />
+        position="top-right"
+        autoClose={3500}
+        hideProgressBar
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

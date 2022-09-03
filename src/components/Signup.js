@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form } from 'react-bootstrap'
+// import { Form } from 'react-bootstrap'
 
 const Signup = () => {
 
@@ -66,8 +66,3 @@ const Signup = () => {
 }
 
 export default Signup
-
-
- {/* <div className='container' id='signup-container' style={{maxWidth: "35%"}}>
-        
-    </div> */}
