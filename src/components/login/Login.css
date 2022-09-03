@@ -1,0 +1,16 @@
+#login-container{
+    background-color:rgba(175, 173, 173, 0.904);
+    border-radius: 15px;
+    margin-top: 5%;
+    width: 23%;
+  }
+
+div.form-group{
+    margin-top: 5%;
+    margin-right: 18%;
+    margin-left: 18%;
+}
+
+h2{
+    text-align: center;
+}

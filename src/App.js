@@ -2,8 +2,8 @@
 
 import './App.css';
 import Header from './components/Header';
-import Login from './components/Login';
-import Signup from './components/Signup';
+import Login from './components/login/Login';
+import Signup from './components/signup/Signup';
 import { ToastContainer} from 'react-toastify';
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
       {/* <img src={logo} className="App-logo" alt="logo" /> */}
       <Header/>
       <Login/>
+      {/* <Test></Test> */}
       {/* <Signup/> */}
       <ToastContainer
         position="top-right"
