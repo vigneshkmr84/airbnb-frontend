@@ -32,9 +32,16 @@ const Signup = () => {
         signup(userData)
     }
 
+    /* const isEnabled = (e) => {
+        e.preventDefault()
+        return (userData.first_name !== "") && (userData.last_name !== "")
+                && (userData.email_id !== "") && (userData.phone_no !== "") && (userData.password !== "")
+                && (userData.id_type !== "") && (userData.id_details !== "")
+    } */
     const isEnabled = (userData.first_name !== "") && (userData.last_name !== "")
     && (userData.email_id !== "") && (userData.phone_no !== "") && (userData.password !== "")
-    && (userData.id_type !== "") && (userData.id_details !== "")
+    && (userData.id_type !== "") && (userData.id_details !== "");
+
 
 
   return (
@@ -63,7 +70,7 @@ const Signup = () => {
             </div>
             <div className="form-group">
                 <label className='form-label'>Email-id </label>
-                    <input type="text" 
+                    <input type="email" 
                         className='form-control form-control-md' 
                         placeholder='Email-id' required
                         name="email_id"
@@ -85,6 +92,7 @@ const Signup = () => {
                         className='form-control form-control-md'
                         placeholder='Password' required
                         name="password"
+                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                         onChange={handleChange}
                         ></input>
             </div>
@@ -93,8 +101,9 @@ const Signup = () => {
                     <select className="form-select" 
                         aria-label="Select ID type"
                         name="id_type" required
-                        onChange={handleChange}>
-                        <option defaultValue={""}>Open this select menu</option>
+                        onChange={handleChange} 
+                        defaultValue={""}>
+                        <option value="">Select Id Type</option>
                         <option value="passport">Passport</option>
                         <option value="state id card">State id card</option>
                         <option value="driver license">Driver License</option>
@@ -110,11 +119,15 @@ const Signup = () => {
                         ></input>
             </div>
             <div className="form-group" style={{textAlign: 'center', marginTop: '10%'}}>
-                <button type="button" 
+                <button type="submit" 
                         className="btn btn-primary btn-md" 
                         onClick={onFormSubmit} 
                         disabled={!isEnabled}
                         style={{width: 120}}>Submit</button>
+            </div>
+            <br></br>
+            <div className="form-group" style={{textAlign: 'center'}}>
+                <p style={{fontSize: '12px'}}>Already have an account? <a href="#!" className="link-primary" >Sign in</a></p>
             </div>
 
             <br></br>
