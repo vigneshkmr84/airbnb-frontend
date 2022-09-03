@@ -3,13 +3,13 @@ import {postAPICall} from './ApiService';
 import Toast from '../components/toast/Toast';
 
 // login 
-export async function login(userName, password){
+export async function login(loginObject){
 
-    var response = await postAPICall('/login', {user_name: userName, password: password});
+    var response = await postAPICall('/login', loginObject);
 
     console.log(response);
     if ( response.status === 200)
-        Toast('Successfully Loggedin', 'success');
+        Toast('Successfully Logged in', 'success');
 }
 
 
