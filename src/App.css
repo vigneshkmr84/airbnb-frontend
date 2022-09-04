@@ -3,10 +3,21 @@
   /* height: 100vw;
   width: 100vh; */
   position: absolute;
+  /* background-image: url("../images/collage2.webp") ;  */
+  /* no-repeat center center fixed; */
+  background-size: 100% auto;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  /* background-size : 100% auto; */
+  /* background-repeat:no-repeat; */
+  background-size:cover;
   top:0px;
   right:0px;
   bottom:0px;
   left:0px;
+  /* Added for header alignment */
+  margin: auto;
 }
 
 .container {

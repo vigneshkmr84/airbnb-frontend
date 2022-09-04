@@ -2,7 +2,8 @@
     background-color:rgba(175, 173, 173, 0.904);
     border-radius: 15px;
     margin-top: 5%;
-    width: 26%;
+    width: 25%;
+    height: 85%;
 }
 
 div.form-group{
@@ -11,10 +12,16 @@ div.form-group{
     margin-left: 15%;
 }
 
-h2{
+h2.fw-bold.mb-2{
     text-align: center;
+    margin-top: 4%;
+    padding-top: 7%;
 }
 
 div.form.h2{
     padding-top: 125px;
+}
+
+div.logotext{
+    height: 60px;
 }

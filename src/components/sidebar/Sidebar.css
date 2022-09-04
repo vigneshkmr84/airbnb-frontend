@@ -1,0 +1,33 @@
+div.ProSidebar {
+    /* height: 100%; */
+}
+
+#sidebar-container {
+    height: 100%;
+}
+
+#sidebar-container .closemenu {
+    /* color: rgb(161, 161, 161);
+    position: absolute;
+    right: 0;
+    z-index: 9999;
+    line-height: 20px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 22px;
+    top: 55px;
+    cursor: pointer; */
+    color: rgb(161, 161, 161);
+    position: absolute;
+    right: 0;
+    /* z-index: 9999; */
+    line-height: 20px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 22px;
+    top: .5%;
+    right: 4.5%;
+    cursor: pointer;
+}
+
+
