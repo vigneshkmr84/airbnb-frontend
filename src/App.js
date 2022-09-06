@@ -12,6 +12,7 @@ import Search from './components/search/Search';
 import NotFound from './components/notFound/NotFound';
 import Home from './components/home/Home';
 import Profile from './components/profile/Profile';
+import Payment from './components/payments/Payment';
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
           <Route path='/search' element={<Search />} />
           <Route path='/home' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='/payment' element={<Payment />} />
           {/* <Route path="*" element={<NotFound/>} /> */}
           {/* <Route path='/login' component={Login} />
           <Route path='/signup' component={Signup} /> */}

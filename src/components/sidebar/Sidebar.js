@@ -65,8 +65,8 @@ const Sidebar = () => {
                     {
                         SidebarData.map(sidebarItem => {
                             return (
-                                <Link to={sidebarItem.link} style={{ color: '#ADADAD' }}>
-                                    <Menu iconShape={iconShape} key={sidebarItem.id}>
+                                <Link to={sidebarItem.link} style={{ color: '#ADADAD' }} key={sidebarItem.id}>
+                                    <Menu iconShape={iconShape} /* key={sidebarItem.id} */>
                                         <MenuItem icon={sidebarItem.icon}>{sidebarItem.name}</MenuItem>
                                     </Menu>
                                 </Link>
