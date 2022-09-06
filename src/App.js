@@ -3,13 +3,19 @@ import Header from './components/header/Header';
 import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
 import { ToastContainer } from 'react-toastify';
-import { Routes, Route, Router, Link } from "react-router-dom";
+import { Routes, Route, } from "react-router-dom";
 
 // import {Example} from './components/signup/Example';
 import Example from './components/signup/Example';
 import Sidebar from './components/sidebar/Sidebar';
+import Search from './components/search/Search';
+import NotFound from './components/notFound/NotFound';
+import Home from './components/home/Home';
+import Profile from './components/profile/Profile';
 
 function App() {
+
+  const showSideBar = false;
 
   return (
 
@@ -20,7 +26,7 @@ function App() {
         {/* <Login/> */}
         {/* <Signup /> */}
         {/* <Example/> */}
-        <Sidebar />
+        
         <ToastContainer
           position="top-right"
           autoClose={3500}
@@ -36,8 +42,12 @@ function App() {
         <Link to='/signup'> Signup</Link> */}
 
         <Routes>
-          <Route path='/login'  element={<Login />} />
+          <Route path='/login'  index element={<Login />} />
           <Route path='/signup' element={<Signup />} />
+          <Route path='/search' element={<Search />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/profile' element={<Profile />} />
+          {/* <Route path="*" element={<NotFound/>} /> */}
           {/* <Route path='/login' component={Login} />
           <Route path='/signup' component={Signup} /> */}
         </Routes>

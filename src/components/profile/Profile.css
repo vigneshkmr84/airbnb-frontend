@@ -1,0 +1,36 @@
+#profile-details {
+    padding-top: 3%;
+}
+
+.profileHeading {
+    display: flex;
+    justify-content: center;
+}
+
+#update-info {
+    width: 180px;
+}
+
+
+div.row {
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+#image-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+/* div.img { */
+#profile-picture {
+    /* size: auto; */
+    height: 60%;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border: 5px solid #768a9f;
+    margin-top: 10%;
+}

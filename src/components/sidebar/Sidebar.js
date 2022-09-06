@@ -31,6 +31,8 @@ const Sidebar = () => {
     const iconShape = 'round';
     const isMenuCollapsed = false;
 
+    const showSideBar = true;
+
     const toggleSideBar = () => {
         //condition checking to change state from true to false and vice versa
         menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
@@ -38,7 +40,7 @@ const Sidebar = () => {
 
     return (
 
-        <div id="sidebar-container">
+        <div id="sidebar-container" style={{display: showSideBar ? 'block': 'non'}}>
 
             <ProSidebar /* popperArrow="true" */ collapsed={menuCollapse} /* style={{display:"none"}} */ >
                 <SidebarHeader>
@@ -46,7 +48,7 @@ const Sidebar = () => {
                         {/* Icon change using menucollapse state */}
                         {/* <p style={{ fontSize: "30px" }}>{menuCollapse ? <GiHamburgerMenu /> : <SiApacheairflow />} Airbnb </p> */}
                         <Link to='/home' style={{color: '#ADADAD', textDecoration: 'none'}}>
-                            <p style={{ fontSize: "30px", paddingTop: '3%', paddingLeft: '20%'}}>Airbnb</p>
+                            <p style={{ fontSize: "30px", paddingTop: '3%', paddingLeft: '20%', font: 'sans-serif'}}>Airbnb</p>
                         </Link>
                     </div>
                     <div className="closemenu" onClick={toggleSideBar}>

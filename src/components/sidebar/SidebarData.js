@@ -31,14 +31,14 @@ export const SidebarData = [
         // default will be upcoming
         id: 3,
         name: "Bookings",
-        link: "/booking",
+        link: "/bookings",
         icon: <BsCalendarWeek />
     },
     {
         // wishlist that user has added
         id: 4,
-        name: "Bookmark",
-        link: "/bookmark",
+        name: "Bookmarks",
+        link: "/bookmarks",
         icon: <FaBookmark />
     },
     {
