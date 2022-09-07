@@ -50,17 +50,25 @@ const Payment = () => {
             <div id='payment-container' style={{ width: '100%' }}>
                 <div className="container rounded bg-white mt-5 mb-5">
                     <h1 className='paymentHeading'>Payment Details</h1>
+                    <div className='col-md-6'>
+                        <button type="button"
+                            id="new-payment"
+                            className="btn btn-primary btn-lg"
+                            style={{ width: '120px' }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                            </svg>
+                            New
+                        </button>
+                    </div>
+                    {/* <button type="button" class="btn btn-primary"><span class="bi bi-plus"></span> Sample Button</button> */}
                 </div>
                 <div id="allCardDetails">
                     <h3>Credit Card Details</h3>
 
                     <CardPayment />
 
-                    {/* <br></br>
-                    <br></br>
-                    <h3>Paypal Details</h3>
-                    <div>
-                    </div> */}
                 </div>
 
                 <div id="allPaypalDetails">

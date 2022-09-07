@@ -13,6 +13,7 @@ import NotFound from './components/notFound/NotFound';
 import Home from './components/home/Home';
 import Profile from './components/profile/Profile';
 import Payment from './components/payments/Payment';
+import Bookmark from './components/bookmarks/Bookmark';
 
 function App() {
 
@@ -49,6 +50,7 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/payment' element={<Payment />} />
+          <Route path='/bookmarks' element={<Bookmark />} />
           {/* <Route path="*" element={<NotFound/>} /> */}
           {/* <Route path='/login' component={Login} />
           <Route path='/signup' component={Signup} /> */}
