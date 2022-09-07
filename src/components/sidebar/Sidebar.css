@@ -30,4 +30,17 @@ div.ProSidebar {
     cursor: pointer;
 }
 
+#sidebar-id {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 050%);
+}
 
+/* .btn{
+    color: #e62929;
+}
+
+.btn:focus{
+    box-shadow: none;
+    outline: none !important;
+} */

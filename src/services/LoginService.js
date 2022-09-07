@@ -8,8 +8,12 @@ export async function login(loginObject) {
     var response = await postAPICall('/login', loginObject);
 
     console.log(response);
-    if (response.status === 200)
+    if (response.status === 200) {
+        console.log('Successfully Logged in');
         Toast('Successfully Logged in', 'success');
+        return true
+    }
+    return false
 }
 
 

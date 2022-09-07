@@ -2,7 +2,8 @@ import React from 'react';
 import './Login.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { login } from '../../services/LoginService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Toast from '../toast/Toast';
 
 const Login = () => {
 
@@ -10,6 +11,7 @@ const Login = () => {
         userName: "",
         password: "",
     })
+    const navigate = useNavigate();
 
     const [loginData, updateFormData] = React.useState(loginObject);
 
@@ -21,9 +23,17 @@ const Login = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(loginData);
+        // console.log(loginData); // sensitive data - will contain username & password
         login(loginData);
+        
+        navigate('/home');
+        // Toast('Successfully Logged in', 'success');
+
+        /* if (await login(loginData) === true) {
+            navigate('/login');
+        } */
     }
+
 
     const isEnabled = (loginData.userName !== "") && (loginData.password !== "")
 

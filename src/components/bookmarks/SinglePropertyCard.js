@@ -30,7 +30,7 @@ const SinglePropertyCard = ({ property_details, imageSize }) => {
 
                     <div className='row'>
                         <div className='col-md-4' style={{}}>
-                            <p className="room-details"> <b>Total Guests:</b> {property_details.guests}</p>
+                            <p className="room-details"> <b>Guests:</b> {property_details.guests}</p>
                         </div>
                         <div className='col-md-4' style={{}}>
                             <p className="room-details"> <b>Checkin:</b> {property_details.checkin_time}</p>
@@ -43,8 +43,7 @@ const SinglePropertyCard = ({ property_details, imageSize }) => {
                         {/* Separate Button to view the property details */}
 
                         <div className='col-md-4' style={{}}>
-                            <label htmlFor="rating-inline"><b>Avg rating:</b></label>
-                            <b-form-rating id="rating-inline" inline value="5"></b-form-rating>
+                            <label htmlFor="rating-inline"><b>Avg rating:</b> {property_details.avg_rating}</label>
                         </div>
 
                         {/* <div className='col-md-6' style={{}}>
@@ -53,9 +52,9 @@ const SinglePropertyCard = ({ property_details, imageSize }) => {
                         <div className='col-md-6' style={{}}>
                             <p className="room-details"> <b>Bedroom:</b> {property_details.bedroom} <b>Bathroom:</b> {property_details.bathroom}</p>
                         </div>
-                        <div className='col-md-2' style={{ color: '#e62929' }} id='delete-button' onClick={() => alert(property_details._id + " Deleted")}>
+                        <div className='col-md-2' id='delete-button' onClick={() => alert(property_details._id + " Deleted")}>
                             {/* <a href={'./property/' + property_details._id} className="btn btn-danger btn-sm">Delete</a> */}
-                            <AiFillDelete />
+                            <button className='btn' style={{ color: '#e62929' }} ><AiFillDelete /></button>
                         </div>
                     </div>
                 </div>

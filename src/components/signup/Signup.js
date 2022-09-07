@@ -1,7 +1,7 @@
 import React from 'react'
 import './Signup.css'
 import { signup } from '../../services/LoginService'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
 
@@ -26,11 +26,14 @@ const Signup = () => {
         })
     }
 
-    const onFormSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const onFormSubmit = async (e) => {
         console.log("Submitted Form")
         e.preventDefault()
-        console.log(userData)
-        signup(userData)
+        // console.log(userData) // sensitive data - will contain username & password
+        signup(userData);
+        navigate('/login');
     }
 
     const isEnabled = (userData.first_name !== "") && (userData.last_name !== "")
