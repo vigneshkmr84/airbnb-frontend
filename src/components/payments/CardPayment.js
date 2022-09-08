@@ -2,7 +2,7 @@ import React from 'react'
 import './Payment.css'
 import { FaCcAmex, FaCcDiscover, FaCcMastercard, FaCcVisa, FaCreditCard } from 'react-icons/fa'
 
-const CardPayment = () => {
+const CardPayment = (/* creditCardDetails */) => {
 
     const creditCardDetails =
         [
@@ -42,9 +42,13 @@ const CardPayment = () => {
 
     return (
 
+        
         <div /* id='credit-card-details' */>
             {creditCardDetails.map((cardDetails => {
+                console.log("Card Payment - credit card details");
+                console.log(creditCardDetails);
                 return (
+                    
                     <div key={cardDetails._id}>
                         <div id='credit-card-details' className={cardDetails.card_type}>
                             <div className='row' style={{ marginRight: '15px', marginBottom: '15px' }}>

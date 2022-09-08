@@ -4,7 +4,7 @@ export async function getUserPaymentDetails(user_id) {
 
     var response = await getAPICall('/users/' + user_id + '/payment');
 
-    console.log(response.message);
+    console.log(response.message.payment_details);
 
     return response.message;
 }

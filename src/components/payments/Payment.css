@@ -29,23 +29,31 @@
 }
 
 
-.credit{
+.credit {
     background-color: #4862e2;
 }
 
-.debit{
+.debit {
     background-color: #4862e2;
 }
 
-.visa{
+.visa {
     background-color: #4862e2;
 }
-.mastercard{
+
+.mastercard {
     background-color: #4f0cd6;
 }
-.amex{
+
+.amex {
     background-color: #1cd8b3;
 }
-.discover{
+
+.discover {
     background-color: #f16821;
+}
+
+#newcard-container {
+    width: 100%;
+    height: 100%;
 }
