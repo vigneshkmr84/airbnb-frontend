@@ -5,7 +5,7 @@ import CardPayment from './CardPayment';
 import './Payment.css';
 import Paypal from './Paypal';
 import { Modal, Button } from 'react-bootstrap';
-import NewCard from './NewCard';
+import AddNewPayment from './AddNewPayment';
 
 const Payment = () => {
 
@@ -53,7 +53,7 @@ const Payment = () => {
 
     const [showNewPaymentModal, setShowNewPaymentModal] = useState(false);
 
-    const cancelNewCardModal = () => {
+    const cancelNewPaymentModal = () => {
         setShowNewPaymentModal(false)
     }
 
@@ -106,7 +106,7 @@ const Payment = () => {
                 <div id="allCardDetails">
                     <h3>Credit Card Details</h3>
 
-                    <CardPayment creditCardDetails={paymentDetails} />
+                    <CardPayment creditCardDetails={paymentDetails} onClose={cancelNewPaymentModal} />
 
                 </div>
 
@@ -119,7 +119,10 @@ const Payment = () => {
                     <br></br>
 
                 </div>
-                <Modal show={showNewPaymentModal} id='newPaymentModalId' backdrop='static' keyboard={false}>
+
+                <AddNewPayment showNewPaymentModal={showNewPaymentModal} onClose={cancelNewPaymentModal}/>
+
+                {/* <Modal show={showNewPaymentModal} id='newPaymentModalId' backdrop='static' keyboard={false}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add New Payment</Modal.Title>
                     </Modal.Header>
@@ -142,20 +145,20 @@ const Payment = () => {
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="success" /* onClick={submitNewPayment} */>
+                        <Button variant="success" >
                             Submit
                         </Button>
-                        <Button variant="secondary" onClick={cancelNewCardModal}>
+                        <Button variant="secondary" onClick={cancelNewPaymentModal}>
                             Cancel
                         </Button>
                     </Modal.Footer>
-                </Modal>
+                </Modal> */}
             </div>
         </div >
     )
 }
 
-const NewCardPaypment = () => {
+/* const NewCardPaypment = () => {
     return (
         <form className='form-group container was-validated'
             id='newcard-container'
@@ -246,6 +249,6 @@ const NewPaypalPaypment = () => {
             </div>
         </form>
     )
-};
+}; */
 
 export default Payment
