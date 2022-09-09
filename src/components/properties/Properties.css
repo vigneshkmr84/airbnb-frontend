@@ -1,0 +1,30 @@
+.propertiesHeading {
+    display: flex;
+    justify-content: center;
+}
+
+.card-text {
+    font-size: 12px;
+    text-align: justify;
+    text-justify: inter-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.card-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* grid-gap: 30px; */
+    row-gap: 50px;
+    column-gap: 50px;
+}
+
+.card-deck {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 15px;
+}

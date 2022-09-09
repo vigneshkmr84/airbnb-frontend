@@ -120,7 +120,7 @@ const Payment = () => {
 
                 </div>
 
-                <AddNewPayment showNewPaymentModal={showNewPaymentModal} onClose={cancelNewPaymentModal}/>
+                <AddNewPayment showNewPaymentModal={showNewPaymentModal} onClose={cancelNewPaymentModal} />
 
                 {/* <Modal show={showNewPaymentModal} id='newPaymentModalId' backdrop='static' keyboard={false}>
                     <Modal.Header closeButton>

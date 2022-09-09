@@ -56,7 +56,7 @@ export const SidebarData = [
     {
         id: 7,
         name: "Listings",
-        link: "/profile/listing",
+        link: "/properties",
         icon: <AiOutlineUnorderedList />,
     },
     {

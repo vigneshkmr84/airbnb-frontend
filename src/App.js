@@ -15,6 +15,7 @@ import Profile from './components/profile/Profile';
 import Payment from './components/payments/Payment';
 import Bookmark from './components/bookmarks/Bookmark';
 import background from './background.jpeg'
+import Properties from './components/properties/Properties';
 function App() {
 
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/payment' element={<Payment />} />
           <Route path='/bookmarks' element={<Bookmark />} />
+          <Route path='/properties/*' element={<Properties />} />
           {/* <Route path="*" element={<NotFound/>} /> */}
           {/* <Route path='/login' component={Login} />
           <Route path='/signup' component={Signup} /> */}

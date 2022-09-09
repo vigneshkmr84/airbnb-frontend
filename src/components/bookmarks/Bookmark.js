@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Sidebar from '../sidebar/Sidebar'
 import './Bookmark.css'
 import { getUserBookmarks } from '../../services/BookmarkService'
+import { Link } from 'react-router-dom'
 
 import SinglePropertyCard from './SinglePropertyCard'
 
@@ -19,6 +20,7 @@ const Bookmark = () => {
         // console.log(bookmarkItems);
     }, []);
 
+    // const imageSize = '150px';
     const imageSize = '250px';
 
     return (
@@ -28,15 +30,26 @@ const Bookmark = () => {
                 <h1 className='bookmarkHeading'>Favourites</h1>
                 <br></br>
                 {
-                    bookmarkItems.map(property => {
-                        return (
-                            <div key={property._id}>
-                                <SinglePropertyCard property_details={property} imageSize={imageSize} />
-                                <br></br>
-                            </div>)
-                    }
+                    bookmarkItems.length == 0 ?
+                        <h3 className='emptyFavourites'>
+                            Oops...You don't have any Favourites. Start <Link to='/properties'>Browsing</Link>
+                        </h3> :
+                        bookmarkItems.map(property => {
+                            return (
+                                <div key={property._id}>
+                                    <SinglePropertyCard
+                                        property_details={property}
+                                        imageSize={imageSize}
+                                        cardWidth='70%'
+                                        flexDirection='row'
+                                    // cardWidth='30%'
+                                    // flexDirection='column'
+                                    />
+                                    <br></br>
+                                </div>)
+                        }
 
-                    )
+                        )
                 }
             </div>
         </div>
