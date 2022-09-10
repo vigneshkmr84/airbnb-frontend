@@ -12,7 +12,11 @@ const PropertyCard = ({ property_details, imageSize, imageHeight, imageWidth, ca
     return (
 
 
-        <Card style={{ borderRadius: '6px', width: '100%' }} className='flip-card'>
+        <Card 
+            style={{ borderRadius: '6px', width: '100%' }} 
+            className='flip-card'
+            // key={property_details._id}
+            >
 
 
             <div className='flip-card-inner'>
@@ -23,7 +27,7 @@ const PropertyCard = ({ property_details, imageSize, imageHeight, imageWidth, ca
                     style={{ width: imageWidth, height: imageHeight, display: 'block', margin: '0 auto', marginTop: '20px' }} />
                 <Card.Body className='flip-card-front'>
                     <Card.Title style={{ fontSize: '15px' }}>
-                        <b><a href={'./property/' + property_details._id}>{property_details.name} </a></b>
+                        <b><a href={'./properties/' + property_details._id}>{property_details.name} </a></b>
                     </Card.Title>
                     <Card.Text className='card-text'>
                         {/* {property_details.description} */}
@@ -31,8 +35,8 @@ const PropertyCard = ({ property_details, imageSize, imageHeight, imageWidth, ca
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className='flip-card-front'>
-                    <b>{property_details.cost_per_day}$ night </b> &nbsp;&nbsp;&nbsp; {property_details.bedroom} beds,{property_details.bathroom} bath
-                    <button class='btn btn-md'><AiOutlineHeart style={{ color: 'red' }} /></button>
+                    <b>{property_details.cost_per_day}$ </b>night &nbsp;&nbsp;&nbsp; {property_details.bedroom} beds,{property_details.bathroom} bath
+                    {/* <button className='btn btn-md'><AiOutlineHeart style={{ color: 'red' }} /></button> */}
                 </Card.Footer>
 
                 {/* <Card.Body className='flip-card-back'>

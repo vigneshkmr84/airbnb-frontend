@@ -1,18 +1,34 @@
+import SinglePropertyCard from '../components/bookmarks/SinglePropertyCard';
 import { postAPICall, getAPICall } from './ApiService'
 
 
 export async function getAllProperties() {
 
     var response = await getAPICall('/property');
-    console.log(response.message);
+    // console.log(response.message);
     return response.message;
 }
 
 
 export async function getPropertyById(property_id) {
-    var response = await getAPICall('/property/' + property_id);
+    var response = await getAPICall('/property/?_id=' + property_id);
+    if (response.message.length == 1) {
+        // console.log(response.message[0]);
+        return response.message[0];
+    } else
+        return {};
+}
+
+export async function getPropertyImages(property_id) {
+    var response = await getAPICall('/property/' + property_id + '/images');
     console.log(response.message);
-    return response.message;
+    sleep(3000)
+    //console.log('Total Images : ' + response.message.images.length);
+    return response.message.images;
+}
+
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
 

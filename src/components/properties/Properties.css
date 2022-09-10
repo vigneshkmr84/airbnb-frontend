@@ -1,7 +1,27 @@
-.propertiesHeading {
+.propertiesHeader {
     display: flex;
     justify-content: center;
 }
+
+.searchContainer {
+    width: 100%;
+    padding-top: 3%;
+}
+
+#searchBar {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* .searchContainer {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+} */
 
 .card-text {
     font-size: 12px;
@@ -15,16 +35,27 @@
     -webkit-box-orient: vertical;
 }
 
+.propertiesBody {
+    /* overflow: hidden;
+    overflow-y: scroll;
+    max-height: 2600px; */
+    width: 80%;
+    margin-left: 8%;
+    margin-right: 8%;
+}
+
 .card-group {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     /* grid-gap: 30px; */
     row-gap: 50px;
     column-gap: 50px;
-}
-
-.card-deck {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 15px;
+    margin-right: 4%;
+    margin-left: 4%;
+    margin-top: 7%;
+    padding-bottom: 5%;
+    /* margin-bottom: 3%; */
+    /* max-height: 700px; */
+    max-height: 700px;
+    overflow-y: scroll;
 }
