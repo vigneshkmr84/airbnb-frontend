@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../sidebar/Sidebar'
 import './Profile.css'
-// import logo from '../../../images/user-profile.jpg'
-import logo from './user-profile.jpg'
-import { getUserProfile } from '../../services/ProfileService'
+import defaultUserImage from './user-profile.jpg'
+import { getUserProfile, updateUserProfile } from '../../services/ProfileService'
+import { GrEdit } from 'react-icons/gr'
 
 const Profile = () => {
 
@@ -18,39 +18,53 @@ const Profile = () => {
     const [userData, setUserDetails] = useState(defaultUserDetails);
     // const [userData, setUserDetails] = React.useState(defaultUserDetails);
 
+    const [updatedUserData, setUpdatedUserData] = useState({});
+
+    const [isEditEnabled, setIsEnabled] = useState(false);
+
+    // function onClickEditInfo() {
+    const onClickEditInfo = (e) => {
+        console.log('Edit Enabled')
+        setIsEnabled(!isEditEnabled);
+    }
+
     const handleChange = (e) => {
-        setUserDetails({
-            ...userData,
+        setUpdatedUserData({
+            ...updatedUserData,
             // dynamically map the name and value of the form data
             // name attribute has to be set on each element - else it will not work
             [e.target.name]: e.target.value.trim()
-        })
+        });
     }
-    
+
     useEffect(() => {
         // fetch the user details for the given id 
         // and set them to userData
-        getUserProfile('6316bca14fad5c24245666ca')
+
+        getUserProfile('6313358188e367845973f368')
+            // getUserProfile('6313810d88e367845973f36a')
             .then((res) => {
                 setUserDetails(res);
             });
         console.log(userData.first_name);
-        /* async function fetchUserDetails(e) {
-            let response = await getUserProfile('6316bca14fad5c24245666ca')
-            console.log(response)
-            setUserDetails({
-                ...userData,
-                // dynamically map the name and value of the form data
-                // name attribute has to be set on each element - else it will not work
-                [e.target.name]: e.target.value.trim()
-            })
-          }
-      
-          // calling userDetails api
-          fetchUserDetails() */
     }, []);
 
 
+    const [updated, setUpdated] = useState(false);
+
+    const markUpdated = () => setUpdated(true);
+
+    const submitForm = () => {
+        setIsEnabled(false);
+        console.log("Form submitted");
+        console.log(updatedUserData)
+        if (updatedUserData === {}){
+            console.log("No updates")
+        }else{
+            console.log("Updating user data")
+            updateUserProfile('6313358188e367845973f368', updatedUserData);
+        }
+    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
@@ -61,21 +75,23 @@ const Profile = () => {
                     <div id="profile-details" className='row'>
                         <div className="col-md-4">
                             <div id='image-container'>
-                                <img src={logo} alt='user profile' id='profile-picture' />
+                                <UserProfilePhoto profile_photo={userData.profile_photo} />
                             </div>
                         </div>
 
                         <div className="col-md-8" style={{ width: '50%' }}>
-                            <form>
+                            <form
+                                // onSubmit={submitForm}
+                                onChange={markUpdated}>
                                 <div className='row'>
                                     <div className='col-md-6'>
                                         <label className='form-label control-label'>First name</label>
                                         <input type='text'
                                             className='form-control mr-sm-2'
-                                            // placeholder='First name' 
                                             name='first_name'
                                             defaultValue={userData.first_name}
-                                            // onChange={handleChange}
+                                            onChange={handleChange}
+                                            disabled={(isEditEnabled) ? "" : "disabled"}
                                         >
 
                                         </input>
@@ -88,6 +104,8 @@ const Profile = () => {
                                             // placeholder='Last name' 
                                             name='last_name'
                                             defaultValue={userData.last_name}
+                                            onChange={handleChange}
+                                            disabled={(isEditEnabled) ? "" : "disabled"}
                                         >
                                         </input>
                                     </div>
@@ -101,6 +119,8 @@ const Profile = () => {
                                             // placeholder='Email id' 
                                             name='email_id'
                                             defaultValue={userData.email_id}
+                                            onChange={handleChange}
+                                            disabled={(isEditEnabled) ? "" : "disabled"}
                                         >
                                         </input>
                                     </div>
@@ -111,6 +131,8 @@ const Profile = () => {
                                             // placeholder='Phone no' 
                                             name='phone_no'
                                             defaultValue={userData.phone_no}
+                                            onChange={handleChange}
+                                            disabled={(isEditEnabled) ? "" : "disabled"}
                                         >
                                         </input>
                                     </div>
@@ -125,6 +147,8 @@ const Profile = () => {
                                             // defaultValue={userData.id_type}
                                             name='id_type'
                                             defaultValue={userData.id_type}
+                                            onChange={handleChange}
+                                            disabled={(isEditEnabled) ? "" : "disabled"}
                                         >
                                         </input>
                                     </div>
@@ -136,19 +160,34 @@ const Profile = () => {
                                             // placeholder='Valid Id no' 
                                             name='id_details'
                                             defaultValue={userData.id_details}
+                                            onChange={handleChange}
+                                            disabled={(isEditEnabled) ? "" : "disabled"}
                                         >
                                         </input>
                                     </div>
                                 </div>
                                 <br></br>
                                 <div className='row'>
-                                    <div className='col-md-12'>
+                                    <div className='col-md-6'>
                                         <div className="form-group" style={{ textAlign: 'center' }}>
                                             <button type="button"
-                                                id='update-info'
-                                                className="btn btn-primary btn-lg"
+                                                id='editButton'
+                                                className="btn btn-danger btn-md"
+                                                onClick={onClickEditInfo}
                                             // onClick={handleSubmit}
-                                            // disabled={!isEnabled}
+                                            > Edit Info
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className='col-md-6'>
+                                        <div className="form-group" style={{ textAlign: 'center' }}>
+                                            {/* <button type="button" */}
+                                            <button type="button"
+                                                id='update-info'
+                                                className="btn btn-primary btn-md"
+                                                onClick={submitForm}
+                                                disabled={(isEditEnabled) ? "disabled" : ""}
+                                            // onSubmit={submitForm}
                                             > Update Info
                                             </button>
                                         </div>
@@ -157,10 +196,21 @@ const Profile = () => {
                             </form>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </div >
+            </div >
+        </div >
     )
 }
 
+
+function UserProfilePhoto(profile_photo) {
+
+    console.log("Rendering Image")
+    if (profile_photo.profile_photo === "") {
+        return (<img src={defaultUserImage} alt='user profile' id='profile-picture' />)
+    } else {
+        return (<img src={"data:image/png;base64," + profile_photo.profile_photo} alt="Red dot" id="profile-picture" />)
+    }
+
+}
 export default Profile
