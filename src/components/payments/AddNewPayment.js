@@ -2,20 +2,26 @@ import React from 'react'
 import { Modal, Button } from "react-bootstrap";
 import './Payment.css'
 import { useState } from "react";
+import { addPaymentDetails } from '../../services/PaymentService';
 
-const AddNewPayment = ({ showNewPaymentModal, onClose }) => {
+const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
 
     const [displayPaypal, setDisplayPaypal] = useState(false);
     const [displayCard, setDisplayCard] = useState(false);
+
+    const [newPaymentDetails, setNewPaymentDetails] = useState({});
+    const [paymentType, setPaymentType] = useState('');
+
 
     const handlePaymentTypeChange = (event) => {
         console.log("Actual value received : " + event.target.value)
         console.log('Card ' + displayCard);
         console.log('Paypal ' + displayPaypal);
-        if (event.target.value.trim() == 'card') {
+        setPaymentType(event.target.value.trim());
+        if (event.target.value.trim() === 'credit') {
             setDisplayCard(true);
             setDisplayPaypal(false);
-        } else if (event.target.value.trim() == 'paypal') {
+        } else if (event.target.value.trim() === 'paypal') {
             setDisplayPaypal(true);
             setDisplayCard(false);
             console.log('paypal')
@@ -28,17 +34,34 @@ const AddNewPayment = ({ showNewPaymentModal, onClose }) => {
         console.log('Paypal ' + displayPaypal);
     }
 
-    const closeButtonClickHandler = () => {
+    const handleChange = (e) => {
+        setNewPaymentDetails({
+            ...newPaymentDetails,
+            // dynamically map the name and value of the form data
+            // name attribute has to be set on each element - else it will not work
+            [e.target.name]: e.target.value.trim()
+        });
+    }
+
+    /* const closeButtonClickHandler = () => {
         // onClose is the variable 
         // which holds the reference 
         // to the function in parent ie. cancelNewCardModal
         onClose()
+    } */
+
+    const submitNewPayment = () => {
+        console.log("Submit Payment");
+        console.log(newPaymentDetails);
+        addPaymentDetails(user_id, paymentType, newPaymentDetails);
+        onClose();
+
     }
 
     return (
         <Modal show={showNewPaymentModal} id='newPaymentModalId' backdrop='static' keyboard={false}>
             <Modal.Header closeButton>
-                <Modal.Title>Add New Payment</Modal.Title>
+                <Modal.Title style={{ textAlign: 'center' }}>Add New Payment</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="form-group">
@@ -49,20 +72,21 @@ const AddNewPayment = ({ showNewPaymentModal, onClose }) => {
                         onChange={handlePaymentTypeChange}
                         defaultValue={""}>
                         <option value="">Select Payment Type</option>
-                        <option value="card">Credit / Debit Card</option>
+                        <option value="credit">Credit / Debit Card</option>
                         <option value="paypal">Paypal</option>
                     </select>
                 </div>
 
-                {displayCard ? <NewCardPaypment /> : null}
-                {displayPaypal ? <NewPaypalPaypment /> : null}
+                {displayCard ? <NewCardPaypment handleChange={handleChange} /> : null}
+                {displayPaypal ? <NewPaypalPaypment handleChange={handleChange} /> : null}
 
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="success" /* onClick={submitNewPayment} */>
+                <Button variant="success" onClick={submitNewPayment}>
                     Submit
                 </Button>
-                <Button variant="secondary" onClick={closeButtonClickHandler}>
+                {/* <Button variant="secondary" onClick={closeButtonClickHandler}> */}
+                <Button variant="danger" onClick={() => onClose()}>
                     Cancel
                 </Button>
             </Modal.Footer>
@@ -70,16 +94,19 @@ const AddNewPayment = ({ showNewPaymentModal, onClose }) => {
     )
 }
 
-const NewPaypalPaypment = () => {
+const NewPaypalPaypment = ({ handleChange }) => {
+
+    // const [account_name, setAccountName] = useState('');
     return (
         <form className='form-group container was-validated' id='newpaypal-container' noValidate >
             <div className='form-group'>
                 <label className='form-label control-label'>Paypal Account Email-id</label>
                 <input type="email"
                     className='form-control form-control-md'
-                    placeholder='Paypal Email-id' required
+                    placeholder='Paypal Email-id'
+                    required
                     name="account_name"
-                //onChange={handleChange}
+                    onChange={handleChange}
                 ></input>
             </div>
 
@@ -87,16 +114,17 @@ const NewPaypalPaypment = () => {
                 <label className='form-label control-label'>Nick name</label>
                 <input type="text"
                     className='form-control form-control-md'
-                    placeholder='Nick name' required
+                    placeholder='Nick name'
+                    required
                     name="nick_name"
-                //onChange={handleChange}
+                    onChange={handleChange}
                 ></input>
             </div>
         </form>
     )
 };
 
-const NewCardPaypment = () => {
+const NewCardPaypment = ({ handleChange }) => {
     return (
         <form className='form-group container was-validated'
             id='newcard-container'
@@ -107,7 +135,7 @@ const NewCardPaypment = () => {
                 <select className="form-select"
                     aria-label="Select Card Type"
                     name="card_type" required
-                    //onChange={handleChange}
+                    onChange={handleChange}
                     defaultValue={""}>
                     <option value="">Select Card Type</option>
                     <option value="visa">Visa</option>
@@ -124,7 +152,7 @@ const NewCardPaypment = () => {
                     className='form-control form-control-md'
                     placeholder='Credit / Debit Card no' required
                     name="card_no"
-                //onChange={handleChange}
+                    onChange={handleChange}
                 ></input>
 
             </div>
@@ -134,7 +162,7 @@ const NewCardPaypment = () => {
                     className='form-control form-control-md'
                     placeholder='Cvv' required
                     name='cvv'
-                //onChange={handleChange}
+                    onChange={handleChange}
                 ></input>
             </div>
             <div className="form-group">
@@ -144,7 +172,7 @@ const NewCardPaypment = () => {
                     className='form-control form-control-md datepicker'
                     placeholder='Expiry Date' required
                     name="expiry_date"
-                //onChange={handleChange}
+                    onChange={handleChange}
                 ></input>
             </div>
 
@@ -154,7 +182,7 @@ const NewCardPaypment = () => {
                     className='form-control form-control-md'
                     placeholder='Nick name' required
                     name="nick_name"
-                //onChange={handleChange}
+                    onChange={handleChange}
                 ></input>
             </div>
             <br></br>

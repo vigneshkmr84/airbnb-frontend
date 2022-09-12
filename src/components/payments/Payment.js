@@ -1,36 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { getUserPaymentDetails } from '../../services/PaymentService';
 import Sidebar from '../sidebar/Sidebar'
-import CardPayment from './CardPayment';
+// import CardPayment from './CardPayment';
 import './Payment.css';
-import Paypal from './Paypal';
-import { Modal, Button } from 'react-bootstrap';
+// import Paypal from './Paypal';
 import AddNewPayment from './AddNewPayment';
+import { Accordion } from 'react-bootstrap';
+import editButton from 'react-bootstrap/Button';
+import moment from 'moment-timezone';
 
 const Payment = () => {
-
-    const creditCardDetails =
-        [
-            {
-                "card_no": 987654321,
-                "cvv": 888,
-                "expiry_date": "2022-11-20T18:05:45.000Z",
-                "created_at": "2022-08-31T08:05:32.279Z",
-                "_id": "630f166e9509e1407342b2a7"
-            },
-            {
-                "card_no": 987654321,
-                "cvv": 888,
-                "expiry_date": "2022-11-20T18:05:45.000Z",
-                "created_at": "2022-09-01T20:58:25.539Z",
-                "_id": "63111d7443cf550baff50306"
-            },
-        ]
-
-    /* var creditCardList = [];
-    creditCardList = creditCardDetails.forEach((item, index) => {
-        creditCardList.push(<li key={index}>{item.card_no}</li>)
-    }) */
 
     const defaultPaymentDetails = {
         _id: '',
@@ -41,14 +20,17 @@ const Payment = () => {
     const [displayPaypal, setDisplayPaypal] = useState(false);
     const [displayCard, setDisplayCard] = useState(false);
 
-    const [paymentDetails, setPaymentDetails] = useState([]);
+    // const [paymentDetails, setPaymentDetails] = useState([]);
+    const [paymentDetails, setPaymentDetails] = useState(defaultPaymentDetails);
 
     useEffect(() => {
         getUserPaymentDetails('630d9e1a5a8e270b69c8e947')
             .then((res) => {
-                // console.log(res);
+                // console.log("Inside use effect method");
                 setPaymentDetails(res);
             });
+        /* console.log(paymentDetails.credit_card)
+        console.log(paymentDetails.paypal) */
     }, []);
 
     const [showNewPaymentModal, setShowNewPaymentModal] = useState(false);
@@ -89,21 +71,24 @@ const Payment = () => {
             <div id='payment-container' style={{ width: '100%' }}>
                 <div className="container rounded bg-white mt-5 mb-5">
                     <h1 className='paymentHeading'>Payment Details</h1>
-                    <div className='col-md-6'>
-                        <button type="button"
-                            id="new-payment"
-                            className="btn btn-primary btn-lg"
-                            style={{ width: '120px' }}
-                            onClick={() => setShowNewPaymentModal(true)}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                            </svg>
-                            Add New Payment
-                        </button>
+                    <div className='row'>
+                        <div className='col-md-6'></div>
+                        <div className='col-md-6'>
+                            <button type="button"
+                                id="new-payment"
+                                className="btn btn-success btn-lg"
+                                // style={{ width: '120px' }}
+                                onClick={() => setShowNewPaymentModal(true)}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                                New Payment
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div id="allCardDetails">
+                {/* <div id="allCardDetails">
                     <h3>Credit Card Details</h3>
 
                     <CardPayment creditCardDetails={paymentDetails} onClose={cancelNewPaymentModal} />
@@ -112,47 +97,95 @@ const Payment = () => {
 
                 <div id="allPaypalDetails">
                     <h3>Paypal Details</h3>
-
                     <Paypal />
+                </div> */}
 
-                    <br></br>
-                    <br></br>
+                <div id="paymentDetails">
+                    {/* <h3> Payment Details </h3> */}
+                    <Accordion defaultActiveKey="0">
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Credit / Debit</Accordion.Header>
+                            <Accordion.Body>
+                                {
+                                    paymentDetails.credit_card.map(credit_card => {
+                                        return (
+                                            <div className='row' id='credit_card_details' key={credit_card._id} >
+
+                                                <div className='col-md-4'>
+                                                    <p>
+                                                        {/* Logo will be picked up from public folder
+                                                                react will know this by default
+                                                            */}
+                                                        <img src={`./payment_images/${credit_card.card_type}.svg`} alt='credit_card' id={credit_card.card_type} />
+                                                    </p>
+                                                </div>
+                                                <div className='col-md-4'>
+                                                    <p>{credit_card.card_no}</p>
+                                                </div>
+                                                <div className='col-md-4'>
+                                                    <p>{moment(credit_card.expiry_date).format('YYYY-mm-dd')}</p>
+                                                </div>
+                                                {/* svg for delete icon */}
+                                                {/* <div className='col-md-4'>
+                                                    <button className='btn btn-primary-sm'>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                        </svg>
+                                                    </button>
+                                                </div> */}
+                                            </div>
+
+                                        )
+                                    }
+                                    )
+                                }
+
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Paypal</Accordion.Header>
+                            <Accordion.Body>
+
+                                {
+                                    paymentDetails.paypal.map(paypal => {
+                                        return (
+                                            <div className='row' id='paypal_details' key={paypal._id} >
+
+                                                <div className='col-md-4'>
+                                                    <p>
+                                                        <img src={`./payment_images/paypal.svg`} alt='paypal' id='paypal' />
+                                                    </p>
+                                                </div>
+                                                <div className='col-md-4'>
+                                                    <p>{paypal.nick_name}</p>
+                                                </div>
+                                                <div className='col-md-4'>
+                                                    <p>{paypal.account_name}</p>
+
+                                                </div>
+                                                {/* svg for delete icon */}
+                                                {/* <div className='col-md-4'>
+                                                    <button className='btn btn-primary-sm'>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                        </svg>
+                                                    </button>
+                                                </div> */}
+                                            </div>
+                                        )
+                                    }
+                                    )
+                                }
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
 
                 </div>
 
-                <AddNewPayment showNewPaymentModal={showNewPaymentModal} onClose={cancelNewPaymentModal} />
+                <AddNewPayment showNewPaymentModal={showNewPaymentModal} onClose={cancelNewPaymentModal} user_id='630d9e1a5a8e270b69c8e947' />
 
-                {/* <Modal show={showNewPaymentModal} id='newPaymentModalId' backdrop='static' keyboard={false}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add New Payment</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="form-group">
-                            <label className='form-label'>Payment Type </label>
-                            <select className="form-select"
-                                aria-label="Select Payment Type"
-                                name="payment_type" required
-                                onChange={handlePaymentTypeChange}
-                                defaultValue={""}>
-                                <option value="">Select Payment Type</option>
-                                <option value="card">Credit / Debit Card</option>
-                                <option value="paypal">Paypal</option>
-                            </select>
-                        </div>
-
-                        {displayCard ? <NewCardPaypment /> : null}
-                        {displayPaypal ? <NewPaypalPaypment /> : null}
-
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="success" >
-                            Submit
-                        </Button>
-                        <Button variant="secondary" onClick={cancelNewPaymentModal}>
-                            Cancel
-                        </Button>
-                    </Modal.Footer>
-                </Modal> */}
             </div>
         </div >
     )
