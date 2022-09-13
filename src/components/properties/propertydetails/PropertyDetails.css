@@ -10,6 +10,7 @@
 .propertyDetailsBody {
     width: 90%;
     padding-top: 3%;
+    /* margin: 0 auto; */
     /* height: 40%; */
 
     /* added for image height adjustment */
@@ -17,6 +18,17 @@
     /* top: 0px;
     left: 0px; */
 }
+
+#propertyDescription{
+    width: 90%;
+    margin: 0 auto;
+}
+/* .detailsBody{
+    margin: 0 auto;
+    width: 100%;
+} */
+
+
 
 /* .singleItem{
     height: 60%;

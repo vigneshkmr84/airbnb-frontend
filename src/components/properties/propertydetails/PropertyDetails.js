@@ -102,14 +102,15 @@ const PropertyDetails = () => {
                     <h1 className='propertyDetailsHeader'>{propertyDetails.name}</h1>
                     <div className='propertyDetailsBody'>
 
-                        {/* <div className='imagesBody'>
-                            <PropertyDetailsDisplay />
-                        </div> */}
+                        <div className='imagesBody'>
+                            <PropertyImagesDisplay />
+                        </div>
 
                         <div className='detailsBody'>
-                            <div className='col-12 col-lg-8' style={{ backgroundColor: 'white' }}>
-                                Red
-                            </div>
+
+                            <br></br>
+                            <br></br>
+                            {/* <h3>Know About the property</h3> */}
                             <div id='propertyDescription'>
                                 <BodyDetailsAccordion
                                     property_details={propertyDetails}
