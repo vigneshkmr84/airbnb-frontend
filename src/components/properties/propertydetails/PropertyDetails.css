@@ -1,0 +1,82 @@
+.propertyDetailsHeader {
+    text-align: center;
+}
+
+#property-details-container {
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.propertyDetailsBody {
+    width: 90%;
+    padding-top: 3%;
+    /* height: 40%; */
+
+    /* added for image height adjustment */
+    /* position: fixed; */
+    /* top: 0px;
+    left: 0px; */
+}
+
+/* .singleItem{
+    height: 60%;
+} */
+
+/* .carousel-item {
+    height: 100%;
+} */
+
+.carousel {
+    /* width: 640px;
+    height: 360px; */
+    width: 80%;
+    /* height: 30%; */
+}
+
+/* .carousel .thumb img {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.carousel .slide img {
+    max-height: 300px;
+    width: auto;
+} */
+
+#reserveForm {
+    background-color: rgb(183, 176, 176);
+    border-radius: 1em;
+    padding-bottom: 8%;
+    padding-right: 7%;
+    padding-left: 7%;
+}
+
+.reserveFormHeader {
+    padding-top: 10%;
+    text-align: center;
+}
+/* text-center */
+#reserveButton{
+    width: 60%;
+    /* display: block;
+    margin: 0 wuto;
+    justify-content: center;
+    text-align: center;
+    align-items: center; */
+    
+}
+
+#reservationFormDiv {
+    border-radius: 1em;
+    width: 38%;
+}
+
+#calculatedValues{
+    border: 2px solid rgb(131, 125, 125);
+    border-radius: 5px;
+}
+/* rgb(75, 72, 72) */
+
+#propertyDescription{
+    width: 60%;
+}

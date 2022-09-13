@@ -54,7 +54,7 @@ function App() {
         <Route path='/payment' element={<Payment />} />
         <Route path='/bookmarks' element={<Bookmark />} />
         <Route path='/properties' element={<Properties />} />
-        {/* <Route path='/properties/:id' element={<PropertyDetails />} /> */}
+        <Route path='/properties/:id' element={<PropertyDetails />} />
         <Route path='/properties1' element={<PropertyDetails />} />
         {/* <Route path="*" element={<NotFound/>} /> */}
         {/* <Route path='/login' component={Login} />

@@ -3,7 +3,7 @@ import Sidebar from '../sidebar/Sidebar'
 import './Properties.css';
 import { getAllProperties, getPropertyById, addNewProperty } from '../../services/PropertiesService';
 import SinglePropertyCard from '../bookmarks/SinglePropertyCard';
-import PropertyCard from './PropertyCard';
+import BookmarksCard from './BookmarksCard';
 
 
 const Properties = () => {
@@ -46,7 +46,7 @@ const Properties = () => {
 
                                     return (
                                         // <SinglePropertyCard
-                                        <PropertyCard
+                                        <BookmarksCard
                                             key={property._id}
                                             property_details={property}
                                             imageWidth={imageWidth}
