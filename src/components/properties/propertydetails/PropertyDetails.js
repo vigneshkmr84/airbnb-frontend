@@ -7,7 +7,9 @@ import PropertyImagesDisplay from './PropertyImagesDisplay';
 import BodyDetailsAccordion from './BodyDetailsAccordion';
 import { getReviewsForPropertyId } from '../../../services/ReviewsService';
 import { getUserProfile } from '../../../services/ProfileService';
-import { Spinner } from 'react-bootstrap';
+import { Accordion, Offcanvas, Spinner } from 'react-bootstrap';
+import moment from 'moment-timezone';
+
 
 
 const PropertyDetails = () => {
@@ -19,9 +21,70 @@ const PropertyDetails = () => {
     const [hostDetails, setHostDetails] = useState(null);
 
     const [loading, setLoading] = useState(false);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     // console.log(property_id);
 
+    const initialBookindData = Object.freeze({
+        checkin_date: '',
+        checkout_date: '',
+        guests : Number.NaN,
+        guest_message: ''
+    })
+
+    const [bookingFormData, setBookingFormData] = useState(initialBookindData);
+    const tax_rate = 0.05;
+
+    const [bookingFare, setBookingFare] = useState({
+        cost: 0,
+        taxes: 0,
+        // nights: 1,
+        nights: Number.NaN,
+        total_price: 0,
+    })
+
+    // submit button toggle based on input validation
+    const isSubmitEnabled =
+        (initialBookindData.checkin_date !== "")
+        && (initialBookindData.checkout_date !== "")
+        && (initialBookindData.guests !== "")
+        && (initialBookindData.guest_message !== "");
+
+    const handleBookingFormChange = (e) => {
+/*         console.log(e.target.value);
+        console.log(isNaN(+e.target.value)); */
+        setBookingFormData({
+            ...bookingFormData,
+            [e.target.name]: e.target.value.trim()
+        });
+
+        /* propertyDetails.cost_per_day * (moment.duration(
+            moment(bookingFormData.checkout_date) - moment(bookingFormData.checkin_date)
+        ).days() + 1) */
+
+        let difference =
+            moment.duration(
+                moment(bookingFormData.checkout_date) - moment(bookingFormData.checkin_date)
+            ).days() + 1;
+
+        setBookingFare({
+            ...bookingFare,
+            cost: (difference * propertyDetails.cost_per_day),
+            nights: difference,
+            taxes: (bookingFare.cost * tax_rate),
+            total_price: (bookingFare.cost + bookingFare.taxes),
+        })
+    }
+
+    const onSubmitBooking = (e) => {
+        console.log('Booking Form Submitted');
+        console.log(bookingFormData)
+        
+        // Call reserve Property API
+    }
 
     // fetching the property details
     useEffect(() => {
@@ -123,95 +186,193 @@ const PropertyDetails = () => {
                                     />
                                 </div>
 
+                                <div className='container-fluid'>
+                                    {/* <Button variant="primary" onClick={handleShow} className='reserveToggleButton'>
+                                        Reserve
+                                    </Button> */}
+                                    <button className='btn btn-primary btn-lg' onClick={handleShow} id='reserveToggleButton'>
+                                        Reserve
+                                    </button>
+                                    <Offcanvas
+                                        show={show}
+                                        onHide={handleClose}
+                                        placement='end'
+                                        name='Reserve'
+                                        className="me-2"
+                                        scroll={true}
+                                        backdrop={false}
+                                        style={{ backgroundColor: '#eeeeee', width: '30%' }}
+                                    >
+                                        <Offcanvas.Header closeButton>
+                                            <Offcanvas.Title style={{ paddingLeft: '40%' }}>
+                                                <h3 className='reserveFormHeader'>Reserve</h3>
+                                            </Offcanvas.Title>
+                                        </Offcanvas.Header>
+                                        <Offcanvas.Body>
+                                            <form className='container was-validated' id='reserveForm'>
+                                                {/* <h4 className='reserveFormHeader'>Reserve Property</h4> */}
+                                                <div className='row'>
+                                                    <div className='col-md-6'>
+                                                        <label className='form-label control-label'>Checkin date</label>
+                                                        <input type='date'
+                                                            className='form-control mr-sm-2'
+                                                            placeholder='Check-in'
+                                                            min={new Date().toISOString().slice(0, 10)}
+                                                            // defaultValue={new Date().toISOString().slice(0, 10)}
+                                                            onChange={handleBookingFormChange}
+                                                            name='checkin_date'
+                                                        />
+                                                    </div>
+
+                                                    <div className='col-md-6'>
+                                                        <label className='form-label control-label'>Checkout date</label>
+                                                        <input type='date'
+                                                            className='form-control mr-sm-2'
+                                                            placeholder='Check-out'
+                                                            min={new Date(new Date().valueOf() + 86400000).toISOString().slice(0, 10)}
+                                                            // defaultValue={new Date(new Date().valueOf() + 2 * 86400000).toISOString().slice(0, 10)}
+                                                            onChange={handleBookingFormChange}
+                                                            name='checkout_date'
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className='row' >
+                                                    <div className='col-md-12'>
+                                                        <label className='form-label control-label'>Guests</label>
+                                                        <input type='number'
+                                                            className='form-control mr-sm-2'
+                                                            placeholder='Guests'
+                                                            onChange={handleBookingFormChange}
+                                                            name='guests'
+                                                            min={1}
+                                                            max={propertyDetails.guests}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className='row' >
+                                                    <div className='col-md-12'>
+                                                        <label className='form-label control-label'>Message to Host</label>
+                                                        <textarea type='text'
+                                                            className='form-control mr-sm-2'
+                                                            placeholder='Type your message...'
+                                                            onChange={handleBookingFormChange}
+                                                            name='guest_message'
+                                                            style={{ height: '120px' }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className='row' >
+                                                    <div className='col-md-12'>
+                                                        <label className='form-label control-label'>Select Payment Method</label>
+                                                        <select className="form-select"
+                                                            aria-label="Select Payment Type"
+                                                            name="payment_type"
+                                                            required
+                                                            // onChange={handlePaymentTypeChange}
+                                                            defaultValue={""}>
+                                                            <option value="">Select Payment Type</option>
+                                                            <option value="credit">Credit / Debit Card</option>
+                                                            <option value="paypal">Paypal</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className='row' style={{ textAlign: 'center' }}>
+                                                    <div className='col-lg-6' /* style={{ textAlign: 'center' }} */>
+                                                        <button
+                                                            className="btn btn-danger btn-md"
+                                                            type="button"
+                                                            id='cancelButton'
+                                                            onClick={handleClose}
+                                                        > Cancel
+                                                        </button>
+                                                    </div>
+                                                    <div className='col-lg-6' /* style={{ textAlign: 'center' }} */>
+                                                        <button
+                                                            className="btn btn-primary btn-md"
+                                                            type="button"
+                                                            id='reserveButton'
+                                                            onClick={onSubmitBooking}
+                                                        > Reserve
+                                                        </button>
+                                                    </div>
+                                                    <hr style={{ margin: '1rem 0', border: 0, color: 'red' }} />
+                                                </div>
+
+                                                {/* Fare Split up */}
+                                                <div className='row'>
+
+                                                </div>
+                                                <div className='row'>
+                                                    <Accordion>
+                                                        <Accordion.Item eventKey='description'>
+                                                            <Accordion.Header><h6>Fare Splitup</h6></Accordion.Header>
+                                                            <Accordion.Body>
+                                                                <p>Service Cost :  ${propertyDetails.service_cost}</p>
+                                                                <p>Cleaning Cost : ${propertyDetails.cleaning_cost}</p>
+                                                                {/* <p> {bookingFare.nights} x ${propertyDetails.cost_per_day} : ${bookingFare.cost} </p>
+                                                                <p>Taxes: ${bookingFare.taxes}</p>
+                                                                <p>Total Cost: ${bookingFare.total_price}</p> */}
+
+                                                                {
+                                                                    !isNaN(parseFloat(bookingFare.nights)) ?
+                                                                        <>
+                                                                            <p> {bookingFare.nights} x ${propertyDetails.cost_per_day} : ${bookingFare.cost} </p>
+                                                                            <p>Taxes: ${bookingFare.taxes}</p>
+                                                                            <p>Total Cost: ${bookingFare.total_price}</p>
+                                                                        </>
+                                                                        : null
+                                                                }
+
+
+                                                            </Accordion.Body>
+                                                        </Accordion.Item>
+
+                                                    </Accordion>
+                                                </div>
+                                                {/* <div className='row'>
+                                                    <div className='col-lg-12' id='calculatedValues'>
+                                                        <div className='row'>
+                                                            <div className='col-md-6'>
+                                                                ${propertyDetails.cost_per_day} x 12 nights
+                                                            </div>
+                                                            <div className='col-md-6'>
+                                                                $1514
+                                                            </div>
+                                                        </div>
+                                                        <div className='row'>
+                                                            <div className='col-md-6'>
+                                                                Cleaning fee
+                                                            </div>
+                                                            <div className='col-md-6'>
+                                                                ${propertyDetails.cleaning_cost}
+                                                            </div>
+                                                        </div>
+                                                        <div className='row'>
+                                                            <div className='col-md-6'>
+                                                                Service fee
+                                                            </div>
+                                                            <div className='col-md-6'>
+                                                                ${propertyDetails.cost_per_day}
+                                                            </div>
+                                                        </div>
+                                                        <div className='row'>
+                                                            <div className='col-md-6'>
+                                                                <b>Total (before taxes)</b>
+                                                            </div>
+                                                            <div className='col-md-6'>
+                                                                <b>${propertyDetails.cost_per_day}*2 + {propertyDetails.cleaning_cost} + {propertyDetails.service_cost}</b>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div> */}
+                                            </form>
+                                        </Offcanvas.Body>
+                                    </Offcanvas>
+                                </div>
+
                                 {/* uncomment the reservation form */}
-                                {/* <div id='reservationFormDiv' className='col-6 col-lg-4'>
-
-
-                                <form className='container was-validated' id='reserveForm'>
-                                    <h4 className='reserveFormHeader'>Reserve Property</h4>
-                                    <div className='row'>
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>Checkin date</label>
-                                            <input type='date'
-                                                className='form-control mr-sm-2'
-                                                placeholder='Check-in'
-                                                min={new Date().toISOString().slice(0, 10)}
-                                                defaultValue={new Date().toISOString().slice(0, 10)}
-                                                name='checkin_date'
-                                            />
-                                        </div>
-
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>Checkout date</label>
-                                            <input type='date'
-                                                className='form-control mr-sm-2'
-                                                placeholder='Check-out'
-                                                min={new Date(new Date().valueOf() + 86400000).toISOString().slice(0, 10)}
-                                                defaultValue={new Date(new Date().valueOf() + 86400000).toISOString().slice(0, 10)}
-                                                name='checkout_date'
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='row'>
-                                        <div className='col-md-12'>
-                                            <label className='form-label control-label'>Guests</label>
-                                            <input type='number'
-                                                className='form-control mr-sm-2'
-                                                placeholder='Guests'
-                                                name='guests'
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='row'>
-                                        <div className='col-lg-12' style={{ textAlign: 'center' }}>
-                                            <button
-                                                className="btn btn-primary btn-lg"
-                                                type="button"
-                                                id='reserveButton'
-                                            > Reserve
-                                            </button>
-                                        </div>
-                                        <hr style={{ margin: '1rem 0', border: 0, color: 'red' }} />
-                                    </div>
-                                    <div className='row'>
-                                        <div className='col-lg-12' id='calculatedValues'>
-                                            <div className='row'>
-                                                <div className='col-md-6'>
-                                                    ${propertyDetails.cost_per_day} x 12 nights
-                                                </div>
-                                                <div className='col-md-6'>
-                                                    $1514
-                                                </div>
-                                            </div>
-                                            <div className='row'>
-                                                <div className='col-md-6'>
-                                                    Cleaning fee
-                                                </div>
-                                                <div className='col-md-6'>
-                                                    ${propertyDetails.cleaning_cost}
-                                                </div>
-                                            </div>
-                                            <div className='row'>
-                                                <div className='col-md-6'>
-                                                    Service fee
-                                                </div>
-                                                <div className='col-md-6'>
-                                                    ${propertyDetails.cost_per_day}
-                                                </div>
-                                            </div>
-                                            <div className='row'>
-                                                <div className='col-md-6'>
-                                                    <b>Total (before taxes)</b>
-                                                </div>
-                                                <div className='col-md-6'>
-                                                    <b>${propertyDetails.cost_per_day}*2 + {propertyDetails.cleaning_cost} + {propertyDetails.service_cost}</b>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div> */}
+                                {/* <div id='reservationFormDiv' className='col-6 col-lg-4'> </div> */}
                             </div>
                         </div>
                         <div></div>

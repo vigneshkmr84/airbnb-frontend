@@ -3,7 +3,7 @@ import { Accordion } from 'react-bootstrap'
 import './PropertyDetails.css'
 import { FcCancel } from 'react-icons/fc';
 import { BsFillHouseDoorFill, BsShieldFillCheck } from 'react-icons/bs';
-import { makeFirstLetterCaps } from '../../common/CommonUtils';
+import { makeFirstLetterCaps, parseLines } from '../../common/CommonUtils';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { getReviewsForPropertyId } from '../../../services/ReviewsService';
 import { Spinner } from 'react-bootstrap';
@@ -41,7 +41,7 @@ const BodyDetailsAccordion = ({ details }) => {
 
 
     // console.log(hostDetails);
-    console.log(hostDetails.host_details);
+    // console.log(hostDetails.host_details);
 
     return (
         <Accordion defaultActiveKey='description' >
@@ -49,7 +49,7 @@ const BodyDetailsAccordion = ({ details }) => {
                 <Accordion.Header><h4>Description</h4></Accordion.Header>
                 <Accordion.Body>
 
-                    {property_details.description}
+                    {parseLines(property_details.description)}
 
                 </Accordion.Body>
             </Accordion.Item>
@@ -65,7 +65,7 @@ const BodyDetailsAccordion = ({ details }) => {
                 <Accordion.Header><h4>Cancellation Policy <FcCancel /></h4></Accordion.Header>
                 <Accordion.Body>
 
-                    {property_details.cancellation_policy}
+                    <p>{parseLines(property_details.cancellation_policy)}</p>
 
                 </Accordion.Body>
             </Accordion.Item>
@@ -85,7 +85,7 @@ const BodyDetailsAccordion = ({ details }) => {
                     {
                         reviews?.map((review, index) => {
                             return (
-                                <p key={index}>{review.comments}</p>
+                                <p key={index}>{parseLines(review.comments)}</p>
                             )
                         })
 
@@ -101,7 +101,7 @@ const BodyDetailsAccordion = ({ details }) => {
                         <a href={'/user/' + hostDetails._id}> {hostDetails.first_name} </a>
                         {/* {hostDetails.host_details.is_superhost ? " and is a Verified Superhost" : null} */}
                     </h5>
-                    <p>{hostDetails.host_details.is_superhost ? " Verified Superhost" : null} {hostDetails.host_details.is_superhost ? <BsShieldFillCheck /> : null}</p>
+                    <p>{hostDetails.host_details.is_superhost ? <small> Verified Superhost</small> : null} {hostDetails.host_details.is_superhost ? <BsShieldFillCheck /> : null}</p>
                     <p> <b>About me :</b> {hostDetails.host_details.description}</p>
                     <p> <b>Languages: </b> {hostDetails.host_details.languages.toString()}</p>
                     <p> <b>Host from: </b> {hostDetails.created_at}</p>
@@ -137,7 +137,10 @@ function generateAmenities(amenitiesArray) {
 function generateSubAmenities(categoryArray) {
     return (
         categoryArray?.map((item, index) => {
-            return (<li key={index}>{makeFirstLetterCaps(item)}</li>)
+            return (
+                <li key={index}>
+                    <small>{makeFirstLetterCaps(item)}</small>
+                </li>)
         })
     )
 }
@@ -146,7 +149,9 @@ function generateHouseRules(house_rules) {
 
     return (
         house_rules?.map((rule, index) => {
-            return (<li key={index}>{makeFirstLetterCaps(rule)}</li>)
+            return (<li key={index}>
+                <small>{makeFirstLetterCaps(rule)}</small>
+            </li>)
         })
     )
 

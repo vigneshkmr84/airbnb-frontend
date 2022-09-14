@@ -53,7 +53,7 @@
 } */
 
 #reserveForm {
-    background-color: rgb(183, 176, 176);
+    /* background-color: rgb(183, 176, 176); */
     border-radius: 1em;
     padding-bottom: 8%;
     padding-right: 7%;
@@ -88,4 +88,11 @@
 
 #propertyDescription{
     width: 70%;
+}
+
+.container-fluid{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding-top: 3%;
 }

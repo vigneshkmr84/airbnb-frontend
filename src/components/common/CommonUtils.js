@@ -7,4 +7,9 @@ export function makeFirstLetterCaps(inputString){
     }
 }
 
+// parser function to detect new line \\n from mongodb and change it appropriately.
+export const parseLines = (value) => value.replaceAll(/(\\n)/g, "\n");
+// export const parseLines = (value) => value.replaceAll(/(\\n)/g, '{"\n"}');
+
+
 //export makeFirstLetterCaps;
