@@ -10,7 +10,7 @@ export async function getAllProperties() {
 
 
 export async function getPropertyById(property_id) {
-    var response = await getAPICall('/property/?_id=' + property_id);
+    var response = await getAPICall('/property?_id=' + property_id);
     if (response.message.length === 1) {
         // console.log(response.message[0]);
         return response.message[0];

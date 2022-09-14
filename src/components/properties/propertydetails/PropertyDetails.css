@@ -39,10 +39,7 @@
 } */
 
 .carousel {
-    /* width: 640px;
-    height: 360px; */
-    width: 80%;
-    /* height: 30%; */
+    width: 75%;
 }
 
 /* .carousel .thumb img {
@@ -90,5 +87,5 @@
 /* rgb(75, 72, 72) */
 
 #propertyDescription{
-    width: 60%;
+    width: 70%;
 }

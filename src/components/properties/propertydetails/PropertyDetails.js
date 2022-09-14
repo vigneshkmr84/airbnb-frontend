@@ -4,119 +4,127 @@ import Sidebar from '../../sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
 import { getPropertyById, getPropertyImages } from '../../../services/PropertiesService';
 import PropertyImagesDisplay from './PropertyImagesDisplay';
-// import BsPlusCircle from 'react-icons/bs'
-// import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai'
 import BodyDetailsAccordion from './BodyDetailsAccordion';
+import { getReviewsForPropertyId } from '../../../services/ReviewsService';
+import { getUserProfile } from '../../../services/ProfileService';
+import { Spinner } from 'react-bootstrap';
 
 
 const PropertyDetails = () => {
     let property_id = useParams();
     // let property_id = '631abfd2ff027fd82e85f6e0';
 
-    // const [propertyDetails, setPropertyDetails] = useState({});
+    const [propertyDetails, setPropertyDetails] = useState(null);
+    const [propertyTopReviews, setPropertyTopReviews] = useState(null);
+    const [hostDetails, setHostDetails] = useState(null);
 
-    console.log(property_id);
-    const propertyDetails = {
-        _id: "6312928f0cb7dbbc5df57f60",
-        host_id: "63083a889346efce3db6a4e9",
-        name: "Sunset View Santa Monica",
-        description: "My house is walking distance to the dowtown area, brewcaipa brewery, flag hill park (awesome views at night of the cities). Yucaipa is a quaint little town in the middle of everything. 10 minutes from oak Glenn apple orchards. 15 mins to redlands. 20 mins to loma linda. 25 minutes from forest falls with amazing hikes and views. 25 minutes from the National orange show events. 40 minutes from glen helen ampitheater. 45 mins to palm springs. 1 hr to big bear. Please also read during your stay.",
-        location: "5151 San hose, Santa Monica, California",
-        cost_per_day: 212,
-        cleaning_cost: 70,
-        service_cost: 50,
-        amenities: [
-            {
-                category: "bedroom",
-                amenities: [
-                    "essentials",
-                    "hangers",
-                    "blankets",
-                    "iron"
-                ]
-            },
-            {
-                category: "kitchen",
-                amenities: [
-                    "dish-washer",
-                    "washer",
-                    "plates",
-                    "iron"
-                ]
-            },
-            {
-                category: "entertainment",
-                amenities: [
-                    "4k TV",
-                    "playstation",
-                    "sound system",
-                    "playstation-5"
-                ]
-            }
-        ],
-        avg_rating: 0,
-        guests: 10,
-        bedroom: 3,
-        bathroom: 2.5,
-        checkin_time: 810,
-        checkout_time: 660,
-        cancellation_policy: "Review the Host’s full cancellation policy which applies even if you cancel for illness or disruptions caused by COVID-19.",
-        host_is_superhost: false,
-        house_rules: [
-            "No Pets Allowed",
-            "No Parties",
-            "Quiet Time from 10pm - 7am",
-            "No Smoking"
-        ],
-        created_at: "2022-09-02T23:31:58.043Z",
-        updated_at: "2022-09-02T23:31:58.043Z",
-        __v: 0
-    }
+    const [loading, setLoading] = useState(false);
 
-    const [totalCost, setTotalCost] = useState(0);
+    // console.log(property_id);
 
-    /* onParameterChange() = (e) => {
-        setTotalCost
-    } */
 
-    // console.log(property_details)
+    // fetching the property details
+    useEffect(() => {
+        let isCalled = false
+        console.log('fetching property details for id : ' + property_id.id)
 
-    /* useEffect(() => {
-        console.log(property_id)
-        console.log('fetching property details for id')
 
-        getPropertyById(property_id.id)
+        if (!isCalled) {
+            getPropertyById(property_id.id)
+                .then((res) => {
+                    setPropertyDetails(res);
+                });
+        }
+        console.log('Retrieved All property details');
+        return () => {
+            isCalled = true;
+        }
+    }, []);
+
+    // fetching the top 5 reviews for the property
+    useEffect(() => {
+
+        async function apiCall() {
+            await getReviewsForPropertyId(property_id.id, 1, 5)
+                .then((res) => {
+                    setPropertyTopReviews(res);
+                });
+        }
+
+        apiCall();
+
+        console.log(propertyTopReviews)
+        console.log('Retrieved Top 5 Reviews');
+
+        // console.log(propertyTopReviews);
+    }, []);
+
+
+    // fetching the host details 
+    useEffect(() => {
+        setLoading(true);
+        getUserProfile('6316bca14fad5c24245666ca')
             .then((res) => {
-                setPropertyDetails(res);
+                setHostDetails(res);
+            }).finally(() => {
+                setLoading(false);
             });
-        console.log(propertyDetails);
 
-    }, []); */
+
+        console.log('Retrieved Host Details');
+
+    }, []);
 
     return (
 
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
-            <div id='property-details-container' style={{ width: '100%' }}>
-                <div className="container rounded bg-white mt-5 mb-5" >
-                    <h1 className='propertyDetailsHeader'>{propertyDetails.name}</h1>
-                    <div className='propertyDetailsBody'>
+            {propertyDetails && hostDetails && propertyTopReviews &&
+                <div id='property-details-container' style={{ width: '100%' }}>
+                    <div className="container rounded bg-white mt-5 mb-5" >
+                        <h1 className='propertyDetailsHeader'>{propertyDetails.name}</h1>
+                        <div className='propertyDetailsBody'>
 
-                        <div className='imagesBody'>
-                            <PropertyImagesDisplay />
-                        </div>
+                            <div className='imagesBody'>
+                                {/* {loading ? <p>Loading....</p> : <PropertyImagesDisplay />} */}
+                                {loading ? <Spinner animation="grow" /> : <PropertyImagesDisplay />}
 
-                        <div className='detailsBody'>
-
-                            <br></br>
-                            <br></br>
-                            {/* <h3>Know About the property</h3> */}
-                            <div id='propertyDescription'>
-                                <BodyDetailsAccordion
-                                    property_details={propertyDetails}
-                                />
                             </div>
-                            <div id='reservationFormDiv' className='col-6 col-lg-4'>
+
+                            <div className='detailsBody'>
+
+                                <br></br>
+                                <br></br>
+                                <div style={{ height: '10%' }}>
+                                    <div className='row' style={{ margin: '0 auto', /* textAlign: 'center', */ backgroundColor: 'rgb(128 128 128 / 20%)', width: '70%', borderRadius: '9px', paddingTop: '2%', paddingLeft: '3%', paddingBottom: '1%' }}>
+                                        {/* <div className='col-md-6'> */}
+                                        <h5>{propertyDetails.one_line_description} Hosted by <a href={'/user/' + hostDetails._id}>{hostDetails.first_name} </a></h5>
+                                        <p>{propertyDetails.guests} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
+                                        {/* </div> */}
+
+                                        {/* <div className='col-md-6'>
+                                        <img src={"data:image/svg+xml;base64," + hostDetails.profile_photo} alt="Profile Picture"
+                                            style={{ objectFit: 'contain', width: '40%', height: '50%' }}
+                                        />
+                                        <h6><a href={'/user/' + hostDetails._id}>{hostDetails.first_name} {hostDetails.last_name}</a> </h6>
+                                    </div> */}
+                                    </div>
+                                </div>
+                                <br></br>
+                                <div id='propertyDescription'>
+                                    <BodyDetailsAccordion
+                                        // property_details={propertyDetails}
+                                        details={{
+                                            property_details: propertyDetails
+                                            , reviews: propertyTopReviews
+                                            , hostDetails: hostDetails
+                                            , property_id: property_id
+                                        }}
+                                    />
+                                </div>
+
+                                {/* uncomment the reservation form */}
+                                {/* <div id='reservationFormDiv' className='col-6 col-lg-4'>
 
 
                                 <form className='container was-validated' id='reserveForm'>
@@ -203,12 +211,13 @@ const PropertyDetails = () => {
 
                                     </div>
                                 </form>
+                            </div> */}
                             </div>
                         </div>
+                        <div></div>
                     </div>
-                    <div></div>
-                </div>
-            </div >
+                </div >
+            }
         </div >
     )
 }
