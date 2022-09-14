@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Accordion } from 'react-bootstrap'
 import './PropertyDetails.css'
 import { FcCancel } from 'react-icons/fc';
-import { BsFillHouseDoorFill } from 'react-icons/bs';
+import { BsFillHouseDoorFill, BsShieldFillCheck } from 'react-icons/bs';
 import { makeFirstLetterCaps } from '../../common/CommonUtils';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { getReviewsForPropertyId } from '../../../services/ReviewsService';
@@ -94,14 +94,18 @@ const BodyDetailsAccordion = ({ details }) => {
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='host_details'>
-                <Accordion.Header><h4>Know your Host ?</h4></Accordion.Header>
+                <Accordion.Header><h4>Know your Host...</h4></Accordion.Header>
                 <Accordion.Body>
 
-                    <h5>Hosted by {hostDetails.first_name} </h5>
-                    {/* <p>{ hostDetails.host_details.is_superhost ? hostDetails.first_name + " is a Superhost" : null }</p> */}
-                    {/* {hostDetails.host_details.description} */}
-                    <p> {hostDetails.first_name} joined on {hostDetails.created_at}</p>
-                    {/* <p> Languages: { hostDetails.host_details.languages} </p> */}
+                    <h5>The Property is hosted by
+                        <a href={'/user/' + hostDetails._id}> {hostDetails.first_name} </a>
+                        {/* {hostDetails.host_details.is_superhost ? " and is a Verified Superhost" : null} */}
+                    </h5>
+                    <p>{hostDetails.host_details.is_superhost ? " Verified Superhost" : null} {hostDetails.host_details.is_superhost ? <BsShieldFillCheck /> : null}</p>
+                    <p> <b>About me :</b> {hostDetails.host_details.description}</p>
+                    <p> <b>Languages: </b> {hostDetails.host_details.languages.toString()}</p>
+                    <p> <b>Host from: </b> {hostDetails.created_at}</p>
+
                 </Accordion.Body>
             </Accordion.Item>
         </Accordion>
