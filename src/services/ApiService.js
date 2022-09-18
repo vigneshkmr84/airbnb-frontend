@@ -1,16 +1,22 @@
 import Toast from '../components/toast/Toast';
+import Cookies from 'js-cookie';
 
 const baseUrl = 'http://localhost:3000'
-const Headers = { 'Content-Type': 'application/json' }
+var Headers = { 'Content-Type': 'application/json' }
 const Internal_Server_Error = { message: 'Unable to make API calls', status: 500 }
-const errorCodes = [400, 401, 402, 404, 500];
+const errorCodes = [400, 402, 404, 500];
+const unauthorized = 401;
+
 
 export async function getAPICall(uri) {
+    // const navigate = useNavigate();
     try {
 
         let finalURL = baseUrl + uri;
         console.log("Making GET API call to : " + finalURL);
         var response;
+        Headers['Authorization'] = 'Bearer ' +  Cookies.get('token');
+        console.log(Headers);
         await fetch(finalURL, {
             method: 'GET',
             headers: Headers,
@@ -23,6 +29,13 @@ export async function getAPICall(uri) {
         // handle the common error here
         if (errorCodes.includes(response.status))
             Toast(response.message, 'error');
+
+        if (response.status === unauthorized) {
+            Toast(response.message, 'error');
+            Cookies.remove('token');
+            // navigate('/login');
+            window.location.href = '/login';
+        }
 
         return response;
     } catch (error) {

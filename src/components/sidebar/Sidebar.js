@@ -11,6 +11,8 @@ import 'react-pro-sidebar/dist/css/styles.css';
 import { SidebarData } from './SidebarData';
 import './Sidebar.css';
 import Toast from '../toast/Toast';
+import Cookies from 'js-cookie'
+
 
 import { FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from 'react-icons/fi';
 
@@ -36,10 +38,10 @@ const Sidebar = () => {
     const navigate = useNavigate();
 
     const submitLogOut = event => {
-        // need to remove all cookies and cache information
-        //clearCookies();
+
         console.log('Logout submitted');
-        //return <Navigate to='/login'  />
+        console.log(Cookies.get('token'));
+        Cookies.remove('token');
         navigate('/login');
         Toast('Successfully Logged out', 'success');
     };

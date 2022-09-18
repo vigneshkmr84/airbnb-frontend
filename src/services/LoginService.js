@@ -1,6 +1,8 @@
 
 import { postAPICall } from './ApiService';
 import Toast from '../components/toast/Toast';
+import Cookies from 'js-cookie'
+
 
 // login 
 export async function login(loginObject) {
@@ -11,6 +13,8 @@ export async function login(loginObject) {
     if (response.status === 200) {
         console.log('Successfully Logged in');
         Toast('Successfully Logged in', 'success');
+        console.log('Setting cookies...')
+        Cookies.set('token', response.message);
         return true
     }
     return false
