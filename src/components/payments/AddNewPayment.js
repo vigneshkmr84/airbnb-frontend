@@ -81,14 +81,20 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
                 {displayPaypal ? <NewPaypalPaypment handleChange={handleChange} /> : null}
 
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="success" onClick={submitNewPayment}>
+            <Modal.Footer style={{ justifyContent: 'center' }}>
+                {/* <Button variant="success" onClick={submitNewPayment}>
                     Submit
                 </Button>
-                {/* <Button variant="secondary" onClick={closeButtonClickHandler}> */}
                 <Button variant="danger" onClick={() => onClose()}>
                     Cancel
-                </Button>
+                </Button> */}
+                {/* <Button variant="secondary" onClick={closeButtonClickHandler}> */}
+                <button className='btn btn-secondary btn-md' onClick={() => onClose()}>
+                    Cancel
+                </button>
+                <button className='btn btn-danger btn-md' onClick={submitNewPayment}>
+                    Submit
+                </button>
             </Modal.Footer>
         </Modal>
     )
