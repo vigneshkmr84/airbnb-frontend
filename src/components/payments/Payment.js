@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { getUserPaymentDetails } from '../../services/PaymentService';
 import Sidebar from '../sidebar/Sidebar'
-// import CardPayment from './CardPayment';
 import './Payment.css';
-// import Paypal from './Paypal';
 import AddNewPayment from './AddNewPayment';
 import { Accordion } from 'react-bootstrap';
-import editButton from 'react-bootstrap/Button';
 import moment from 'moment-timezone';
 
 const Payment = () => {
@@ -101,7 +98,6 @@ const Payment = () => {
                 </div> */}
 
                 <div id="paymentDetails">
-                    {/* <h3> Payment Details </h3> */}
                     <Accordion defaultActiveKey="0">
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Credit / Debit</Accordion.Header>

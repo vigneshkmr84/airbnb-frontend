@@ -9,6 +9,8 @@ import { getReviewsForPropertyId } from '../../../services/ReviewsService';
 import { getUserProfile } from '../../../services/ProfileService';
 import { Accordion, Offcanvas, Spinner } from 'react-bootstrap';
 import moment from 'moment-timezone';
+import { getUserPaymentDetails } from '../../../services/PaymentService';
+import { addBooking } from '../../../services/BookingService';
 
 
 
@@ -23,15 +25,26 @@ const PropertyDetails = () => {
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
 
+    const [userPaymentNickNames, setUserPaymentNickNames] = useState(null);
+
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        console.log("Show enabled");
+        getUserPaymentDetails('630d9e1a5a8e270b69c8e947', true)
+            .then((res) => {
+                setUserPaymentNickNames(res)
+            });
+
+        console.log(userPaymentNickNames);
+        setShow(true)
+    };
 
     // console.log(property_id);
 
     const initialBookindData = Object.freeze({
-        checkin_date: '',
-        checkout_date: '',
-        guests : Number.NaN,
+        start_date: '',
+        end_date: '',
+        no_of_people: Number.NaN,
         guest_message: ''
     })
 
@@ -48,41 +61,46 @@ const PropertyDetails = () => {
 
     // submit button toggle based on input validation
     const isSubmitEnabled =
-        (initialBookindData.checkin_date !== "")
-        && (initialBookindData.checkout_date !== "")
-        && (initialBookindData.guests !== "")
+        (initialBookindData.start_date !== "")
+        && (initialBookindData.end_date !== "")
+        && (initialBookindData.no_of_people !== "")
         && (initialBookindData.guest_message !== "");
 
     const handleBookingFormChange = (e) => {
-/*         console.log(e.target.value);
-        console.log(isNaN(+e.target.value)); */
+        /*         console.log(e.target.value);
+                console.log(isNaN(+e.target.value)); */
         setBookingFormData({
             ...bookingFormData,
             [e.target.name]: e.target.value.trim()
         });
 
         /* propertyDetails.cost_per_day * (moment.duration(
-            moment(bookingFormData.checkout_date) - moment(bookingFormData.checkin_date)
+            moment(bookingFormData.end_date) - moment(bookingFormData.start_date)
         ).days() + 1) */
 
         let difference =
             moment.duration(
-                moment(bookingFormData.checkout_date) - moment(bookingFormData.checkin_date)
+                moment(bookingFormData.end_date) - moment(bookingFormData.start_date)
             ).days() + 1;
 
         setBookingFare({
             ...bookingFare,
             cost: (difference * propertyDetails.cost_per_day),
             nights: difference,
-            taxes: (bookingFare.cost * tax_rate),
-            total_price: (bookingFare.cost + bookingFare.taxes),
+            taxes: Math.round(bookingFare.cost * tax_rate * 100) / 100,
+            // total_price: Math.round(bookingFare.cost + bookingFare.taxes * 100)/100,
+            total_price: Math.round((difference * propertyDetails.cost_per_day) * (1 + tax_rate) * 100) / 100
         })
     }
 
     const onSubmitBooking = (e) => {
         console.log('Booking Form Submitted');
-        console.log(bookingFormData)
-        
+        // console.log(bookingFormData)
+        var formData = bookingFormData;
+        formData.property_id = property_id.id
+        console.log(formData)
+        addBooking(formData)
+
         // Call reserve Property API
     }
 
@@ -162,7 +180,7 @@ const PropertyDetails = () => {
                                     <div className='row' style={{ margin: '0 auto', /* textAlign: 'center', */ backgroundColor: 'rgb(128 128 128 / 20%)', width: '70%', borderRadius: '9px', paddingTop: '2%', paddingLeft: '3%', paddingBottom: '1%' }}>
                                         {/* <div className='col-md-6'> */}
                                         <h5>{propertyDetails.one_line_description} Hosted by <a href={'/user/' + hostDetails._id}>{hostDetails.first_name} </a></h5>
-                                        <p>{propertyDetails.guests} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
+                                        <p>{propertyDetails.no_of_people} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
                                         {/* </div> */}
 
                                         {/* <div className='col-md-6'>
@@ -187,9 +205,7 @@ const PropertyDetails = () => {
                                 </div>
 
                                 <div className='container-fluid'>
-                                    {/* <Button variant="primary" onClick={handleShow} className='reserveToggleButton'>
-                                        Reserve
-                                    </Button> */}
+
                                     <button className='btn btn-primary btn-lg' onClick={handleShow} id='reserveToggleButton'>
                                         Reserve
                                     </button>
@@ -220,7 +236,7 @@ const PropertyDetails = () => {
                                                             min={new Date().toISOString().slice(0, 10)}
                                                             // defaultValue={new Date().toISOString().slice(0, 10)}
                                                             onChange={handleBookingFormChange}
-                                                            name='checkin_date'
+                                                            name='start_date'
                                                         />
                                                     </div>
 
@@ -232,7 +248,7 @@ const PropertyDetails = () => {
                                                             min={new Date(new Date().valueOf() + 86400000).toISOString().slice(0, 10)}
                                                             // defaultValue={new Date(new Date().valueOf() + 2 * 86400000).toISOString().slice(0, 10)}
                                                             onChange={handleBookingFormChange}
-                                                            name='checkout_date'
+                                                            name='end_date'
                                                         />
                                                     </div>
                                                 </div>
@@ -243,9 +259,9 @@ const PropertyDetails = () => {
                                                             className='form-control mr-sm-2'
                                                             placeholder='Guests'
                                                             onChange={handleBookingFormChange}
-                                                            name='guests'
+                                                            name='no_of_people'
                                                             min={1}
-                                                            max={propertyDetails.guests}
+                                                            max={propertyDetails.no_of_people}
                                                         />
                                                     </div>
                                                 </div>
@@ -268,11 +284,41 @@ const PropertyDetails = () => {
                                                             aria-label="Select Payment Type"
                                                             name="payment_type"
                                                             required
-                                                            // onChange={handlePaymentTypeChange}
+                                                            onChange={handleBookingFormChange}
                                                             defaultValue={""}>
                                                             <option value="">Select Payment Type</option>
                                                             <option value="credit">Credit / Debit Card</option>
                                                             <option value="paypal">Paypal</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className='row' >
+                                                    <div className='col-md-12'>
+                                                        <label className='form-label control-label'>Select Payment</label>
+                                                        <select className="form-select"
+                                                            aria-label="Select Payment"
+                                                            name="payment_details_id"
+                                                            required
+                                                            onChange={handleBookingFormChange}
+                                                            defaultValue={""}>
+                                                            <option value="">Select Payment</option>
+
+                                                            {
+                                                                bookingFormData.payment_type === 'credit' ?
+                                                                    userPaymentNickNames?.credit_card.map((card => {
+                                                                        return (
+                                                                            <option key={card._id} id={card._id}>{card.nick_name}</option>
+                                                                        )
+                                                                    })
+                                                                    )
+                                                                    :
+                                                                    userPaymentNickNames?.paypal.map((paypal => {
+                                                                        return (
+                                                                            <option key={paypal._id} id={paypal._id}>{paypal.nick_name}</option>
+                                                                        )
+                                                                    })
+                                                                    )
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>

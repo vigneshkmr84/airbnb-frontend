@@ -2,9 +2,11 @@
 import Toast from '../components/toast/Toast';
 import { postAPICall, getAPICall, deleteAPICall } from './ApiService'
 
-export async function getUserPaymentDetails(user_id) {
+export async function getUserPaymentDetails(user_id, nick_name = false) {
 
-    var response = await getAPICall('/users/' + user_id + '/payment');
+    // let uri = (query === null || query === undefined) ? '/users/' + user_id + '/payment' : '/users/' + user_id + '/payment?nick_name=' + nick_name;
+    let uri = '/users/' + user_id + '/payment?nick_name=' + nick_name;
+    var response = await getAPICall(uri);
 
     console.log(response.message.payment_details);
     return response.message.payment_details;
@@ -16,7 +18,7 @@ export async function addPaymentDetails(user_id, paymentType, userData) {
 
     console.log(response.message);
 
-    if ( response.status === 200){
+    if (response.status === 200) {
         Toast('Added Successfully', 'success');
     }
 
