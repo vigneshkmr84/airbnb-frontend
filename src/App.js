@@ -5,7 +5,6 @@ import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
 import { ToastContainer } from 'react-toastify';
 import { Routes, Route, } from "react-router-dom";
-import Example from './components/signup/Example';
 import Sidebar from './components/sidebar/Sidebar';
 import NotFound from './components/notFound/NotFound';
 import Search from './components/search/Search';
@@ -14,7 +13,6 @@ import Home from './components/home/Home';
 import Profile from './components/profile/Profile';
 import Payment from './components/payments/Payment';
 import Bookmark from './components/bookmarks/Bookmark';
-import background from './background.jpeg'
 import Properties from './components/properties/Properties';
 import PropertyDetails from './components/properties/propertydetails/PropertyDetails';
 function App() {
