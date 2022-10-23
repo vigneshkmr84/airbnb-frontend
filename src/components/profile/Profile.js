@@ -3,7 +3,11 @@ import Sidebar from '../sidebar/Sidebar'
 import './Profile.css'
 import defaultUserImage from './user-profile.jpg'
 import { getUserProfile, updateUserProfile } from '../../services/ProfileService'
-import { GrEdit } from 'react-icons/gr'
+import Spinner from 'react-bootstrap/Spinner';
+import jwt_decode from "jwt-decode";
+import Cookies from 'js-cookie'
+import AddPropertyModal from './AddPropertyModal'
+
 
 const Profile = () => {
 
@@ -16,12 +20,16 @@ const Profile = () => {
         id_type: '',
     }
     const [userData, setUserDetails] = useState(defaultUserDetails);
-    // const [userData, setUserDetails] = React.useState(defaultUserDetails);
+
+    const [showNewPropertyModal, setShowNewPropertyModal] = useState(false);
 
     const [updatedUserData, setUpdatedUserData] = useState({});
 
     const [isEditEnabled, setIsEnabled] = useState(false);
 
+    const cancelNewPropertyModal = () => {
+        setShowNewPropertyModal(false);
+    }
     // function onClickEditInfo() {
     const onClickEditInfo = (e) => {
         console.log('Edit Enabled')
@@ -41,8 +49,10 @@ const Profile = () => {
         // fetch the user details for the given id 
         // and set them to userData
 
-        getUserProfile('6313358188e367845973f368')
-            // getUserProfile('6313810d88e367845973f36a')
+        //  getUserProfile('6313358188e367845973f368')
+        var token_data = jwt_decode(Cookies.get('token'));
+        console.log(token_data)
+        getUserProfile(token_data.user_id)
             .then((res) => {
                 setUserDetails(res);
             });
@@ -58,18 +68,26 @@ const Profile = () => {
         setIsEnabled(false);
         console.log("Form submitted");
         console.log(updatedUserData)
-        if (updatedUserData === {}){
+        if (updatedUserData === {}) {
             console.log("No updates")
-        }else{
+        } else {
             console.log("Updating user data")
             updateUserProfile('6313358188e367845973f368', updatedUserData);
         }
+    }
+
+    const addProperty = () => {
+        console.log("Add Property Clicked");
+        setShowNewPropertyModal(true);
     }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
             <div id='profile-container' style={{ width: '100%' }}>
+                {/*                 <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner> */}
                 <div className="container rounded bg-white mt-5 mb-5">
                     <h1 className='profileHeading'>Personal Details</h1>
                     <div id="profile-details" className='row'>
@@ -81,7 +99,6 @@ const Profile = () => {
 
                         <div className="col-md-8" style={{ width: '50%' }}>
                             <form
-                                // onSubmit={submitForm}
                                 onChange={markUpdated}>
                                 <div className='row'>
                                     <div className='col-md-6'>
@@ -101,7 +118,6 @@ const Profile = () => {
                                         <label className='form-label control-label'>Last name</label>
                                         <input type='text'
                                             className='form-control mr-sm-2'
-                                            // placeholder='Last name' 
                                             name='last_name'
                                             defaultValue={userData.last_name}
                                             onChange={handleChange}
@@ -116,7 +132,6 @@ const Profile = () => {
                                         <label className='form-label control-label'>Email Id</label>
                                         <input type='text'
                                             className='form-control mr-sm-2'
-                                            // placeholder='Email id' 
                                             name='email_id'
                                             defaultValue={userData.email_id}
                                             onChange={handleChange}
@@ -128,7 +143,6 @@ const Profile = () => {
                                         <label className='form-label control-label'>Phone no</label>
                                         <input type='tel'
                                             className='form-control mr-sm-2'
-                                            // placeholder='Phone no' 
                                             name='phone_no'
                                             defaultValue={userData.phone_no}
                                             onChange={handleChange}
@@ -143,8 +157,6 @@ const Profile = () => {
                                         <label className='form-label control-label'>Id type</label>
                                         <input type='text'
                                             className='form-control mr-sm-2'
-                                            // placeholder='Valid Id no' 
-                                            // defaultValue={userData.id_type}
                                             name='id_type'
                                             defaultValue={userData.id_type}
                                             onChange={handleChange}
@@ -157,7 +169,6 @@ const Profile = () => {
                                         <label className='form-label control-label'>Valid Id no</label>
                                         <input type='text'
                                             className='form-control mr-sm-2'
-                                            // placeholder='Valid Id no' 
                                             name='id_details'
                                             defaultValue={userData.id_details}
                                             onChange={handleChange}
@@ -174,26 +185,35 @@ const Profile = () => {
                                                 id='editButton'
                                                 className="btn btn-danger btn-md"
                                                 onClick={onClickEditInfo}
-                                            // onClick={handleSubmit}
                                             > Edit Info
                                             </button>
                                         </div>
                                     </div>
                                     <div className='col-md-6'>
                                         <div className="form-group" style={{ textAlign: 'center' }}>
-                                            {/* <button type="button" */}
                                             <button type="button"
                                                 id='update-info'
                                                 className="btn btn-primary btn-md"
                                                 onClick={submitForm}
                                                 disabled={(isEditEnabled) ? "disabled" : ""}
-                                            // onSubmit={submitForm}
                                             > Update Info
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+                                <div className='row'>
+                                    <div className='col-md-12'>
+                                        <button type="button"
+                                            id='update-info'
+                                            className="btn btn-primary btn-md"
+                                            onClick={addProperty}
+                                        > Add Property
+                                        </button>
+                                    </div>
+                                </div>
                             </form>
+
+                            <AddPropertyModal showNewPropertyModal={showNewPropertyModal} cancelNewPropertyModal={cancelNewPropertyModal} /* user_id='630d9e1a5a8e270b69c8e947' */ />
                         </div>
                     </div>
                 </div >

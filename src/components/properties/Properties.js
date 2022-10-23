@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../sidebar/Sidebar'
 import './Properties.css';
-import { getAllProperties, getPropertyById, addNewProperty } from '../../services/PropertiesService';
-import SinglePropertyCard from '../bookmarks/SinglePropertyCard';
+import { getAllProperties } from '../../services/PropertiesService';
+// import SinglePropertyCard from '../bookmarks/SinglePropertyCard';
 import BookmarksCard from './BookmarksCard';
 import Footer from '../footer/Footer';
 
@@ -44,16 +44,15 @@ const Properties = () => {
                         <div className='propertiesBody'>
                             <div className='card-group'>
                                 {
-                                    propertiesList.map((property, index) => {
+                                    propertiesList.map((property) => {
 
                                         return (
-                                            // <SinglePropertyCard
+
                                             <BookmarksCard
                                                 key={property._id}
                                                 property_details={property}
                                                 imageWidth={imageWidth}
                                                 imageHeight={imageHeight}
-                                                // cardWidth='30%'
                                                 flexDirection='row'
                                             />
                                         )
@@ -65,25 +64,6 @@ const Properties = () => {
                             <br></br>
                             <br></br>
                             <br></br>
-                            {/* <div className='card-group'>
-                            {
-                                propertiesList.map((property, index) => {
-
-                                    return (
-                                        // <SinglePropertyCard
-                                        <PropertyCard
-                                            key={property._id}
-                                            property_details={property}
-                                            imageWidth={imageWidth}
-                                            imageHeight={imageHeight}
-                                            // cardWidth='30%'
-                                            flexDirection='row'
-                                        />
-                                    )
-                                })
-
-                            }
-                        </div> */}
                         </div>
                     </div>
                 </div>
