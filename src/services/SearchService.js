@@ -1,7 +1,9 @@
-import { postAPICall } from './ApiService';
+import { getAPICall } from './ApiService';
 
 export async function searchProperty(searchQuery) {
 
-    /* var response = await postAPICall('/search', searchQuery);
-    console.log(response); */
+    var response = await getAPICall('/search/' + searchQuery);
+    console.log(response.message);
+
+    return response.message;
 }

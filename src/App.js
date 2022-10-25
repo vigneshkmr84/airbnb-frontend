@@ -6,7 +6,7 @@ import Signup from './components/signup/Signup';
 import { ToastContainer } from 'react-toastify';
 import { Routes, Route, } from "react-router-dom";
 import Sidebar from './components/sidebar/Sidebar';
-import NotFound from './components/notFound/NotFound';
+
 import Search from './components/search/Search';
 
 import Home from './components/home/Home';
@@ -47,13 +47,14 @@ function App() {
         <Route path='/login' index element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/search' element={<Search />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/home' element={<Properties />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/payment' element={<Payment />} />
         <Route path='/bookmarks' element={<Bookmark />} />
         <Route path='/properties' element={<Properties />} />
         <Route path='/properties/:id' element={<PropertyDetails />} />
         <Route path='/properties1' element={<PropertyDetails />} />
+        
         {/* <Route path="*" element={<NotFound/>} /> */}
         {/* <Route path='/login' component={Login} />
           <Route path='/signup' component={Signup} /> */}

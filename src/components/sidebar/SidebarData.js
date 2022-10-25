@@ -1,10 +1,4 @@
-import {
-    FaBookmark
-    , FaHome
-    , FaSearchLocation
-    , FaUserAlt
-} from 'react-icons/fa';
-
+import { FaBookmark, FaHome, FaSearchLocation, FaUserAlt } from 'react-icons/fa';
 import { MdOutlinePayment } from 'react-icons/md';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { BsCalendarWeek, BsTelephoneFill } from 'react-icons/bs';
@@ -18,14 +12,14 @@ export const SidebarData = [
         link: "/home",
         icon: <FaHome />
     },
-    {
+    /* {
         // search will specifically contain the search option
         // display the results one by one
         id: 2,
         name: "Search",
         link: "/search",
         icon: <FaSearchLocation />
-    },
+    }, */
     {
         // upcoming and past select drop down
         // default will be upcoming
@@ -52,13 +46,13 @@ export const SidebarData = [
         name: "Payment Details",
         link: "/payment",
         icon: <MdOutlinePayment />,
-    },
+    }/* ,
     {
         id: 7,
         name: "Listings",
         link: "/properties",
         icon: <AiOutlineUnorderedList />,
-    },
+    } */,
     {
         id: 8,
         name: "Contact us",
