@@ -9,8 +9,8 @@ import { searchProperty } from '../../services/SearchService';
 import './Search.css';
 
 const Properties = () => {
-
-    const [propertiesList, setAllPropertiesList] = useState([]);
+    const emptyArray = [];
+    const [propertiesList, setAllPropertiesList] = useState(emptyArray);
 
     const [searchQuery, updateProperty] = useState('');
 
@@ -24,10 +24,27 @@ const Properties = () => {
     }
 
     useEffect(() => {
-        getAllProperties()
+        async function getData() {
+            let response = await fetch('properties.json')
+                .then(function (data) {
+                    return data.json();
+                });
+
+            // console.log(response);
+            setAllPropertiesList(response);
+            return response;
+        }
+
+
+        getData();
+        console.log(propertiesList);
+
+        // ORIGINAL CODE
+        /* getAllProperties()
             .then((res) => {
                 setAllPropertiesList(res);
-            })
+            }) */
+
     }, []);
 
     /* const imageWidth = '250px';
@@ -68,7 +85,7 @@ const Properties = () => {
                         </div>
                         <div className='propertiesBody'>
                             <div className='card-group'>
-                                {
+                                {propertiesList ?
                                     propertiesList.map((property) => {
                                         return (
                                             <BookmarksCard
@@ -80,7 +97,7 @@ const Properties = () => {
                                             />
                                         )
                                     })
-
+                                    : <h4>No Data found</h4>
                                 }
                             </div>
 

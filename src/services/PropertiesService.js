@@ -1,10 +1,23 @@
 import { postAPICall, getAPICall } from './ApiService'
 
-
+// ORIGINAL CODE
 export async function getAllProperties() {
 
     var response = await getAPICall('/property');
-    // console.log(response.message);
+    console.log(response.message);
+    return response.message;
+}
+
+export async function getAllProperties1() {
+    let response;
+    response = await fetch('properties.json')
+        .then(function(data){
+            console.log(data);
+            return data.json();
+        });
+
+    console.log('Get all properties response : ');
+    console.log(response);
     return response.message;
 }
 
