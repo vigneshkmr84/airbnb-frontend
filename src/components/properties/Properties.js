@@ -9,18 +9,27 @@ import { searchProperty } from '../../services/SearchService';
 import './Search.css';
 
 const Properties = () => {
-    const emptyArray = [];
-    const [propertiesList, setAllPropertiesList] = useState(emptyArray);
 
-    const [searchQuery, updateProperty] = useState('');
+
+    const [propertiesList, setAllPropertiesList] = useState([]);
+
+    const [search, setSearch] = useState('');
 
     const onSearchSubmit = (e) => {
-        console.log("Search for : " + searchQuery);
-        searchProperty(searchQuery);
+        console.log("Search for : " + search);
+        // searchProperty(search);
+        let searchProperty = propertiesList.filter((property) => {
+            if (property.name.toLowerCase().includes(search.toLowerCase()) || property.location.toLowerCase().includes(search.toLowerCase())) {
+                return property;
+            }
+        });
+
+        console.log(searchProperty);
+        setAllPropertiesList(searchProperty);
     }
 
     const handleChange = (e) => {
-        updateProperty(e.target.value.trim());
+        setSearch(e.target.value.trim());
     }
 
     useEffect(() => {
