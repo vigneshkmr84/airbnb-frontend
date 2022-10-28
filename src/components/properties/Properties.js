@@ -11,21 +11,23 @@ import './Search.css';
 const Properties = () => {
 
 
-    const [propertiesList, setAllPropertiesList] = useState([]);
+    const [allProperties, setAllPropertiesList] = useState([]);
 
     const [search, setSearch] = useState('');
+
+    const [searchList, setSearchList] = useState([]);
 
     const onSearchSubmit = (e) => {
         console.log("Search for : " + search);
         // searchProperty(search);
-        let searchProperty = propertiesList.filter((property) => {
+        let searchProperty = allProperties.filter((property) => {
             if (property.name.toLowerCase().includes(search.toLowerCase()) || property.location.toLowerCase().includes(search.toLowerCase())) {
                 return property;
             }
         });
 
         console.log(searchProperty);
-        setAllPropertiesList(searchProperty);
+        setSearchList(searchProperty);
     }
 
     const handleChange = (e) => {
@@ -39,14 +41,14 @@ const Properties = () => {
                     return data.json();
                 });
 
-            // console.log(response);
             setAllPropertiesList(response);
+            setSearchList(response);
             return response;
         }
 
 
         getData();
-        console.log(propertiesList);
+        console.log(allProperties);
 
         // ORIGINAL CODE
         /* getAllProperties()
@@ -94,8 +96,8 @@ const Properties = () => {
                         </div>
                         <div className='propertiesBody'>
                             <div className='card-group'>
-                                {propertiesList ?
-                                    propertiesList.map((property) => {
+                                {searchList ?
+                                    searchList.map((property) => {
                                         return (
                                             <BookmarksCard
                                                 key={property._id}
