@@ -16,7 +16,7 @@ export async function getAPICall(uri) {
         console.log("Making GET API call to : " + finalURL);
         var response;
         Headers['Authorization'] = 'Bearer ' +  Cookies.get('token');
-        console.log(Headers);
+        // console.log(Headers);
         await fetch(finalURL, {
             method: 'GET',
             headers: Headers,

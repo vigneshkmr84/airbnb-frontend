@@ -5,6 +5,7 @@ import { FcCancel } from 'react-icons/fc';
 import { BsFillHouseDoorFill, BsShieldFillCheck } from 'react-icons/bs';
 import { makeFirstLetterCaps, parseLines } from '../../common/CommonUtils';
 import { MdOutlineRateReview } from 'react-icons/md';
+import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { getReviewsForPropertyId } from '../../../services/ReviewsService';
 import { Spinner } from 'react-bootstrap';
 
@@ -44,7 +45,7 @@ const BodyDetailsAccordion = ({ details }) => {
     // console.log(hostDetails.host_details);
 
     return (
-        <Accordion defaultActiveKey='description' >
+        property_details && <Accordion defaultActiveKey='description' >
             <Accordion.Item eventKey='description'>
                 <Accordion.Header><h4>Description</h4></Accordion.Header>
                 <Accordion.Body>
@@ -56,9 +57,22 @@ const BodyDetailsAccordion = ({ details }) => {
             <Accordion.Item eventKey='house_rules'>
                 <Accordion.Header><h4>House Rules <BsFillHouseDoorFill /></h4></Accordion.Header>
                 <Accordion.Body>
-
+                    <ul>
+                        <li>
+                            <small>Checkin Time: {property_details.checkin_time}</small>
+                        </li>
+                        <li>
+                            <small>Checkout Time: {property_details.checkout_time}</small>
+                        </li>
+                    </ul>
                     {generateHouseRules(property_details.house_rules)}
 
+                </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey='pricing'>
+                <Accordion.Header><h4>Pricing <AiOutlineDollarCircle /></h4></Accordion.Header>
+                <Accordion.Body>
+                    {showPricing(property_details)}
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='cancellation_policy'>
@@ -77,11 +91,9 @@ const BodyDetailsAccordion = ({ details }) => {
 
                 </Accordion.Body>
             </Accordion.Item>
-            <Accordion.Item eventKey='reviews'>
+            {/* <Accordion.Item eventKey='reviews'>
                 <Accordion.Header><h4>What others have to say about the place ? <MdOutlineRateReview /></h4></Accordion.Header>
                 <Accordion.Body>
-
-                    {/* {generateAmenities(property_details.amenities)} */}
                     {
                         reviews?.map((review, index) => {
                             return (
@@ -92,14 +104,14 @@ const BodyDetailsAccordion = ({ details }) => {
                     }
 
                 </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey='host_details'>
+            </Accordion.Item> */}
+
+            {/* <Accordion.Item eventKey='host_details'>
                 <Accordion.Header><h4>Know your Host...</h4></Accordion.Header>
                 <Accordion.Body>
 
                     <h5>The Property is hosted by
                         <a href={'/user/' + hostDetails._id}> {hostDetails.first_name} </a>
-                        {/* {hostDetails.host_details.is_superhost ? " and is a Verified Superhost" : null} */}
                     </h5>
                     <p>{hostDetails.host_details.is_superhost ? <small> Verified Superhost</small> : null} {hostDetails.host_details.is_superhost ? <BsShieldFillCheck /> : null}</p>
                     <p> <b>About me :</b> {hostDetails.host_details.description}</p>
@@ -107,7 +119,8 @@ const BodyDetailsAccordion = ({ details }) => {
                     <p> <b>Host from: </b> {hostDetails.created_at}</p>
 
                 </Accordion.Body>
-            </Accordion.Item>
+            </Accordion.Item> */}
+
         </Accordion>
     )
 }
@@ -133,6 +146,25 @@ function generateAmenities(amenitiesArray) {
     )
 }
 
+function showPricing(payment_details) {
+    return (
+        <ul>
+            <li>
+                <small>Cost per Day: {payment_details.cost_per_day}$</small>
+            </li>
+            <li>
+                <small>Cleaning Cost: {payment_details.cleaning_cost}$</small>
+            </li>
+            <li>
+                <small>Service Cost: {payment_details.service_cost}$</small>
+            </li>
+            {/* <li> */}
+            <br></br>
+            <small>*Additional Taxes might apply</small>
+            {/* </li> */}
+        </ul>
+    )
+}
 
 function generateSubAmenities(categoryArray) {
     return (
@@ -149,9 +181,10 @@ function generateHouseRules(house_rules) {
 
     return (
         house_rules?.map((rule, index) => {
-            return (<li key={index}>
-                <small>{makeFirstLetterCaps(rule)}</small>
-            </li>)
+            return (
+                <li key={index}>
+                    <small>{makeFirstLetterCaps(rule)}</small>
+                </li>)
         })
     )
 

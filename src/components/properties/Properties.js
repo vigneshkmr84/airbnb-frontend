@@ -10,7 +10,6 @@ import './Search.css';
 
 const Properties = () => {
 
-
     const [allProperties, setAllPropertiesList] = useState([]);
 
     const [search, setSearch] = useState('');

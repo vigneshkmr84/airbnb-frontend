@@ -13,14 +13,13 @@ import { getUserPaymentDetails } from '../../../services/PaymentService';
 import { addBooking } from '../../../services/BookingService';
 
 
-
 const PropertyDetails = () => {
     let property_id = useParams();
     // let property_id = '631abfd2ff027fd82e85f6e0';
 
-    const [propertyDetails, setPropertyDetails] = useState(null);
+    const [propertyDetails, setPropertyDetails] = useState({});
     const [propertyTopReviews, setPropertyTopReviews] = useState(null);
-    const [hostDetails, setHostDetails] = useState(null);
+    const [hostDetails, setHostDetails] = useState({});
 
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
@@ -39,16 +38,14 @@ const PropertyDetails = () => {
         setShow(true)
     };
 
-    // console.log(property_id);
-
-    const initialBookindData = Object.freeze({
+    const initialBookingData = Object.freeze({
         start_date: '',
         end_date: '',
         no_of_people: Number.NaN,
         guest_message: ''
     })
 
-    const [bookingFormData, setBookingFormData] = useState(initialBookindData);
+    const [bookingFormData, setBookingFormData] = useState(initialBookingData);
     const tax_rate = 0.05;
 
     const [bookingFare, setBookingFare] = useState({
@@ -61,22 +58,17 @@ const PropertyDetails = () => {
 
     // submit button toggle based on input validation
     const isSubmitEnabled =
-        (initialBookindData.start_date !== "")
-        && (initialBookindData.end_date !== "")
-        && (initialBookindData.no_of_people !== "")
-        && (initialBookindData.guest_message !== "");
+        (initialBookingData.start_date !== "")
+        && (initialBookingData.end_date !== "")
+        && (initialBookingData.no_of_people !== "")
+        && (initialBookingData.guest_message !== "");
 
     const handleBookingFormChange = (e) => {
-        /*         console.log(e.target.value);
-                console.log(isNaN(+e.target.value)); */
         setBookingFormData({
             ...bookingFormData,
             [e.target.name]: e.target.value.trim()
         });
 
-        /* propertyDetails.cost_per_day * (moment.duration(
-            moment(bookingFormData.end_date) - moment(bookingFormData.start_date)
-        ).days() + 1) */
 
         let difference =
             moment.duration(
@@ -106,9 +98,41 @@ const PropertyDetails = () => {
 
     // fetching the property details
     useEffect(() => {
-        let isCalled = false
-        console.log('fetching property details for id : ' + property_id.id)
 
+        console.log('fetching property details for id : ' + property_id.id)
+        async function getData() {
+            await fetch('properties.json')
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    let property = data.filter(el => el._id === property_id.id);
+                    console.log(property[0]);
+                    setPropertyDetails(property[0]);
+                    console.log(propertyDetails);
+                });
+
+            // console.log(response);
+            /* let property = response.filter((el) => {
+                console.log('filter for ' + el._id);
+                if (el._id == property_id.id){
+                    console.log('match found');
+                    return el;
+                }
+            }); */
+            /* let property = response.filter(el => el._id === property_id.id);
+            console.log(property[0]);
+            setPropertyDetails(property[0]);
+            console.log(propertyDetails); */
+        }
+
+        getData();
+
+        console.log(propertyDetails);
+
+        /* let isCalled = false;
 
         if (!isCalled) {
             getPropertyById(property_id.id)
@@ -119,11 +143,11 @@ const PropertyDetails = () => {
         console.log('Retrieved All property details');
         return () => {
             isCalled = true;
-        }
+        } */
     }, []);
 
     // fetching the top 5 reviews for the property
-    useEffect(() => {
+    /* useEffect(() => {
 
         async function apiCall() {
             await getReviewsForPropertyId(property_id.id, 1, 5)
@@ -137,19 +161,52 @@ const PropertyDetails = () => {
         console.log(propertyTopReviews)
         console.log('Retrieved Top 5 Reviews');
 
-        // console.log(propertyTopReviews);
-    }, []);
+    }, []); */
 
 
     // fetching the host details 
     useEffect(() => {
-        setLoading(true);
+
+        console.log('fetching user details for id : ' + '6316bca14fad5c24245666ca')
+        async function getData() {
+            await fetch('users.json')
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    let user = data.filter(el => el._id === '6316bca14fad5c24245666ca');
+                    console.log(user);
+                    setHostDetails(user[0]);
+                    console.log(hostDetails);
+                });
+
+
+            // console.log(response);
+            /* let property = response.filter((el) => {
+                console.log('filter for ' + el._id);
+                if (el._id == property_id.id){
+                    console.log('match found');
+                    return el;
+                }
+            }); */
+            /* let property = response.filter(el => el._id === property_id.id);
+            console.log(property[0]);
+            setPropertyDetails(property[0]);
+            console.log(propertyDetails); */
+        }
+
+        getData();
+
+        // ORIGINAL WORKING CODE
+        /* setLoading(true);
         getUserProfile('6316bca14fad5c24245666ca')
             .then((res) => {
                 setHostDetails(res);
             }).finally(() => {
                 setLoading(false);
-            });
+            }); */
 
 
         console.log('Retrieved Host Details');
@@ -160,7 +217,7 @@ const PropertyDetails = () => {
 
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
-            {propertyDetails && hostDetails && propertyTopReviews &&
+            {propertyDetails /* && hostDetails  && propertyTopReviews */ &&
                 <div id='property-details-container' style={{ width: '100%' }}>
                     <div className="container rounded bg-white mt-5 mb-5" >
                         <h1 className='propertyDetailsHeader'>{propertyDetails.name}</h1>
@@ -180,7 +237,7 @@ const PropertyDetails = () => {
                                     <div className='row' style={{ margin: '0 auto', /* textAlign: 'center', */ backgroundColor: 'rgb(128 128 128 / 20%)', width: '70%', borderRadius: '9px', paddingTop: '2%', paddingLeft: '3%', paddingBottom: '1%' }}>
                                         {/* <div className='col-md-6'> */}
                                         <h5>{propertyDetails.one_line_description} Hosted by <a href={'/user/' + hostDetails._id}>{hostDetails.first_name} </a></h5>
-                                        <p>{propertyDetails.no_of_people} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
+                                        <p>{propertyDetails.guests} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
                                         {/* </div> */}
 
                                         {/* <div className='col-md-6'>
@@ -234,7 +291,6 @@ const PropertyDetails = () => {
                                                             className='form-control mr-sm-2'
                                                             placeholder='Check-in'
                                                             min={new Date().toISOString().slice(0, 10)}
-                                                            // defaultValue={new Date().toISOString().slice(0, 10)}
                                                             onChange={handleBookingFormChange}
                                                             name='start_date'
                                                         />
@@ -246,7 +302,6 @@ const PropertyDetails = () => {
                                                             className='form-control mr-sm-2'
                                                             placeholder='Check-out'
                                                             min={new Date(new Date().valueOf() + 86400000).toISOString().slice(0, 10)}
-                                                            // defaultValue={new Date(new Date().valueOf() + 2 * 86400000).toISOString().slice(0, 10)}
                                                             onChange={handleBookingFormChange}
                                                             name='end_date'
                                                         />
