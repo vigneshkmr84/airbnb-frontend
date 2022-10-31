@@ -106,10 +106,26 @@ const PropertyDetails = () => {
 
     // fetching the property details
     useEffect(() => {
-        let isCalled = false
+
         console.log('fetching property details for id : ' + property_id.id)
 
+        async function getData() {
+            await getPropertyById(property_id.id)
+                .then(async function (data) {
+                    setPropertyDetails(data);
+                    let host_id = data.host_id;
+                    console.log('Fetching host details : ' + host_id);
+                    await getUserProfile(host_id)
+                        .then(host_data => {
+                            setHostDetails(host_data);
+                        })
+                });
+        }
 
+        getData();
+
+        /* 
+        let isCalled = false;
         if (!isCalled) {
             getPropertyById(property_id.id)
                 .then((res) => {
@@ -119,7 +135,7 @@ const PropertyDetails = () => {
         console.log('Retrieved All property details');
         return () => {
             isCalled = true;
-        }
+        } */
     }, []);
 
     // fetching the top 5 reviews for the property
@@ -129,20 +145,18 @@ const PropertyDetails = () => {
             await getReviewsForPropertyId(property_id.id, 1, 5)
                 .then((res) => {
                     setPropertyTopReviews(res);
+                    console.log(propertyTopReviews)
+                    console.log('Retrieved Top 5 Reviews');
                 });
         }
 
         apiCall();
 
-        console.log(propertyTopReviews)
-        console.log('Retrieved Top 5 Reviews');
-
-        // console.log(propertyTopReviews);
     }, []);
 
 
     // fetching the host details 
-    useEffect(() => {
+    /* useEffect(() => {
         setLoading(true);
         getUserProfile('6316bca14fad5c24245666ca')
             .then((res) => {
@@ -154,7 +168,7 @@ const PropertyDetails = () => {
 
         console.log('Retrieved Host Details');
 
-    }, []);
+    }, []); */
 
     return (
 
@@ -180,7 +194,7 @@ const PropertyDetails = () => {
                                     <div className='row' style={{ margin: '0 auto', /* textAlign: 'center', */ backgroundColor: 'rgb(128 128 128 / 20%)', width: '70%', borderRadius: '9px', paddingTop: '2%', paddingLeft: '3%', paddingBottom: '1%' }}>
                                         {/* <div className='col-md-6'> */}
                                         <h5>{propertyDetails.one_line_description} Hosted by <a href={'/user/' + hostDetails._id}>{hostDetails.first_name} </a></h5>
-                                        <p>{propertyDetails.no_of_people} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
+                                        <p>{propertyDetails.guests} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
                                         {/* </div> */}
 
                                         {/* <div className='col-md-6'>

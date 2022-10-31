@@ -12,22 +12,38 @@ const Properties = () => {
 
     const [propertiesList, setAllPropertiesList] = useState([]);
 
-    const [searchQuery, updateProperty] = useState('');
+    const [search, setSearch] = useState('');
+
+    const [searchList, setSearchList] = useState([]);
+
 
     const onSearchSubmit = (e) => {
-        console.log("Search for : " + searchQuery);
-        searchProperty(searchQuery);
+        console.log("Search for : " + search);
+        async function getData() {
+            await searchProperty(search)
+                .then(data => {
+                    setSearchList(data);
+                })
+        }
+        getData();
+
     }
 
     const handleChange = (e) => {
-        updateProperty(e.target.value.trim());
+        setSearch(e.target.value.trim());
     }
 
     useEffect(() => {
-        getAllProperties()
-            .then((res) => {
-                setAllPropertiesList(res);
-            })
+
+        async function getData() {
+            await getAllProperties()
+                .then(data => {
+                    setAllPropertiesList(data);
+                    setSearchList(data);
+                });
+        }
+
+        getData();
     }, []);
 
     /* const imageWidth = '250px';
@@ -68,8 +84,8 @@ const Properties = () => {
                         </div>
                         <div className='propertiesBody'>
                             <div className='card-group'>
-                                {
-                                    propertiesList.map((property) => {
+                                {searchList ?
+                                    searchList.map((property) => {
                                         return (
                                             <BookmarksCard
                                                 key={property._id}
@@ -80,7 +96,8 @@ const Properties = () => {
                                             />
                                         )
                                     })
-
+                                    // : <h6>Try searching property name or location</h6>
+                                    : <h6>No data found...</h6>
                                 }
                             </div>
 
