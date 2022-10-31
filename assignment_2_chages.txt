@@ -1,0 +1,15 @@
+things to do:
+
+
+- import and use properties.json data from local
+- change fetch api to load the data (from backend to local)
+- implement on data filter search for properties
+
+- export properties_images, reviews collections to show the details
+- pricing, checkin and checkout time (split time and mins properly) (add backend check as well)
+- Avg Rating on Top and on Cards as well
+
+- remove login details and set the jwt token at start  ?? (need to check on how to implement this)
+
+
+/Users/vigneshthirunavukkarasu/Downloads/OneDrive-2022-09-01/properties.json
