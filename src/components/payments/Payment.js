@@ -46,10 +46,10 @@ const Payment = () => {
         console.log("Actual value received : " + event.target.value)
         console.log('Card ' + displayCard);
         console.log('Paypal ' + displayPaypal);
-        if (event.target.value.trim() == 'card') {
+        if (event.target.value.trim() === 'card') {
             setDisplayCard(true);
             setDisplayPaypal(false);
-        } else if (event.target.value.trim() == 'paypal') {
+        } else if (event.target.value.trim() === 'paypal') {
             setDisplayPaypal(true);
             setDisplayCard(false);
             console.log('paypal')

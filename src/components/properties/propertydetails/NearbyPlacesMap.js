@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { Helmet } from 'react-helmet';
 
 const NearbyPlacesMap = () => {
+    
     const mapStyles = {
         height: "65vh",
         width: "100%"
@@ -11,13 +11,15 @@ const NearbyPlacesMap = () => {
     const defaultCenter = {
         lat: -33.8688, lng: 151.2093
     }
+
+    // NEED TO WORK AGAIN
+    /* 
     const [nearByPlaces, setNearByPlaces] = useState([]);
     // const types = "museum,restaurants,amusement_park,cafe,movie_theater,church,casino,stadium,supermarket,zoo,train_station";
     const types = 'restaurant';
     const googleAPIUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDHD5Azdp9yEur5KnVYJAUNf8ZAw6m40F4&radius=1000&"
 
-    // NEED TO WORK AGAIN
-    /* useEffect(() => {
+    useEffect(() => {
         const script = document.createElement("script");
         script.src = "/path/to/resource.js";
         script.async = true;

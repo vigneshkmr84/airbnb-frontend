@@ -3,7 +3,6 @@ import Sidebar from '../sidebar/Sidebar'
 import './Bookmark.css'
 import { getUserBookmarks } from '../../services/BookmarkService'
 import { Link } from 'react-router-dom'
-
 import SinglePropertyCard from './SinglePropertyCard'
 
 const Bookmark = () => {
@@ -30,7 +29,7 @@ const Bookmark = () => {
                 <h1 className='bookmarkHeading'>Favourites</h1>
                 <br></br>
                 {
-                    bookmarkItems.length == 0 ?
+                    bookmarkItems.length === 0 ?
                         <h3 className='emptyFavourites'>
                             Oops...You don't have any Favourites. Start <Link to='/properties'>Browsing</Link>
                         </h3> :

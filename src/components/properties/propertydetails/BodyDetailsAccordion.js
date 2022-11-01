@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Accordion } from 'react-bootstrap'
 import './PropertyDetails.css'
 import { FcCancel } from 'react-icons/fc';
 import { BsFillHouseDoorFill, BsShieldFillCheck } from 'react-icons/bs';
 import { makeFirstLetterCaps, parseLines } from '../../common/CommonUtils';
 import { MdOutlineRateReview } from 'react-icons/md';
-import { getReviewsForPropertyId } from '../../../services/ReviewsService';
-import { Spinner } from 'react-bootstrap';
+
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import NearbyPlacesMap from './NearbyPlacesMap';
 
@@ -19,31 +18,6 @@ const BodyDetailsAccordion = ({ details }) => {
     const property_details = details.property_details;
     const reviews = details.reviews;
     const hostDetails = details.hostDetails;
-
-    /* const [propertyTopReviews, setPropertyTopReviews] = useState({});
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-
-        console.log("Property id : "+property_details._id);
-        // console.log(property_details);
-        setLoading(true)
-        getReviewsForPropertyId(property_details._id, 1, 5)
-            .then((res) => {
-                setPropertyTopReviews(res);
-            }).finally(() => {
-                setLoading(false);
-            });
-
-        console.log(propertyTopReviews);
-        console.log('Retrieved Top 5 Reviews');
-
-    }, []); */
-
-
-
-    // console.log(hostDetails);
-    // console.log(hostDetails.host_details);
 
     return (
         <Accordion defaultActiveKey='description' >
@@ -96,7 +70,6 @@ const BodyDetailsAccordion = ({ details }) => {
                 <Accordion.Header><h4>What others have to say about the place ? <MdOutlineRateReview /></h4></Accordion.Header>
                 <Accordion.Body>
 
-                    {/* {generateAmenities(property_details.amenities)} */}
                     {
                         reviews?.map((review, index) => {
                             return (
@@ -125,9 +98,9 @@ const BodyDetailsAccordion = ({ details }) => {
             <Accordion.Item eventKey='nearby_places'>
                 <Accordion.Header><h4>Nearby Attractions</h4></Accordion.Header>
                 <Accordion.Body>
-
-
+                    
                     <NearbyPlacesMap />
+
                 </Accordion.Body>
             </Accordion.Item>
         </Accordion>
@@ -190,10 +163,8 @@ function showPricing(payment_details) {
             <li>
                 <small>Service Cost: {payment_details.service_cost}$</small>
             </li>
-            {/* <li> */}
             <br></br>
             <small>*Additional Taxes might apply</small>
-            {/* </li> */}
         </ul>
     )
 }

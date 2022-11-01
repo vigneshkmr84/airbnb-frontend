@@ -17,15 +17,19 @@ const Properties = () => {
     const [searchList, setSearchList] = useState([]);
 
 
-    const onSearchSubmit = (e) => {
+    const onSearchSubmit = () => {
         console.log("Search for : " + search);
-        async function getData() {
-            await searchProperty(search)
-                .then(data => {
-                    setSearchList(data);
-                })
+        if (search === "" || search === null)
+            setSearchList(propertiesList);
+        else {
+            async function getData() {
+                await searchProperty(search)
+                    .then(data => {
+                        setSearchList(data);
+                    })
+            }
+            getData();
         }
-        getData();
 
     }
 

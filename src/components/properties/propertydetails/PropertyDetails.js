@@ -16,7 +16,6 @@ import { addBooking } from '../../../services/BookingService';
 
 const PropertyDetails = () => {
     let property_id = useParams();
-    // let property_id = '631abfd2ff027fd82e85f6e0';
 
     const [propertyDetails, setPropertyDetails] = useState(null);
     const [propertyTopReviews, setPropertyTopReviews] = useState(null);
@@ -107,7 +106,7 @@ const PropertyDetails = () => {
     // fetching the property details
     useEffect(() => {
 
-        console.log('fetching property details for id : ' + property_id.id)
+        console.log('Fetching property details for id : ' + property_id.id)
 
         async function getData() {
             await getPropertyById(property_id.id)
@@ -124,18 +123,6 @@ const PropertyDetails = () => {
 
         getData();
 
-        /* 
-        let isCalled = false;
-        if (!isCalled) {
-            getPropertyById(property_id.id)
-                .then((res) => {
-                    setPropertyDetails(res);
-                });
-        }
-        console.log('Retrieved All property details');
-        return () => {
-            isCalled = true;
-        } */
     }, []);
 
     // fetching the top 5 reviews for the property

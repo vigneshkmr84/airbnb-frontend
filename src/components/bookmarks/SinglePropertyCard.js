@@ -1,10 +1,8 @@
 import React from 'react'
-//import logo from '../profile/user-profile.jpg'
 import logo from '../profile/card-image.webp'
 import './Bookmark.css'
-import { AiFillDelete } from 'react-icons/ai';
 
-const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirection, counter }) => {
+const  SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirection, counter }) => {
     return (
 
         <div className='row' style={{ justifyContent: 'center', display: 'flex', alignItems: 'center' }}>

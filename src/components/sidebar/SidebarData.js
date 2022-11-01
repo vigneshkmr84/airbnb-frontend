@@ -1,6 +1,5 @@
-import { FaBookmark, FaHome, FaSearchLocation, FaUserAlt } from 'react-icons/fa';
+import { FaBookmark, FaHome, FaUserAlt } from 'react-icons/fa';
 import { MdOutlinePayment } from 'react-icons/md';
-import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { BsCalendarWeek, BsTelephoneFill } from 'react-icons/bs';
 
 export const SidebarData = [

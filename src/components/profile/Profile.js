@@ -3,7 +3,6 @@ import Sidebar from '../sidebar/Sidebar'
 import './Profile.css'
 import defaultUserImage from './user-profile.jpg'
 import { getUserProfile, updateUserProfile } from '../../services/ProfileService'
-import Spinner from 'react-bootstrap/Spinner';
 import jwt_decode from "jwt-decode";
 import Cookies from 'js-cookie'
 import AddPropertyModal from './AddPropertyModal'
@@ -31,7 +30,7 @@ const Profile = () => {
         setShowNewPropertyModal(false);
     }
     // function onClickEditInfo() {
-    const onClickEditInfo = (e) => {
+    const onClickEditInfo = () => {
         console.log('Edit Enabled')
         setIsEnabled(!isEditEnabled);
     }
