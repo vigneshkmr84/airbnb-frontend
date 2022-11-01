@@ -237,7 +237,12 @@ const PropertyDetails = () => {
                                     <div className='row' style={{ margin: '0 auto', /* textAlign: 'center', */ backgroundColor: 'rgb(128 128 128 / 20%)', width: '70%', borderRadius: '9px', paddingTop: '2%', paddingLeft: '3%', paddingBottom: '1%' }}>
                                         {/* <div className='col-md-6'> */}
                                         <h5>{propertyDetails.one_line_description} Hosted by <a href={'/user/' + hostDetails._id}>{hostDetails.first_name} </a></h5>
-                                        <p>{propertyDetails.guests} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
+                                        <div className='row'>
+                                            <b>Avg Rating: {propertyDetails.avg_rating}/5</b>
+                                        </div>
+                                        <div className='row'>
+                                            <p>{propertyDetails.guests} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
+                                        </div>
                                         {/* </div> */}
 
                                         {/* <div className='col-md-6'>
