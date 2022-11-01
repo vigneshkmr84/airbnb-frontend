@@ -8,6 +8,7 @@ import { MdOutlineRateReview } from 'react-icons/md';
 import { getReviewsForPropertyId } from '../../../services/ReviewsService';
 import { Spinner } from 'react-bootstrap';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
+import NearbyPlacesMap from './NearbyPlacesMap';
 
 
 // details = {{property_details: propertyDetails, reviews: propertyTopReviews, hostDetails: hostDetails}}
@@ -119,6 +120,14 @@ const BodyDetailsAccordion = ({ details }) => {
                     <p> <b>Languages: </b> {hostDetails.host_details.languages.toString()}</p>
                     <p> <b>Host from: </b> {hostDetails.created_at}</p>
 
+                </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey='nearby_places'>
+                <Accordion.Header><h4>Nearby Attractions</h4></Accordion.Header>
+                <Accordion.Body>
+
+
+                    <NearbyPlacesMap />
                 </Accordion.Body>
             </Accordion.Item>
         </Accordion>
