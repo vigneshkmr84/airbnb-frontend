@@ -1,8 +1,17 @@
 
-export function makeFirstLetterCaps(inputString){
+import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
+import jwt from 'jwt-decode';
+
+export function getUserId() {
+    let token = Cookies.get('token');
+    let decoded = jwtDecode(token);
+    return decoded.user_id;
+}
+export function makeFirstLetterCaps(inputString) {
     if (inputString !== null || inputString !== undefined) {
         return inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase();
-    }else{
+    } else {
         return inputString;
     }
 }

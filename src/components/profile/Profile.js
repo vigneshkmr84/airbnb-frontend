@@ -54,8 +54,8 @@ const Profile = () => {
         getUserProfile(token_data.user_id)
             .then((res) => {
                 setUserDetails(res);
+                console.log(userData.first_name);
             });
-        console.log(userData.first_name);
     }, []);
 
 
@@ -184,7 +184,9 @@ const Profile = () => {
                                                 id='editButton'
                                                 className="btn btn-danger btn-md"
                                                 onClick={onClickEditInfo}
-                                            > Edit Info
+                                            >
+                                                <i className="bi bi-pencil"></i>
+                                                &nbsp;&nbsp;Edit Info
                                             </button>
                                         </div>
                                     </div>
