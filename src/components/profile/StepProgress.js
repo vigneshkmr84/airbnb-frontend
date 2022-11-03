@@ -44,7 +44,7 @@ const StepProgress = ({ formData, setFormData }) => {
         <div className='form'>
             <div className='form-container'>
                 <div className='progress-header'>
-                    <h4>{formTitle[page]}</h4>
+                    <h5>{formTitle[page]}</h5>
                 </div>
                 <div className='progressbar'>
                     <div style={{ width: `${widthStyle()}`, backgroundColor: '#4181ff', height: '7px' }}></div>

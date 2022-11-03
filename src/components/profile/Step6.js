@@ -48,7 +48,7 @@ const Step6 = ({ formData, setFormData }) => {
     return (
         <div>
             <div className='row'>
-                <h5>Upload Main picture</h5>
+                <h6>Upload Main picture</h6>
             </div>
             <div className='row'>
                 <div className='col'>
@@ -59,11 +59,11 @@ const Step6 = ({ formData, setFormData }) => {
                         onChange={e => handleSingleImgUpload(e)}
                     ></input>
                 </div>
-                <div className='col'>
+                {/* <div className='col'>
                     <button className='btn btn-danger'>
                         <i className="bi bi-trash"></i>
                     </button>
-                </div>
+                </div> */}
             </div>
 
             {/* <div className='row'>
