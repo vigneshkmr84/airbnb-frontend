@@ -2,7 +2,7 @@ import React from 'react'
 import { Accordion } from 'react-bootstrap'
 import './PropertyDetails.css'
 import { FcCancel } from 'react-icons/fc';
-import { BsFillHouseDoorFill, BsShieldFillCheck } from 'react-icons/bs';
+import { BsFillHouseDoorFill } from 'react-icons/bs';
 import { makeFirstLetterCaps, parseLines } from '../../common/CommonUtils';
 import { MdOutlineRateReview } from 'react-icons/md';
 
@@ -71,11 +71,7 @@ const BodyDetailsAccordion = ({ details }) => {
                 <Accordion.Body>
 
                     {
-                        reviews?.map((review, index) => {
-                            return (
-                                <p key={index}>{parseLines(review.comments)}</p>
-                            )
-                        })
+                        renderReviews(reviews)
 
                     }
 
@@ -88,7 +84,7 @@ const BodyDetailsAccordion = ({ details }) => {
                     <h5>The Property is hosted by
                         <a href={'/user/' + hostDetails._id}> {hostDetails.first_name} </a>
                     </h5>
-                    <p>{hostDetails.host_details.is_superhost ? <small> Verified Superhost</small> : null} {hostDetails.host_details.is_superhost ? <BsShieldFillCheck /> : null}</p>
+                    {/* <p>{hostDetails.host_details.is_superhost ? <small> Verified Superhost</small> : null} {hostDetails.host_details.is_superhost ? <BsShieldFillCheck /> : null}</p> */}
                     <p> <b>About me :</b> {hostDetails.host_details.description}</p>
                     <p> <b>Languages: </b> {hostDetails.host_details.languages.toString()}</p>
                     <p> <b>Host from: </b> {hostDetails.created_at}</p>
@@ -98,7 +94,7 @@ const BodyDetailsAccordion = ({ details }) => {
             <Accordion.Item eventKey='nearby_places'>
                 <Accordion.Header><h4>Nearby Attractions</h4></Accordion.Header>
                 <Accordion.Body>
-                    
+
                     <NearbyPlacesMap />
 
                 </Accordion.Body>
@@ -107,7 +103,8 @@ const BodyDetailsAccordion = ({ details }) => {
     )
 }
 
-function generateAmenities(amenitiesArray) {
+// ORIINAL WORKING FUNCTION
+/* function generateAmenities(amenitiesArray) {
     return (
         <div>
             {
@@ -121,6 +118,30 @@ function generateAmenities(amenitiesArray) {
                             <br></br>
                         </div>
                     )
+                }
+                )
+            }
+        </div>
+    )
+} */
+
+function generateAmenities(amenitiesArray) {
+    return (
+        <div>
+            {
+                amenitiesArray?.map((amenitiesObject, index1) => {
+                    return (
+                        amenitiesObject.amenities.length !== 0 ?
+                            <div key={index1}>
+                                <h4 key={index1}>{makeFirstLetterCaps(amenitiesObject.category)}</h4>
+
+                                {generateSubAmenities(amenitiesObject.amenities)}
+
+                                <br></br>
+                            </div>
+                            : <></>
+                    )
+
                 }
                 )
             }
@@ -166,6 +187,19 @@ function showPricing(payment_details) {
             <br></br>
             <small>*Additional Taxes might apply</small>
         </ul>
+    )
+}
+
+
+function renderReviews(reviews) {
+    return (
+        reviews.length !== 0 ?
+            reviews?.map((review, index) => {
+                return (
+                    <p key={index}>{parseLines(review.comments)}</p>
+                )
+            })
+            : "Not yet Reviewed"
     )
 }
 export default BodyDetailsAccordion

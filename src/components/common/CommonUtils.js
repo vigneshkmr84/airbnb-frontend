@@ -1,7 +1,6 @@
 
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
-import jwt from 'jwt-decode';
 
 export function getUserId() {
     let token = Cookies.get('token');

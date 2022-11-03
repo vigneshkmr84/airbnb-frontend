@@ -5,6 +5,7 @@ import StepProgress from './StepProgress';
 import { addNewProperty } from '../../services/PropertiesService';
 import moment from 'moment-timezone';
 import { getUserId as getUserIdFromCookies } from '../common/CommonUtils';
+import Toast from '../../components/toast/Toast';
 
 const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
 
@@ -51,11 +52,18 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
             },
         ],
         img: "",
-        cancellation_policy: "test policy",
+        cancellation_policy: "",
         host_id: "",
     }
 
+    const stringFieldsToValidate = ["name", "description", "one_liner", "location", "img", "cancellation_policy", "host_id", "house_type"];
+
     const [formData, setFormData] = useState(emptyFormData);
+
+    const validateForm = () => {
+        console.log("Validating Form");
+        return true;
+    }
 
     // POST call to submit new property
     const submitProperty = () => {
@@ -70,9 +78,13 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
         newData.host_id = getUserIdFromCookies();
 
         console.log(newData);
-        addNewProperty(newData);
-        cancelNewPropertyModal();
-        setFormData(emptyFormData);
+        if (validateForm()) {
+            addNewProperty(newData);
+            cancelNewPropertyModal();
+            setFormData(emptyFormData);
+        }else{
+            Toast('Invalid Property Details', 'error');
+        }
     }
 
     return (

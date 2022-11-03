@@ -9,8 +9,8 @@ const Step6 = ({ formData, setFormData }) => {
     const handleSingleImgUpload = async (event) => {
         const file = event.target.files[0]
         console.log(file);
-        const base64 = await convertBase64(file)
-        setFormData({ ...formData, img: base64 });
+        var base64 = await convertBase64(file)
+        setFormData({ ...formData, img: base64.split("base64,")[1] });
         // console.log(base64)
 
         /* const files = event.target.files

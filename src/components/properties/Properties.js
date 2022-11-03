@@ -75,7 +75,7 @@ const Properties = () => {
                                 <button className="btn btn-secondary"
                                     id='search-button'
                                     onClick={onSearchSubmit}>
-                                    <i class="bi bi-search"></i>
+                                    <i className="bi bi-search"></i>
                                 </button>
 
                             </div>

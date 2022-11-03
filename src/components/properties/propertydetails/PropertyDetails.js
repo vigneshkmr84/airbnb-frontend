@@ -157,6 +157,13 @@ const PropertyDetails = () => {
 
     }, []); */
 
+    const renderRating = (rating) => {
+        console.log(rating);
+        return (
+            rating !== 0 ? <b><i class="bi bi-star-fill"></i> {rating}</b> : <small><b>No Ratings yet</b></small>
+        )
+    }
+
     return (
 
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
@@ -179,17 +186,9 @@ const PropertyDetails = () => {
                                 <br></br>
                                 <div style={{ height: '10%' }}>
                                     <div className='row' style={{ margin: '0 auto', /* textAlign: 'center', */ backgroundColor: 'rgb(128 128 128 / 20%)', width: '70%', borderRadius: '9px', paddingTop: '2%', paddingLeft: '3%', paddingBottom: '1%' }}>
-                                        {/* <div className='col-md-6'> */}
                                         <h5>{propertyDetails.one_line_description} Hosted by <a href={'/user/' + hostDetails._id}>{hostDetails.first_name} </a></h5>
                                         <p>{propertyDetails.guests} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
-                                        {/* </div> */}
-
-                                        {/* <div className='col-md-6'>
-                                        <img src={"data:image/svg+xml;base64," + hostDetails.profile_photo} alt="Profile Picture"
-                                            style={{ objectFit: 'contain', width: '40%', height: '50%' }}
-                                        />
-                                        <h6><a href={'/user/' + hostDetails._id}>{hostDetails.first_name} {hostDetails.last_name}</a> </h6>
-                                    </div> */}
+                                        {renderRating(propertyDetails.avg_rating)}
                                     </div>
                                 </div>
                                 <br></br>

@@ -5,11 +5,12 @@ import Step3 from './Step3';
 import Step4 from './Step4';
 import Step5 from './Step5';
 import Step6 from './Step6';
+import Step7 from './Step7';
 
 const StepProgress = ({ formData, setFormData }) => {
     const [page, setPage] = useState(0);
 
-    const formTitle = ['Basic details', 'Cost details ($)', 'Guests', 'Amenities', 'House rules', 'Photos'];
+    const formTitle = ['Basic details', 'Cost details ($)', 'Guests', 'Amenities', 'House rules', 'Photos', 'Cancellation Policy'];
 
     const displayForm = () => {
 
@@ -27,6 +28,8 @@ const StepProgress = ({ formData, setFormData }) => {
                 return <Step5 formData={formData} setFormData={setFormData} />;
             case 5:
                 return <Step6 formData={formData} setFormData={setFormData} />;
+            case 6:
+                return <Step7 formData={formData} setFormData={setFormData} />;
 
             default: return null;
         }
