@@ -1,5 +1,5 @@
 import { postAPICall, getAPICall } from './ApiService'
-
+import Toast from '../components/toast/Toast';
 
 export async function getAllProperties() {
 
@@ -35,5 +35,7 @@ export async function addNewProperty(newProperty) {
 
     var response = await postAPICall('/property', newProperty);
     console.log(response.message);
-    return response.message;
+
+    if (response.status === 200)
+        Toast('Successfully Added', 'success');
 }

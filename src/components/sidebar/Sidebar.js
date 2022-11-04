@@ -98,7 +98,6 @@ const Sidebar = () => {
 
                 <SidebarFooter style={{ paddingBottom: "0%" }}>
                     <Menu iconShape={iconShape} style={{ color: '#e13131' }}>
-                        {/* <MenuItem icon={<FiLogOut />} onClick={() => alert('Alert Clicked')}>Logout</MenuItem> */}
                         <MenuItem icon={<FiLogOut />} onClick={setModalIsOpenToTrue}>Logout</MenuItem>
                     </Menu>
                 </SidebarFooter>

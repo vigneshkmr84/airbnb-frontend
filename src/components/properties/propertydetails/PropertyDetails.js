@@ -427,7 +427,7 @@ const PropertyDetails = () => {
 
 export function renderRating(rating){
     return (
-        rating !== 0 ? <b><i className="bi bi-star-fill"></i> {rating}</b> : <small><b>No Ratings yet</b></small>
+        rating !== 0 ? <b><i className="bi bi-star-fill"></i> {rating}</b> : <small><b>No Ratings</b></small>
     )
 }
 

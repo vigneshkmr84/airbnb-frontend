@@ -4,6 +4,7 @@ import './Bookmark.css'
 import { getUserBookmarks } from '../../services/BookmarkService'
 import { Link } from 'react-router-dom'
 import SinglePropertyCard from './SinglePropertyCard'
+import { getUserId } from '../common/CommonUtils'
 
 const Bookmark = () => {
 
@@ -11,12 +12,12 @@ const Bookmark = () => {
     const [bookmarkItems, setBookmarkItems] = useState([]);
 
     useEffect(() => {
-
-        getUserBookmarks('630da37df7f004a22661e1f1')
+        let user_id = getUserId();
+        console.log('Fetching Bookmarks for user : ', user_id);
+        getUserBookmarks(user_id)
             .then((res) => {
                 setBookmarkItems(res);
             });
-        // console.log(bookmarkItems);
     }, []);
 
     // const imageSize = '150px';

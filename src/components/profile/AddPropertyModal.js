@@ -82,7 +82,7 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
             addNewProperty(newData);
             cancelNewPropertyModal();
             setFormData(emptyFormData);
-        }else{
+        } else {
             Toast('Invalid Property Details', 'error');
         }
     }

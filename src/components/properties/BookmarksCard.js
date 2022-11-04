@@ -2,9 +2,16 @@ import React from 'react'
 import './Properties.css'
 import Card from 'react-bootstrap/Card';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { getUserId } from '../common/CommonUtils';
+import { addToBookmarks } from '../../services/BookmarkService';
 
 const BookmarksCard = ({ property_details, imageHeight, imageWidth, cardWidth, flexDirection }) => {
 
+    const onClickFavourite = (e) => {
+        console.log(property_details._id, ' Clicked as favourites');
+        let user_id = getUserId();
+        addToBookmarks(user_id, property_details._id);
+    }
     return (
 
 
@@ -32,7 +39,7 @@ const BookmarksCard = ({ property_details, imageHeight, imageWidth, cardWidth, f
                     <div style={{ fontSize: '15px', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', wordWrap: 'break-word' }}>
                         <b style={{ textAlign: 'left' }}>{property_details.cost_per_day}$</b>
 
-                        <a onClick={() => alert('clicked')} style={{ float: 'right' }}>
+                        <a onClick={(e) => onClickFavourite(e)} style={{ float: 'right' }}>
                             <AiOutlineHeart size={14} />
                         </a>
                     </div>
