@@ -39,6 +39,7 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
                         </div>
                     </div>
 
+
                     <div className='row'>
                         <p className="card-text">{property_details.description}</p>
                     </div>
