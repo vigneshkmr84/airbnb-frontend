@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../sidebar/Sidebar'
-import './Bookmark.css'
 import { getUserBookmarks } from '../../services/BookmarkService'
 import { Link } from 'react-router-dom'
 import SinglePropertyCard from './SinglePropertyCard'
 import { getUserId } from '../common/CommonUtils'
+import './Bookmark.css'
 
 const Bookmark = () => {
 
@@ -26,7 +26,7 @@ const Bookmark = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
-            <div id='bookmark-container' style={{ width: '100%' }}>
+            <div id='bookmark-container'>
                 <h1 className='bookmarkHeading'>Favourites</h1>
                 <br></br>
                 {
