@@ -20,9 +20,8 @@ export async function getPropertyById(property_id) {
 
 export async function getPropertyImages(property_id) {
     var response = await getAPICall('/property/' + property_id + '/images');
-    console.log(response.message);
     sleep(3000)
-    //console.log('Total Images : ' + response.message.images.length);
+    console.log(response.message.images);
     return response.message.images;
 }
 

@@ -20,6 +20,7 @@ const PropertyDetails = () => {
     const [propertyDetails, setPropertyDetails] = useState(null);
     const [propertyTopReviews, setPropertyTopReviews] = useState(null);
     const [hostDetails, setHostDetails] = useState(null);
+    const [propertyImages, setPropertyImages] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
@@ -27,7 +28,7 @@ const PropertyDetails = () => {
     const [userPaymentNickNames, setUserPaymentNickNames] = useState(null);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => {
+    const onClickHandleReserveToggle = () => {
         console.log("Show enabled");
         getUserPaymentDetails('630d9e1a5a8e270b69c8e947', true)
             .then((res) => {
@@ -132,8 +133,8 @@ const PropertyDetails = () => {
             await getReviewsForPropertyId(property_id.id, 1, 5)
                 .then((res) => {
                     setPropertyTopReviews(res);
-                    console.log(propertyTopReviews)
                     console.log('Retrieved Top 5 Reviews');
+                    console.log(propertyTopReviews)
                 });
         }
 
@@ -141,24 +142,15 @@ const PropertyDetails = () => {
 
     }, []);
 
-
-    // fetching the host details 
-    /* useEffect(() => {
-        setLoading(true);
-        getUserProfile('6316bca14fad5c24245666ca')
+    useEffect(() => {
+        getPropertyImages(property_id.id)
             .then((res) => {
-                setHostDetails(res);
-            }).finally(() => {
-                setLoading(false);
-            });
+                setPropertyImages(res);
+                console.log(propertyImages);
+                console.log("property images length : ", propertyImages.length);
+            })
 
-
-        console.log('Retrieved Host Details');
-
-    }, []); */
-
-    
-
+    }, []);
     return (
 
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
@@ -171,7 +163,7 @@ const PropertyDetails = () => {
 
                             <div className='imagesBody'>
                                 {/* {loading ? <p>Loading....</p> : <PropertyImagesDisplay />} */}
-                                {loading ? <Spinner animation="grow" /> : <PropertyImagesDisplay />}
+                                {loading ? <Spinner animation="grow" /> : <PropertyImagesDisplay propertyImages={propertyImages} />}
 
                             </div>
 
@@ -180,10 +172,14 @@ const PropertyDetails = () => {
                                 <br></br>
                                 <br></br>
                                 <div style={{ height: '10%' }}>
-                                    <div className='row' style={{ margin: '0 auto', /* textAlign: 'center', */ backgroundColor: 'rgb(128 128 128 / 20%)', width: '70%', borderRadius: '9px', paddingTop: '2%', paddingLeft: '3%', paddingBottom: '1%' }}>
+                                    <div
+                                        className='row'
+                                        style={{ margin: '0 auto', /* textAlign: 'center', */ backgroundColor: 'rgb(128 128 128 / 20%)', width: '70%', borderRadius: '9px', paddingTop: '2%', paddingLeft: '3%', paddingBottom: '1%' }}>
+
                                         <h5>{propertyDetails.one_line_description} Hosted by <a href={'/user/' + hostDetails._id}>{hostDetails.first_name} </a></h5>
                                         <p>{propertyDetails.guests} guests &bull; {propertyDetails.bedroom} bedroom &bull; {propertyDetails.bathroom} bath</p>
                                         {renderRating(propertyDetails.avg_rating)}
+
                                     </div>
                                 </div>
                                 <br></br>
@@ -201,7 +197,10 @@ const PropertyDetails = () => {
 
                                 <div className='container-fluid'>
 
-                                    <button className='btn btn-primary btn-lg' onClick={handleShow} id='reserveToggleButton'>
+                                    <button
+                                        className='btn btn-primary btn-lg'
+                                        onClick={onClickHandleReserveToggle}
+                                        id='reserveToggleButton'>
                                         Reserve
                                     </button>
                                     <Offcanvas
@@ -216,12 +215,14 @@ const PropertyDetails = () => {
                                     >
                                         <Offcanvas.Header closeButton>
                                             <Offcanvas.Title style={{ paddingLeft: '40%' }}>
+
                                                 <h3 className='reserveFormHeader'>Reserve</h3>
+
                                             </Offcanvas.Title>
                                         </Offcanvas.Header>
                                         <Offcanvas.Body>
                                             <form className='container was-validated' id='reserveForm'>
-                                                {/* <h4 className='reserveFormHeader'>Reserve Property</h4> */}
+
                                                 <div className='row'>
                                                     <div className='col-md-6'>
                                                         <label className='form-label control-label'>Checkin date</label>
@@ -229,7 +230,6 @@ const PropertyDetails = () => {
                                                             className='form-control mr-sm-2'
                                                             placeholder='Check-in'
                                                             min={new Date().toISOString().slice(0, 10)}
-                                                            // defaultValue={new Date().toISOString().slice(0, 10)}
                                                             onChange={handleBookingFormChange}
                                                             name='start_date'
                                                         />
@@ -425,7 +425,7 @@ const PropertyDetails = () => {
 }
 
 
-export function renderRating(rating){
+export function renderRating(rating) {
     return (
         rating !== 0 ? <b><i className="bi bi-star-fill"></i> {rating}</b> : <small><b>No Ratings</b></small>
     )
