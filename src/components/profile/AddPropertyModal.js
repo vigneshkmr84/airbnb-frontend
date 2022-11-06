@@ -19,6 +19,8 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
         cost_per_day: 0,
         service_cost: 0,
         cleaning_cost: 0,
+        latitude: 0,
+        longitude: 0,
         guests: 1,
         bedroom: 1,
         bathroom: 1,

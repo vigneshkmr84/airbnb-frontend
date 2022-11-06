@@ -32,15 +32,22 @@ const BodyDetailsAccordion = ({ details }) => {
             <Accordion.Item eventKey='house_rules'>
                 <Accordion.Header><h4>House Rules <BsFillHouseDoorFill /></h4></Accordion.Header>
                 <Accordion.Body>
-                    <ul>
-                        <li>
-                            <small>Checkin Time: {property_details.checkin_time}</small>
-                        </li>
-                        <li>
-                            <small>Checkout Time: {property_details.checkout_time}</small>
-                        </li>
-                    </ul>
+                    <div className='row'>
+
+                        <ul>
+                            <label className='input-text'>Timings</label>
+                            <li>
+                                <small>Checkin Time: {property_details.checkin_time}</small>
+                            </li>
+                            <li>
+                                <small>Checkout Time: {property_details.checkout_time}</small>
+                            </li>
+                        </ul>
+                    </div>
+
                     {generateHouseRules(property_details.house_rules)}
+
+
 
                 </Accordion.Body>
             </Accordion.Item>
@@ -95,7 +102,7 @@ const BodyDetailsAccordion = ({ details }) => {
                 <Accordion.Header><h4>Nearby Attractions</h4></Accordion.Header>
                 <Accordion.Body>
 
-                    <NearbyPlacesMap />
+                    <NearbyPlacesMap latitude={property_details.latitude} longitude={property_details.longitude} />
 
                 </Accordion.Body>
             </Accordion.Item>
@@ -164,11 +171,14 @@ function generateSubAmenities(categoryArray) {
 function generateHouseRules(house_rules) {
 
     return (
-        house_rules?.map((rule, index) => {
-            return (<li key={index}>
-                <small>{makeFirstLetterCaps(rule)}</small>
-            </li>)
-        })
+        <div className='row'>
+            {house_rules?.map((rule, index) => {
+                return (
+                    <li key={index}>
+                        <small>{makeFirstLetterCaps(rule)}</small>
+                    </li>)
+            })}
+        </div>
     )
 
 }
@@ -196,7 +206,7 @@ function renderReviews(reviews) {
         reviews.length !== 0 ?
             reviews?.map((review, index) => {
                 return (
-                    <p key={index}>{parseLines(review.comments)}</p>
+                    <p key={index}><small><b>{review.user_name}</b>: {parseLines(review.comments)}</small></p>
                 )
             })
             : "Not yet Reviewed"

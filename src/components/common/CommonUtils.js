@@ -2,10 +2,20 @@
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 
+
+export function getToken() {
+    return Cookies.get('token');
+}
 export function getUserId() {
-    let token = Cookies.get('token');
-    let decoded = jwtDecode(token);
-    return decoded.user_id;
+    let token = getToken();
+    if (token === null || token === undefined) {
+        console.log('token missing');
+        return null;
+    }
+    else {
+        let decoded = jwtDecode(token);
+        return decoded.user_id;
+    }
 }
 export function makeFirstLetterCaps(inputString) {
     if (inputString !== null || inputString !== undefined) {

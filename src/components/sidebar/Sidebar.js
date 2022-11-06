@@ -104,7 +104,9 @@ const Sidebar = () => {
 
             </ProSidebar>
 
-            <Modal show={isLogOutOpen} id='modal-id'>
+
+            {renderLogoutPopup(isLogOutOpen, submitLogOut, setModalIsOpenToFalse)}
+            {/* <Modal show={isLogOutOpen} id='modal-id'>
                 <Modal.Header closeButton>
                     <Modal.Title>Logout</Modal.Title>
                 </Modal.Header>
@@ -117,10 +119,29 @@ const Sidebar = () => {
                         Close
                     </Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
 
         </div>
     )
 }
 
+
+function renderLogoutPopup(isLogOutOpen, submitLogOut, setModalIsOpenToFalse) {
+    return (
+        <Modal show={isLogOutOpen} id='modal-id'>
+            <Modal.Header closeButton>
+                <Modal.Title>Logout</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Are you sure you want to logout ?</Modal.Body>
+            <Modal.Footer>
+                <Button variant="danger" onClick={submitLogOut}>
+                    Yes
+                </Button>
+                <Button variant="secondary" onClick={setModalIsOpenToFalse}>
+                    Close
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    )
+}
 export default Sidebar

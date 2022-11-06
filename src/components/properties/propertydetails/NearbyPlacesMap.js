@@ -1,15 +1,16 @@
 import React from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
-const NearbyPlacesMap = () => {
-    
+const NearbyPlacesMap = ({ latitude, longitude }) => {
+
     const mapStyles = {
         height: "65vh",
         width: "100%"
     };
 
     const defaultCenter = {
-        lat: -33.8688, lng: 151.2093
+        lat: latitude
+        , lng: longitude
     }
 
     // NEED TO WORK AGAIN

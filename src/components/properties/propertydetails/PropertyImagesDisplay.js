@@ -6,9 +6,9 @@ import Carousel from 'react-bootstrap/Carousel';
 const PropertyImagesDisplay = ({ propertyImages }) => {
 
 
-    const renderImages = (singleImage) => {
+    const renderImages = (singleImage, index) => {
         return (
-            <Carousel.Item>
+            <Carousel.Item key={index}>
                 <div style={{ height: '600px', width: '1000px' }}>
                     <img
                         src={"data:image/png;base64," + singleImage.image}
@@ -33,8 +33,8 @@ const PropertyImagesDisplay = ({ propertyImages }) => {
                 indicators={true}
             >
                 {
-                    propertyImages?.map((singleImage) => {
-                        return renderImages(singleImage)
+                    propertyImages?.map((singleImage, index) => {
+                        return renderImages(singleImage, index)
                     })
 
                 }

@@ -68,9 +68,11 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
                     <label className='form-label'>Payment Type </label>
                     <select className="form-select"
                         aria-label="Select Payment Type"
-                        name="payment_type" required
+                        name="payment_type"
+                        required
                         onChange={handlePaymentTypeChange}
-                        defaultValue={""}>
+                        defaultValue={""}
+                    >
                         <option value="">Select Payment Type</option>
                         <option value="credit">Credit / Debit Card</option>
                         <option value="paypal">Paypal</option>

@@ -35,6 +35,32 @@ const Step1 = ({ formData, setFormData }) => {
                     />
                 </div>
             </div>
+            
+            {/* Latitude and longitude */}
+            <div className='row'>
+                <div className='col col-md-6'>
+                    <label className='form-label'>Latitude </label>
+                    <input className="form-control"
+                        placeholder='Latitude'
+                        name="latitude"
+                        type="text"
+                        required
+                        value={formData.latitude}
+                        onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
+                    />
+                </div>
+                <div className='col col-md-6'>
+                    <label className='form-label'>Longitude </label>
+                    <input className="form-control"
+                        placeholder='Longitude'
+                        name="longitude"
+                        type="text"
+                        required
+                        value={formData.longitude}
+                        onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
+                    />
+                </div>
+            </div>
             <div className='row'>
                 <div className='col col-md-12'>
                     <label className='form-label'>Property type</label>
