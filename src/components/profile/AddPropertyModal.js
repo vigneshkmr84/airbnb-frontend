@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import './AddPropertyModal.css';
 import StepProgress from './StepProgress';
-import { addNewProperty } from '../../services/PropertiesService';
+import { addNewProperty, addPropertyImages } from '../../services/PropertiesService';
 import moment from 'moment-timezone';
 import { getUserId as getUserIdFromCookies } from '../common/CommonUtils';
 import Toast from '../../components/toast/Toast';
@@ -58,6 +58,7 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
         host_id: "",
     }
 
+    const [propertyImages, setPropertyImages] = useState([]);
     const stringFieldsToValidate = ["name", "description", "one_liner", "location", "img", "cancellation_policy", "host_id", "house_type"];
 
     const [formData, setFormData] = useState(emptyFormData);
@@ -71,6 +72,7 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
     const submitProperty = () => {
         console.log('Adding new property');
 
+        console.log(propertyImages)
         let in_time = parseInt(formData.checkin_time.format("HHmm"));
         let out_time = parseInt(formData.checkout_time.format("HHmm"));
 
@@ -81,9 +83,19 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
 
         console.log(newData);
         if (validateForm()) {
-            addNewProperty(newData);
+            addNewProperty(newData, propertyImages)
+                .then(async res => {
+                    console.log(res)
+                    console.log('Submitting property images')
+                    var response2 = await addPropertyImages(propertyImages, res.message)
+                    if (response2.status === 200) {
+                        Toast('Successfully Added', 'success');
+                    } else {
+                        Toast('Error in submitting property', 'error');
+                    }
+                })
             cancelNewPropertyModal();
-            setFormData(emptyFormData);
+            // setFormData(emptyFormData);
         } else {
             Toast('Invalid Property Details', 'error');
         }
@@ -95,7 +107,7 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
                 <Modal.Title style={{ textAlign: 'center' }}>List a Property</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <StepProgress formData={formData} setFormData={setFormData} />
+                <StepProgress formData={formData} setFormData={setFormData} propertyImages={propertyImages} setPropertyImages={setPropertyImages} />
             </Modal.Body>
             <Modal.Footer style={{ justifyContent: 'center' }}>
 

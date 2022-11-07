@@ -13,8 +13,6 @@ import NearbyPlacesMap from './NearbyPlacesMap';
 // details = {{property_details: propertyDetails, reviews: propertyTopReviews, hostDetails: hostDetails}}
 const BodyDetailsAccordion = ({ details }) => {
 
-
-
     const property_details = details.property_details;
     const reviews = details.reviews;
     const hostDetails = details.hostDetails;
@@ -33,9 +31,8 @@ const BodyDetailsAccordion = ({ details }) => {
                 <Accordion.Header><h4>House Rules <BsFillHouseDoorFill /></h4></Accordion.Header>
                 <Accordion.Body>
                     <div className='row'>
-
+                        <h6 className='input-text'>Timings</h6>
                         <ul>
-                            <label className='input-text'>Timings</label>
                             <li>
                                 <small>Checkin Time: {property_details.checkin_time}</small>
                             </li>
@@ -45,7 +42,7 @@ const BodyDetailsAccordion = ({ details }) => {
                         </ul>
                     </div>
 
-                    {generateHouseRules(property_details.house_rules)}
+                    {renderHouseRules(property_details.house_rules)}
 
 
 
@@ -54,7 +51,7 @@ const BodyDetailsAccordion = ({ details }) => {
             <Accordion.Item eventKey='pricing'>
                 <Accordion.Header><h4>Pricing <AiOutlineDollarCircle /></h4></Accordion.Header>
                 <Accordion.Body>
-                    {showPricing(property_details)}
+                    {renderPricing(property_details)}
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='cancellation_policy'>
@@ -69,7 +66,7 @@ const BodyDetailsAccordion = ({ details }) => {
                 <Accordion.Header><h4>What this place offers ?</h4></Accordion.Header>
                 <Accordion.Body>
 
-                    {generateAmenities(property_details.amenities)}
+                    {renderAmenities(property_details.amenities)}
 
                 </Accordion.Body>
             </Accordion.Item>
@@ -110,29 +107,7 @@ const BodyDetailsAccordion = ({ details }) => {
     )
 }
 
-// ORIINAL WORKING FUNCTION
-/* function generateAmenities(amenitiesArray) {
-    return (
-        <div>
-            {
-                amenitiesArray?.map((amenitiesObject, index1) => {
-                    return (
-                        <div key={index1}>
-                            <h4 key={index1}>{makeFirstLetterCaps(amenitiesObject.category)}</h4>
-
-                            {generateSubAmenities(amenitiesObject.amenities)}
-
-                            <br></br>
-                        </div>
-                    )
-                }
-                )
-            }
-        </div>
-    )
-} */
-
-function generateAmenities(amenitiesArray) {
+function renderAmenities(amenitiesArray) {
     return (
         <div>
             {
@@ -168,21 +143,24 @@ function generateSubAmenities(categoryArray) {
     )
 }
 
-function generateHouseRules(house_rules) {
+function renderHouseRules(house_rules) {
 
     return (
         <div className='row'>
-            {house_rules?.map((rule, index) => {
-                return (
-                    <li key={index}>
-                        <small>{makeFirstLetterCaps(rule)}</small>
-                    </li>)
-            })}
+            <h6>Rules</h6>
+            <ul>
+                {house_rules?.map((rule, index) => {
+                    return (
+                        <li key={index}>
+                            <small>{makeFirstLetterCaps(rule)}</small>
+                        </li>)
+                })}
+            </ul>
         </div>
     )
 
 }
-function showPricing(payment_details) {
+function renderPricing(payment_details) {
     return (
         <ul>
             <li>
@@ -212,4 +190,5 @@ function renderReviews(reviews) {
             : "Not yet Reviewed"
     )
 }
+
 export default BodyDetailsAccordion

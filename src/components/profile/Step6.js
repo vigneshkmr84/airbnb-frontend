@@ -13,6 +13,25 @@ const Step6 = ({ formData, setFormData, propertyImages, setPropertyImages }) => 
         setFormData({ ...formData, img: base64.split("base64,")[1] });
     }
 
+    const handleMultipleImgUpload = (event) => {
+        console.log(event.target);
+        let files = event.target.files
+        console.log(files.length);
+
+        var filesList = Array.from(files);
+        console.log(filesList)
+        let base64Data = []
+        filesList.forEach(async (f) => {
+            // Array.prototype.forEach.call(filesList.photo.files, async function (file) {
+            let base64 = await convertBase64(f);
+            base64Data.push({ image: base64.split("base64,")[1] });
+        })
+
+        console.log(base64Data);
+        setPropertyImages(base64Data);
+
+    }
+
     const convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -47,10 +66,6 @@ const Step6 = ({ formData, setFormData, propertyImages, setPropertyImages }) => 
         setPropertyImages(images)
     }
 
-
-    const handleImageUpload = (e,i) =>{
-
-    }
     return (
         <div>
             <div className='row'>
@@ -75,31 +90,28 @@ const Step6 = ({ formData, setFormData, propertyImages, setPropertyImages }) => 
             <div className='row'>
                 <h6>Other pictures</h6>
             </div>
-            {propertyImages?.map((el, index) => {
-                return (
-                    <div className='row' key={index}>
-                        <input className="form-control w-25"
-                            placeholder={`Title ${index + 1}`}
-                            type="text"
-                            name='title'
-                            value={el.title}
-                            required
-                            onChange={e => handleChange(e, index)}
-                        />
-                        <div className='col'>
-                            <input
-                                className="form-control"
-                                type='file'
-                                placeholder={`Upload image ${index + 1}`}
-                                accept={fileFormats}
-                                name='image'
-                                value={el.image}
-                                onChange={e => handleImageUpload(e, index)}
-                            ></input>
-                        </div>
-                    </div>
-                )
-            })}
+
+            <div className='row'>
+                {/* <input className="form-control w-25"
+                    placeholder={`Title ${index + 1}`}
+                    type="text"
+                    name='title'
+                    value={el.title}
+                    required
+                    onChange={e => handleChange(e, index)}
+                /> */}
+                <div className='col'>
+                    <input
+                        multiple
+                        className="form-control"
+                        type='file'
+                        placeholder="Upload image"
+                        accept={fileFormats}
+                        name='image'
+                        onChange={e => handleMultipleImgUpload(e)}
+                    ></input>
+                </div>
+            </div>
             {/* <div className='row'>
                 <input className="form-control w-25"
                     placeholder='Image 1'
@@ -117,14 +129,14 @@ const Step6 = ({ formData, setFormData, propertyImages, setPropertyImages }) => 
                 </div>
             </div> */}
 
-            <div className='row' style={{ justifyContent: 'center', textAlign: 'center' }}>
+            {/* <div className='row' style={{ justifyContent: 'center', textAlign: 'center' }}>
                 <button
                     className='btn btn-primary w-25'
                     style={{ alignItems: 'center' }}
                     onClick={(e) => onClickAddButton(e)}>
                     <i className="bi bi-plus-lg" /> &nbsp;Add
                 </button>
-            </div>
+            </div> */}
         </div>
     )
 }

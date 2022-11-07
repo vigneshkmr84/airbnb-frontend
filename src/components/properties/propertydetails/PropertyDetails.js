@@ -214,7 +214,7 @@ const PropertyDetails = () => {
 
                                 <div className='container'>
 
-                                    <div className='row'>
+                                    <div className='row' style={{width: '60%'}}>
 
                                         <div className='col'>
                                             {renderUpdateButton(propertyDetails.host_id)}
