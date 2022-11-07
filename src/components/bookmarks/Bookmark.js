@@ -34,12 +34,14 @@ const Bookmark = () => {
                         <h3 className='emptyFavourites'>
                             Oops...You don't have any Favourites. Start <Link to='/properties'>Browsing</Link>
                         </h3> :
-                        bookmarkItems.map(property => {
+                        bookmarkItems?.map(property => {
                             return (
                                 <div key={property._id}>
                                     <SinglePropertyCard
                                         property_details={property}
                                         imageSize={imageSize}
+                                        bookmarkItems={bookmarkItems}
+                                        setBookmarkItems={setBookmarkItems}
                                         cardWidth='70%'
                                         flexDirection='row'
                                     // cardWidth='30%'

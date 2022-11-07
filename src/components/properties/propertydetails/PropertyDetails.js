@@ -13,6 +13,7 @@ import { getUserPaymentDetails } from '../../../services/PaymentService';
 import { addBooking } from '../../../services/BookingService';
 import HandleReserve from './HandleReserve';
 import { getUserId } from '../../common/CommonUtils';
+import { renderCancelButton, renderSubmitButton } from '../../common/IconButtons';
 
 
 
@@ -214,7 +215,7 @@ const PropertyDetails = () => {
 
                                 <div className='container'>
 
-                                    <div className='row' style={{width: '60%'}}>
+                                    <div className='row' style={{ width: '60%' }}>
 
                                         <div className='col'>
                                             {renderUpdateButton(propertyDetails.host_id)}
@@ -260,12 +261,12 @@ function renderUpdateButton(host_id) {
     return (
         host_id === getUserId() ?
             // <div className='col'>
-                <button
-                    className='btn btn-primary btn-lg'
-                    // onClick={() => setShowReviewModal(true)}
-                    id='updateToggleButton'>
-                    <i className="bi bi-pencil"></i> Update
-                </button>
+            <button
+                className='btn btn-primary btn-lg'
+                // onClick={() => setShowReviewModal(true)}
+                id='updateToggleButton'>
+                <i className="bi bi-pencil"></i> Update
+            </button>
             // </div>
             :
             <></>
@@ -314,12 +315,13 @@ function renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, re
             <Modal.Footer>
                 <Button
                     variant="secondary"
-                    onClick={() => setShowReviewModal(false)}
-                >
-                    Close
+                    onClick={() => setShowReviewModal(false)}>
+                    {renderCancelButton()}
                 </Button>
-                <Button variant="primary" onClick={submitReview}>
-                    Submit
+                <Button
+                    variant="primary"
+                    onClick={submitReview}>
+                    {renderSubmitButton()}
                 </Button>
             </Modal.Footer>
         </Modal>

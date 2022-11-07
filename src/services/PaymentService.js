@@ -1,15 +1,18 @@
-// import { Toast } from 'react-bootstrap';
 import Toast from '../components/toast/Toast';
 import { postAPICall, getAPICall, deleteAPICall } from './ApiService'
 
 export async function getUserPaymentDetails(user_id, nick_name = false) {
 
-    // let uri = (query === null || query === undefined) ? '/users/' + user_id + '/payment' : '/users/' + user_id + '/payment?nick_name=' + nick_name;
     let uri = '/users/' + user_id + '/payment?nick_name=' + nick_name;
     var response = await getAPICall(uri);
 
-    console.log(response.message.payment_details);
-    return response.message.payment_details;
+    // return empty object if no data is present 
+    if (response.message.payment_details === null || response.message.payment_details === undefined) {
+        return { ...response.message, payment_details: { credit_card: [], paypal: [] } }
+    } else {
+        console.log(response.message.payment_details);
+        return response.message.payment_details;
+    }
 }
 
 export async function addPaymentDetails(user_id, paymentType, userData) {

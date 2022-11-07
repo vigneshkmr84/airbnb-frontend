@@ -5,11 +5,19 @@ import { renderRating } from '../properties/propertydetails/PropertyDetails'
 import './Bookmark.css'
 
 // Display bookmark details - a full card
-const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirection, counter }) => {
+const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirection, bookmarkItems, setBookmarkItems }) => {
 
-    const onClickDeleteBookmark = (e, _id) => {
+    const onClickDeleteBookmark = async (e, _id) => {
         console.log('Deleting bookmark : ', _id);
-        deleteBookmark(getUserId(), _id);
+        console.log(bookmarkItems);
+        let status = await deleteBookmark(getUserId(), _id);
+        let items = bookmarkItems;
+        if (status === 200) {
+            console.log('filtering elements');
+            items?.filter(el => el._id !== _id)
+        }
+        console.log(items);
+        setBookmarkItems(items);
     }
 
     return (

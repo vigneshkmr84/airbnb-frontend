@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import './Payment.css'
 import { useState } from "react";
 import { addPaymentDetails } from '../../services/PaymentService';
+import { renderCancelButton, renderSubmitButton } from '../common/IconButtons';
 
 const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
 
@@ -84,18 +85,11 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
 
             </Modal.Body>
             <Modal.Footer style={{ justifyContent: 'center' }}>
-                {/* <Button variant="success" onClick={submitNewPayment}>
-                    Submit
-                </Button>
-                <Button variant="danger" onClick={() => onClose()}>
-                    Cancel
-                </Button> */}
-                {/* <Button variant="secondary" onClick={closeButtonClickHandler}> */}
                 <button className='btn btn-secondary btn-md' onClick={() => onClose()}>
-                    Cancel
+                    {renderCancelButton()}
                 </button>
-                <button className='btn btn-danger btn-md' onClick={submitNewPayment}>
-                    Submit
+                <button className='btn btn-primary btn-md' onClick={submitNewPayment}>
+                    {renderSubmitButton()}
                 </button>
             </Modal.Footer>
         </Modal>
@@ -142,7 +136,8 @@ const NewCardPaypment = ({ handleChange }) => {
                 <label className='form-label'>Card Type</label>
                 <select className="form-select"
                     aria-label="Select Card Type"
-                    name="card_type" required
+                    name="card_type"
+                    required
                     onChange={handleChange}
                     defaultValue={""}>
                     <option value="">Select Card Type</option>
@@ -158,7 +153,8 @@ const NewCardPaypment = ({ handleChange }) => {
                 <label className='form-label control-label'>Card no</label>
                 <input type="text"
                     className='form-control form-control-md'
-                    placeholder='Credit / Debit Card no' required
+                    placeholder='Credit / Debit Card no'
+                    required
                     name="card_no"
                     onChange={handleChange}
                 ></input>
@@ -168,7 +164,8 @@ const NewCardPaypment = ({ handleChange }) => {
                 <label className='form-label'>Cvv</label>
                 <input type="password"
                     className='form-control form-control-md'
-                    placeholder='Cvv' required
+                    placeholder='Cvv'
+                    required
                     name='cvv'
                     onChange={handleChange}
                 ></input>
@@ -178,7 +175,8 @@ const NewCardPaypment = ({ handleChange }) => {
                 <input type="date"
                     min={new Date().toISOString().slice(0, 10)}
                     className='form-control form-control-md datepicker'
-                    placeholder='Expiry Date' required
+                    placeholder='Expiry Date'
+                    required
                     name="expiry_date"
                     onChange={handleChange}
                 ></input>
@@ -188,7 +186,8 @@ const NewCardPaypment = ({ handleChange }) => {
                 <label className='form-label'>Nick name </label>
                 <input type="text"
                     className='form-control form-control-md'
-                    placeholder='Nick name' required
+                    placeholder='Nick name'
+                    required
                     name="nick_name"
                     onChange={handleChange}
                 ></input>

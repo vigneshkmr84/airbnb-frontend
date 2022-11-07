@@ -6,6 +6,7 @@ import { addNewProperty, addPropertyImages } from '../../services/PropertiesServ
 import moment from 'moment-timezone';
 import { getUserId as getUserIdFromCookies } from '../common/CommonUtils';
 import Toast from '../../components/toast/Toast';
+import { renderCancelButton, renderSubmitButton } from '../common/IconButtons';
 
 const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
 
@@ -112,10 +113,10 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
             <Modal.Footer style={{ justifyContent: 'center' }}>
 
                 <button className='btn btn-secondary btn-md' onClick={() => cancelNewPropertyModal()}>
-                    Cancel
+                    {renderCancelButton()}
                 </button>
-                <button className='btn btn-danger btn-md' onClick={submitProperty}>
-                    Submit
+                <button className='btn btn-primary btn-md' onClick={submitProperty}>
+                    {renderSubmitButton()}
                 </button>
             </Modal.Footer>
         </Modal>

@@ -23,8 +23,8 @@ const Properties = () => {
         else {
             async function getData() {
                 await searchProperty(search)
-                    .then(data => {
-                        setSearchList(data);
+                    .then(res => {
+                        setSearchList(res);
                     })
             }
             getData();
@@ -40,9 +40,9 @@ const Properties = () => {
 
         async function getData() {
             await getAllProperties()
-                .then(data => {
-                    setAllPropertiesList(data);
-                    setSearchList(data);
+                .then(res => {
+                    setAllPropertiesList(res);
+                    setSearchList(res);
                 });
         }
 

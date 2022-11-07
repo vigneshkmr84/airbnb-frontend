@@ -20,6 +20,9 @@ export async function deleteBookmark(user_id, property_id) {
 
     var response = await deleteAPICall('/users/' + user_id + '/favourite', { id: property_id });
 
-    if (response.status === 200)
+    if (response.status === 200) {
         Toast('Successfully Removed', 'success');
+        console.log('returning 200')
+        return 200
+    }
 }
