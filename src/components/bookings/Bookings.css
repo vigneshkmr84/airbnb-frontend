@@ -8,3 +8,8 @@
     justify-content: center;
     padding-top: 1%;
 }
+
+#bookings-container {
+    overflow-y: scroll;
+    width: 100%;
+}

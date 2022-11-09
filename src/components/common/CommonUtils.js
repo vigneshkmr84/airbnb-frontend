@@ -1,6 +1,7 @@
 
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
+import moment from "moment";
 
 
 export function getToken() {
@@ -31,3 +32,18 @@ export const parseLines = (value) => value.replaceAll(/(\\n)/g, "\n");
 
 
 //export makeFirstLetterCaps;
+
+
+export const dateFormat = (date) => {
+    let df = moment(date).format('DD-MMM-YYYY')
+    // console.log(df);
+    return df;
+}
+
+
+export const dateGreaterCheck = (d1, d2) => {
+    d1 = new Date(d1).getTime();
+    d2 = new Date(d2).getTime();
+
+    return d1 > d2;
+}

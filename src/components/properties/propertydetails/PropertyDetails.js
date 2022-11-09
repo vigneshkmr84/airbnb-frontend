@@ -279,11 +279,16 @@ function renderUpdateButton(host_id) {
             <></>
     )
 }
-export function renderRating(rating) {
+export function renderRating(rating, isBookingType) {
     return (
         rating !== 0 ? <b><i className="bi bi-star-fill"></i> {rating}</b> : <small><b>No Ratings</b></small>
     )
 }
+/* export function renderRating(rating, isBookingType) {
+    return (
+        rating !== 0 ? <b style={{ textAlign: isBookingType === true ? 'right' : 'none' }}><i className="bi bi-star-fill"></i> {rating}</b> : <small><b>No Ratings</b></small>
+    )
+} */
 
 
 function renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, reviewForm, setReviewForm) {

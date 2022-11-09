@@ -1,6 +1,7 @@
 import React from 'react'
+import { deleteBooking } from '../../services/BookingService'
 import { deleteBookmark } from '../../services/BookmarkService'
-import { getUserId } from '../common/CommonUtils'
+import { dateFormat, dateGreaterCheck, getUserId } from '../common/CommonUtils'
 import { renderCancelButton } from '../common/IconButtons'
 import { renderRating } from '../properties/propertydetails/PropertyDetails'
 import './Bookmark.css'
@@ -19,6 +20,12 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
         }
         console.log(items);
         setBookmarkItems(items);
+    }
+
+    const onClickDeleteBooking = async (e, _id) => {
+        console.log('Deleting bookmark : ', _id);
+        console.log(bookmarkItems);
+        deleteBooking(getUserId(), _id);
     }
 
     return (
@@ -41,14 +48,14 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
                                 <a href={'./properties/' + property_details._id}>{property_details.name} </a>
                             </div>
                         </div>
-                        <div className='col-md-4'>
-                            <small className="card-cost"><b>{property_details.cost_per_day}$/ day</b></small>
-                            {renderRating(property_details.avg_rating)}
+                        <div className='col-md-4' style={{ textAlign: isBookingType === true ? 'right' : 'none' }}>
+                            {isBookingType ? <></> : <small className="card-cost"><b>{property_details.cost_per_day}$/ day</b></small>}
+                            {renderRating(property_details.avg_rating, isBookingType)}
                         </div>
                     </div>
 
                     {
-                        !isBookingType ? renderBookmarks(property_details, onClickDeleteBookmark) : renderBookings(booking_details)
+                        !isBookingType ? renderBookmarks(property_details, onClickDeleteBookmark) : renderBookings(booking_details, onClickDeleteBooking)
                     }
 
 
@@ -58,15 +65,15 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
     )
 }
 
-export const renderBookings = (bookingData) => {
+export const renderBookings = (bookingData, onClickDeleteBooking) => {
 
     return (
         <div>
             <div className='row'>
-                <div className='col-md-6'>
+                <div className='col-md-12'>
                     <small>
-                        <b>Start Date : </b> {bookingData.start_date} &bull;&nbsp;
-                        <b>End Date : </b> {bookingData.end_date}
+                        <b>Start Date : </b> {dateFormat(bookingData.start_date)} &bull;&nbsp;
+                        <b>End Date : </b> {dateFormat(bookingData.end_date)}
                     </small>
                 </div>
             </div>
@@ -85,22 +92,60 @@ export const renderBookings = (bookingData) => {
                 </div>
             </div>
             <div className='row'>
-                <div className='col-md-12'>
-                    <button
-                        className='btn btn-danger'
-                        style={{ float: 'right' }}
-                    // onClick={(e) => onClickDeleteBookmark(e, property_details._id)}
-                    >
-                        {renderCancelButton()}
-                    </button>
+                <div className='col-md-6'>
+                    <small className="cost-details">
+                        <b>Payment used:</b> {bookingData.payment_details_id}
+                    </small>
                 </div>
             </div>
+            {
+                bookingData.canceled ?
+                    <div className='row'>
+                        <div className='col-md-12'>
+                            <small style={{ color: 'red' }}><b>Canceled Booking</b></small>
+                        </div>
+                    </div>
+                    : new Date().getTime() > new Date(bookingData.end_date).getTime() ?
+                        <div className='row'>
+                            <div className='col-md-12'>
+                                <small style={{ color: 'green' }}><b>Trip Completed</b></small>
+                            </div>
+                        </div>
+                        : <></>
+            }
+            {
+
+            }
+            {/* Do not show Cancel button if it's already canceled */}
+            {
+                isCancelable(bookingData)
+                    ?
+                    <></>
+                    : <div className='row'>
+                        <div className='col-md-12'>
+                            <button
+                                className='btn btn-danger'
+                                style={{ float: 'right' }}
+                                onClick={(e) => onClickDeleteBooking(e, bookingData._id)}
+                            >
+                                {renderCancelButton()}
+                            </button>
+                        </div>
+                    </div>
+            }
         </div>
     )
 }
 
+const isCancelable = (bookingData) => {
 
-export const renderBookmarks = (property_details, onClickDeleteBookmark) => {
+    // trip already completed / already canceled
+    return (
+        bookingData.canceled || new Date().getTime() > new Date(bookingData.end_date).getTime()
+    )
+}
+
+const renderBookmarks = (property_details, onClickDeleteBookmark) => {
 
     return (
 

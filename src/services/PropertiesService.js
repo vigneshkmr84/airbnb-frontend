@@ -24,6 +24,7 @@ export async function getPropertyImages(property_id) {
 }
 
 export const sleep = (milliseconds) => {
+    console.log('Sleep for ', milliseconds);
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
