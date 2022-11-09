@@ -40,6 +40,9 @@ export const dateFormat = (date) => {
     return df;
 }
 
+export const formatCreditCardNo = (num) => {
+    return '**** ' + String(num).slice(-4);
+}
 
 export const dateGreaterCheck = (d1, d2) => {
     d1 = new Date(d1).getTime();

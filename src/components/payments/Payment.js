@@ -19,11 +19,8 @@ const Payment = () => {
     const [displayPaypal, setDisplayPaypal] = useState(false);
     const [displayCard, setDisplayCard] = useState(false);
     const user_id = getUserId();
-    const [paymentDetails, setPaymentDetails] = useState(defaultPaymentDetails);
+    const [paymentDetails, setPaymentDetails] = useState({});
 
-    useEffect(() => {
-
-    })
     useEffect(() => {
         getUserPaymentDetails(user_id)
             .then((res) => {

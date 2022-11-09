@@ -1,5 +1,6 @@
 import moment from 'moment-timezone'
 import React from 'react'
+import { dateFormat, formatCreditCardNo } from '../common/CommonUtils'
 
 const CreditCard = ({ credit_card }) => {
     return (
@@ -14,10 +15,11 @@ const CreditCard = ({ credit_card }) => {
                             </p>
                         </div>
                         <div className='col-md-4'>
-                            <p>{credit_card.card_no}</p>
+                            <p>{formatCreditCardNo(credit_card.card_no)}</p>
                         </div>
                         <div className='col-md-4'>
-                            <p>{moment(credit_card.expiry_date).format('YYYY-mm-dd')}</p>
+                            {/* <p>{moment(credit_card.expiry_date).format('YYYY-mm-dd')}</p> */}
+                            <p>{dateFormat(credit_card.expiry_date)}</p>
                         </div>
                         {/* svg for delete icon */}
                         {/* <div className='col-md-4'>
