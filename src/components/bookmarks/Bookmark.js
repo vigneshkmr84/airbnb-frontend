@@ -32,7 +32,7 @@ const Bookmark = () => {
                 {
                     bookmarkItems.length === 0 ?
                         <h3 className='emptyFavourites'>
-                            Oops...You don't have any Favourites. Start <Link to='/properties'>Browsing</Link>
+                            Oops...You don't have any Favourites. Start <Link to='/home'>Browsing</Link>
                         </h3> :
                         bookmarkItems?.map(property => {
                             return (
@@ -44,6 +44,7 @@ const Bookmark = () => {
                                         setBookmarkItems={setBookmarkItems}
                                         cardWidth='70%'
                                         flexDirection='row'
+                                        isBookingType={false}
                                     // cardWidth='30%'
                                     // flexDirection='column'
                                     />

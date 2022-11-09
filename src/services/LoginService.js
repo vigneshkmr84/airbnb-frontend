@@ -2,6 +2,7 @@
 import { postAPICall } from './ApiService';
 import Toast from '../components/toast/Toast';
 import Cookies from 'js-cookie'
+import { sleep } from './PropertiesService';
 
 
 // login 
@@ -15,6 +16,7 @@ export async function login(loginObject) {
         Toast('Successfully Logged in', 'success');
         console.log('Setting cookies...')
         Cookies.set('token', response.message);
+        sleep(1000);
         return true
     }
     return false

@@ -23,7 +23,7 @@ export async function getPropertyImages(property_id) {
     return response.message;
 }
 
-const sleep = (milliseconds) => {
+export const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 

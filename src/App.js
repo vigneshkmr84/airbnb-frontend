@@ -13,6 +13,7 @@ import Payment from './components/payments/Payment';
 import Bookmark from './components/bookmarks/Bookmark';
 import Properties from './components/properties/Properties';
 import PropertyDetails from './components/properties/propertydetails/PropertyDetails';
+import Bookings from './components/bookings/Bookings';
 
 function App() {
 
@@ -50,10 +51,11 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/payment' element={<Payment />} />
         <Route path='/bookmarks' element={<Bookmark />} />
+        <Route path='/bookings' element={<Bookings />} />
 
         <Route path='/properties/:id' element={<PropertyDetails />} />
 
-        {/* <Route path='/properties' element={<Properties />} /> */}                
+        {/* <Route path='/properties' element={<Properties />} /> */}
         {/* <Route path="*" element={<NotFound/>} /> */}
         {/* <Route path='/login' component={Login} />
           <Route path='/signup' component={Signup} /> */}

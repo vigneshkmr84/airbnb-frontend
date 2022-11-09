@@ -1,11 +1,12 @@
 import React from 'react'
 import { deleteBookmark } from '../../services/BookmarkService'
 import { getUserId } from '../common/CommonUtils'
+import { renderCancelButton } from '../common/IconButtons'
 import { renderRating } from '../properties/propertydetails/PropertyDetails'
 import './Bookmark.css'
 
 // Display bookmark details - a full card
-const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirection, bookmarkItems, setBookmarkItems }) => {
+const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirection, bookmarkItems, setBookmarkItems, isBookingType, booking_details }) => {
 
     const onClickDeleteBookmark = async (e, _id) => {
         console.log('Deleting bookmark : ', _id);
@@ -35,7 +36,6 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
                 <div className="card-body">
 
                     <div className='row'>
-
                         <div className='col-md-8'>
                             <div className="card-title">
                                 <a href={'./properties/' + property_details._id}>{property_details.name} </a>
@@ -47,40 +47,103 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
                         </div>
                     </div>
 
+                    {
+                        !isBookingType ? renderBookmarks(property_details, onClickDeleteBookmark) : renderBookings(booking_details)
+                    }
 
-                    <div className='row'>
-                        <p className="card-text">{property_details.description}</p>
-                    </div>
 
-                    <div className='row'>
-                        <div className='col-md-6'>
-                            <small className="room-details"> <b>Guests:</b> {property_details.guests} <b>Bedroom:</b> {property_details.bedroom} <b>Bath:</b> {property_details.bathroom}</small>
-                        </div>
-                    </div>
-
-                    <div className='row'>
-                        <div className='col-md-6'>
-                            <small className="room-details"> <b>Checkin:</b> {property_details.checkin_time} <b>Checkout:</b> {property_details.checkout_time}</small>
-                        </div>
-                    </div>
-
-                    <div className='row'>
-                        <div className='col-md-10'>
-                            <small>Host : Adam</small>
-                        </div>
-                        <div className='col-md-2'>
-                            <button
-                                className='btn'
-                                style={{ color: '#e62929', float: 'right' }}
-                                onClick={(e) => onClickDeleteBookmark(e, property_details._id)}>
-                                <i className="bi bi-trash-fill"></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     )
+}
+
+export const renderBookings = (bookingData) => {
+
+    return (
+        <div>
+            <div className='row'>
+                <div className='col-md-6'>
+                    <small>
+                        <b>Start Date : </b> {bookingData.start_date} &bull;&nbsp;
+                        <b>End Date : </b> {bookingData.end_date}
+                    </small>
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col-md-6'>
+                    <small className="room-details">
+                        <b>Guests:</b> {bookingData.no_of_people}
+                    </small>
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col-md-6'>
+                    <small className="cost-details">
+                        <b>Total Cost:</b> {bookingData.total_cost}$
+                    </small>
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col-md-12'>
+                    <button
+                        className='btn btn-danger'
+                        style={{ float: 'right' }}
+                    // onClick={(e) => onClickDeleteBookmark(e, property_details._id)}
+                    >
+                        {renderCancelButton()}
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+export const renderBookmarks = (property_details, onClickDeleteBookmark) => {
+
+    return (
+
+        <div>
+            <div className='row'>
+                <p className="card-text">{property_details.description}</p>
+            </div>
+
+            <div className='row'>
+                <div className='col-md-6'>
+                    <small className="room-details">
+                        <b>Guests:</b> {property_details.guests} &bull;&nbsp;
+                        <b>Bedroom:</b> {property_details.bedroom} &bull;&nbsp;
+                        <b>Bath:</b> {property_details.bathroom}
+                    </small>
+                </div>
+            </div>
+
+            <div className='row'>
+                <div className='col-md-6'>
+                    <small className="room-details">
+                        <b>Checkin:</b> {property_details.checkin_time} &bull;&nbsp;
+                        <b>Checkout:</b> {property_details.checkout_time}
+                    </small>
+                </div>
+            </div>
+
+            <div className='row'>
+                <div className='col-md-10'>
+                    <small>Host : Adam</small>
+                </div>
+                <div className='col-md-2'>
+                    <button
+                        className='btn'
+                        style={{ color: '#e62929', float: 'right' }}
+                        onClick={(e) => onClickDeleteBookmark(e, property_details._id)}>
+                        <i className="bi bi-trash-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    );
 }
 
 export default SinglePropertyCard

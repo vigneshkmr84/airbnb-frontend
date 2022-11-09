@@ -1,0 +1,10 @@
+.emptyData {
+    padding-top: 4%;
+    text-align: center;
+}
+
+.bookingsHeader {
+    display: flex;
+    justify-content: center;
+    padding-top: 1%;
+}

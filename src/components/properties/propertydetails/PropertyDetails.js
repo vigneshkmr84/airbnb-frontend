@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './PropertyDetails.css';
 import Sidebar from '../../sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
@@ -7,10 +7,10 @@ import PropertyImagesDisplay from './PropertyImagesDisplay';
 import BodyDetailsAccordion from './BodyDetailsAccordion';
 import { addUserReviewForProperty, getReviewsForPropertyId } from '../../../services/ReviewsService';
 import { getUserProfile } from '../../../services/ProfileService';
-import { Accordion, Button, Modal, Offcanvas, Spinner } from 'react-bootstrap';
+import { Button, Modal, Spinner } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import { getUserPaymentDetails } from '../../../services/PaymentService';
-import { addBooking } from '../../../services/BookingService';
+import { createBooking } from '../../../services/BookingService';
 import HandleReserve from './HandleReserve';
 import { getUserId } from '../../common/CommonUtils';
 import { renderCancelButton, renderSubmitButton } from '../../common/IconButtons';
@@ -114,7 +114,7 @@ const PropertyDetails = () => {
         var formData = bookingFormData;
         formData.property_id = property_id.id
         console.log(formData)
-        addBooking(formData)
+        createBooking(formData)
 
         // Call reserve Property API
     }
@@ -242,7 +242,16 @@ const PropertyDetails = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    {/* <HandleReserve /> */}
+                                    <HandleReserve
+                                        show={show}
+                                        handleClose={handleClose}
+                                        handleBookingFormChange={handleBookingFormChange}
+                                        propertyDetails={propertyDetails}
+                                        bookingFare={bookingFare}
+                                        userPaymentNickNames={userPaymentNickNames}
+                                        bookingFormData={bookingFormData}
+                                        onSubmitBooking={onSubmitBooking}
+                                    />
                                 </div>
 
                                 {/* uncomment the reservation form */}
@@ -260,14 +269,12 @@ const PropertyDetails = () => {
 function renderUpdateButton(host_id) {
     return (
         host_id === getUserId() ?
-            // <div className='col'>
             <button
                 className='btn btn-primary btn-lg'
                 // onClick={() => setShowReviewModal(true)}
                 id='updateToggleButton'>
                 <i className="bi bi-pencil"></i> Update
             </button>
-            // </div>
             :
             <></>
     )
