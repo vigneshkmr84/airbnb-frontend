@@ -5,7 +5,8 @@ import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
 import { ToastContainer } from 'react-toastify';
 import { Routes, Route, } from "react-router-dom";
-
+import background from './components/login/cool-background.png'
+import { NotFound } from './404';
 
 
 import Profile from './components/profile/Profile';
@@ -17,11 +18,17 @@ import Bookings from './components/bookings/Bookings';
 
 function App() {
 
+  const appStyle = {
+      display: 'flex'
+    , flexDirection: 'row'
+    , backgroundImage: window.location.pathname === '/login' ? `url(${background})` : ""
+  }
+
   return (
 
     // flex direction is added to display the sidebar and other part side by side
     <div className="App"
-      style={{ display: 'flex', flexDirection: 'row', /* backgroundImage: `url(${background})` */ }}>
+      style={appStyle}>
       {/* <img src={logo} className="App-logo" alt="logo" /> */}
       {/* <Header id="main-header"/> */}
       {/* <Login/> */}
@@ -54,11 +61,8 @@ function App() {
         <Route path='/bookings' element={<Bookings />} />
 
         <Route path='/properties/:id' element={<PropertyDetails />} />
+        <Route path="*" element={<NotFound />} />
 
-        {/* <Route path='/properties' element={<Properties />} /> */}
-        {/* <Route path="*" element={<NotFound/>} /> */}
-        {/* <Route path='/login' component={Login} />
-          <Route path='/signup' component={Signup} /> */}
       </Routes>
 
 

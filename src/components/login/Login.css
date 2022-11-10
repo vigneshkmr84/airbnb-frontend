@@ -1,17 +1,22 @@
-#login-container{
-    background-color:rgba(175, 173, 173, 0.904);
+#login-container {
+    background-color: rgba(175, 173, 173, 0.904);
+    /* background-image: url('cool-background.png'); */
     border-radius: 15px;
     margin-top: 5%;
     width: 23%;
-    height: 50%;
+    /* height: 50%; */
+    height: auto;
+    overflow: auto;
+    max-height: 50%;
+
 }
 
-div.form-group{
+div.form-group {
     margin-top: 5%;
     margin-right: 18%;
     margin-left: 18%;
 }
 
-h2{
+h2 {
     text-align: center;
 }
