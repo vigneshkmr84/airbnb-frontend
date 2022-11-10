@@ -27,7 +27,7 @@ const Payment = () => {
                 setPaymentDetails(res);
                 console.log(res);
             });
-    }, {});
+    }, []);
 
     const [showNewPaymentModal, setShowNewPaymentModal] = useState(false);
 

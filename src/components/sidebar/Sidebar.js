@@ -8,7 +8,8 @@ import { SidebarData } from './SidebarData';
 import './Sidebar.css';
 import Toast from '../toast/Toast';
 import Cookies from 'js-cookie'
-import logo from './logo.jpg';
+// import logo from './logo.jpg';
+import logo from './logo3.svg';
 
 
 import { FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from 'react-icons/fi';

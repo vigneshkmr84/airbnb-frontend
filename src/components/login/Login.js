@@ -81,9 +81,9 @@ const Login = () => {
             <br></br>
             <div className="form-group" style={{ textAlign: 'center' }}>
                 <p style={{ fontSize: '12px' }}>Don't have an account?&nbsp;
-                    <Link to='/signup'>
+                    {/* <Link to='/signup'> */}
                         <a href="./signup" className="link-primary" >Sign up</a>
-                    </Link>
+                    {/* </Link> */}
                 </p>
             </div>
             <br></br>
