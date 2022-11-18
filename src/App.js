@@ -5,7 +5,8 @@ import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
 import { ToastContainer } from 'react-toastify';
 import { Routes, Route, } from "react-router-dom";
-import background from './components/login/cool-background.png'
+// import background from './components/login/cool-background.png'
+import background from './components/login/blue-background.png'
 import { NotFound } from './404';
 
 

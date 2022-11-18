@@ -1,5 +1,6 @@
 import { postAPICall, getAPICall } from './ApiService'
 import Toast from '../components/toast/Toast'
+import { getUserId } from '../components/common/CommonUtils';
 
 // Will get the user details for profile page for a single user
 // based on the id 
@@ -12,10 +13,10 @@ export async function getUserProfile(user_id) {
 
 // Based on Form submit will update the user profile
 // update to the user id provided
-export async function updateUserProfile(user_id, userData) {
+export async function updateUserProfile(userData) {
 
     console.log(userData)
-    var response = await postAPICall('/users/' + user_id + '/update', userData);
+    var response = await postAPICall('/users/' + getUserId() + '/update', userData);
 
     console.log(response.message);
     if (response.status === 200) {

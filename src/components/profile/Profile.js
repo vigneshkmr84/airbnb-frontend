@@ -54,7 +54,7 @@ const Profile = () => {
         getUserProfile(token_data.user_id)
             .then((res) => {
                 setUserDetails(res);
-                console.log(userData.first_name);
+                console.log(res.first_name);
             });
     }, []);
 
@@ -71,7 +71,7 @@ const Profile = () => {
             console.log("No updates")
         } else {
             console.log("Updating user data")
-            updateUserProfile('6313358188e367845973f368', updatedUserData);
+            updateUserProfile(updatedUserData);
         }
     }
 
@@ -84,15 +84,14 @@ const Profile = () => {
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
             <div id='profile-container' style={{ width: '100%' }}>
-                {/*                 <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner> */}
+
                 <div className="container rounded bg-white mt-5 mb-5">
                     <h1 className='profileHeading'>Personal Details</h1>
                     <div id="profile-details" className='row'>
                         <div className="col-md-4">
                             <div id='image-container'>
-                                <UserProfilePhoto profile_photo={userData.profile_photo} />
+                                {/* <UserProfilePhoto profile_photo={userData.profile_photo} /> */}
+                                {renderUserProfilePhoto(userData.profile_photo)}
                             </div>
                         </div>
 
@@ -224,13 +223,26 @@ const Profile = () => {
 }
 
 
-function UserProfilePhoto(profile_photo) {
+function renderUserProfilePhoto(profile_photo) {
 
-    console.log("Rendering Image")
-    if (profile_photo.profile_photo === "") {
-        return (<img src={defaultUserImage} alt='user profile' id='profile-picture' />)
+    console.log("Rendering Image");
+    // console.log(profile_photo);
+    if (profile_photo === "") {
+        return (
+            <img
+                src={defaultUserImage}
+                alt='User profile'
+                id='profile-picture'
+            />
+        )
     } else {
-        return (<img src={"data:image/png;base64," + profile_photo.profile_photo} alt="Red dot" id="profile-picture" />)
+        return (
+            <img
+                src={"data:image/png;base64," + profile_photo}
+                alt="User profile"
+                id="profile-picture"
+            />
+        )
     }
 
 }

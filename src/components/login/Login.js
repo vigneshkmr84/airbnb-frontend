@@ -3,6 +3,7 @@ import './Login.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { login } from '../../services/LoginService';
 import { useNavigate } from 'react-router-dom';
+import Signup from '../signup/Signup';
 
 
 const Login = () => {
@@ -14,6 +15,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     const [loginData, updateFormData] = useState(loginObject);
+    const [showSignup, setShowSignup] = useState(false);
 
     const handleInputChange = (e) => {
         updateFormData({
@@ -76,62 +78,17 @@ const Login = () => {
             <div id='login-footer'>
                 <div className="row form-group" style={{ textAlign: 'center', paddingTop: '5%' }}>
                     <p style={{ fontSize: '12px' }}>Don't have an account?&nbsp;
-                        <a href="./signup" className="link-primary" >Sign up</a>
+                        <a className="text-primary" onClick={(e) => { setShowSignup(true) }}>Sign up</a>
                     </p>
                 </div>
             </div>
+
+            <Signup showSignup={showSignup} setShowSignup={setShowSignup} />
         </div>
-
-
     )
-    {/* <form className='container was-validated' id='login-container' noValidate>
-
-            <h2 className="fw-bold mb-2" style={{ padding: 30 }}>Log in</h2>
-
-            <div className="form-group">
-                <label className='form-label'>Username</label>
-                <input type="text"
-                    className='form-control form-control-md'
-                    placeholder='Email id / Phone no' required
-                    name="userName"
-                    onChange={handleChange}
-                >
-                </input>
-            </div>
-
-            <div className="form-group">
-                <label className='form-label'>Password </label>
-                <input type="Password"
-                    className='form-control form-control-md'
-                    placeholder='Password' required
-                    name="password"
-                    onChange={handleChange}
-                >
-                </input>
-            </div>
-
-            <br></br>
-            <div className="form-group" style={{ textAlign: 'center' }}>
-                <button type="button"
-                    className="btn btn-primary btn-lg"
-                    onClick={e => onClickLoginSubmit(e)}
-                    style={{ width: 120 }}
-                    disabled={!isEnabled}
-                > Login
-                </button>
-            </div>
-
-            <br></br>
-            <div className="form-group" style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: '12px' }}>Don't have an account?&nbsp;
-                    <a href="./signup" className="link-primary" >Sign up</a>
-                </p>
-            </div>
-            <br></br>
-        </form> */}
-
-
 
 }
 
+
 export default Login
+

@@ -35,8 +35,8 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
                 <div className='card-image'>
                     <img
                         src={"data:image/png;base64," + property_details.img}
-                        alt="Red dot"
-                        id="profile-picture"
+                        alt="property"
+                        id="property-image"
                         style={{ width: imageSize, height: imageSize }}
                     />
                 </div>
