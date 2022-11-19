@@ -103,7 +103,7 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
     }
 
     return (
-        <Modal show={showNewPropertyModal} id='addNewPaymentId' backdrop='static' keyboard={false}>
+        <Modal show={showNewPropertyModal} id='addNewProperty' backdrop='static' keyboard={false}>
             <Modal.Header closeButton>
                 <Modal.Title style={{ textAlign: 'center' }}>List a Property</Modal.Title>
             </Modal.Header>

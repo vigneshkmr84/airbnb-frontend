@@ -5,14 +5,13 @@ import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom'
 import 'react-pro-sidebar/dist/css/styles.css';
 import { SidebarData } from './SidebarData';
-import './Sidebar.css';
 import Toast from '../toast/Toast';
-import Cookies from 'js-cookie'
+import { FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from 'react-icons/fi';
+import { removeToken } from '../common/CommonUtils';
+import './Sidebar.css';
+
 // import logo from './logo.jpg';
 import logo from './logo3.svg';
-
-
-import { FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from 'react-icons/fi';
 
 const Sidebar = () => {
 
@@ -32,13 +31,12 @@ const Sidebar = () => {
 
     const navigate = useNavigate();
 
-    const submitLogOut = (event) => {
+    const submitLogOut = async () => {
 
         console.log('Logout submitted');
-        console.log(Cookies.get('token'));
-        Cookies.remove('token');
-        navigate('/login');
-        Toast('Successfully Logged out', 'success');
+        await removeToken()
+            .then(navigate('/login'))
+            .then(Toast('Successfully Logged out', 'success'))
     };
 
 
@@ -50,7 +48,7 @@ const Sidebar = () => {
 
     return (
 
-        <div id="sidebar-container" style={{ display: showSideBar ? 'block' : 'non' }}>
+        <div id="sidebar-container" style={{ display: showSideBar ? 'block' : 'non', }}>
 
             <ProSidebar /* popperArrow="true" */ collapsed={menuCollapse} /* style={{display:"none"}} */ >
                 <SidebarHeader>
@@ -102,20 +100,6 @@ const Sidebar = () => {
 
 
             {renderLogoutPopup(isLogOutOpen, submitLogOut, setModalIsOpenToFalse)}
-            {/* <Modal show={isLogOutOpen} id='modal-id'>
-                <Modal.Header closeButton>
-                    <Modal.Title>Logout</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to logout ?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={submitLogOut}>
-                        Yes
-                    </Button>
-                    <Button variant="secondary" onClick={setModalIsOpenToFalse}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal> */}
 
         </div>
     )

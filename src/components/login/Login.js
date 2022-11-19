@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { login } from '../../services/LoginService';
+import { callLoginApi } from '../../services/LoginService';
 import { useNavigate } from 'react-router-dom';
 import Signup from '../signup/Signup';
 
@@ -25,10 +25,12 @@ const Login = () => {
     }
     const onClickLoginSubmit = async (e) => {
         e.preventDefault()
-        await login(loginData)
-            .then(res => {
-                if (res === true) {
+
+        await callLoginApi(loginData)
+            .then(status => {
+                if (status === 200) {
                     navigate('/home');
+                    window.location.reload(true);
                 }
             });
     }

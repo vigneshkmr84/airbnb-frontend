@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Sidebar from '../sidebar/Sidebar'
 import './Profile.css'
 import defaultUserImage from './user-profile.jpg'
-import { getUserProfile, updateUserProfile } from '../../services/ProfileService'
-import jwt_decode from "jwt-decode";
-import Cookies from 'js-cookie'
+import { getUserProfileApi, updateUserProfileApi } from '../../services/ProfileService'
 import AddPropertyModal from './AddPropertyModal'
+import { convertImageToBase64, getUserId, isHost } from '../common/CommonUtils'
+import Form from 'react-bootstrap/Form';
+import BecomeHostModal from './BecomeHostModal'
 
 
 const Profile = () => {
+
+    const fileFormats = 'image/*, .heic';
 
     const defaultUserDetails = {
         first_name: '',
@@ -26,10 +29,30 @@ const Profile = () => {
 
     const [isEditEnabled, setIsEnabled] = useState(false);
 
+    const fileRef = useRef(null);
+
+    const handleUploadProfilePicture = () => { fileRef.current.click() }
+
+    const handleFileChange = async (e) => {
+        console.log('handling profile pic change')
+        const file = e.target.files && e.target.files[0]
+
+        await convertImageToBase64(file)
+            .then((data) => {
+                setUpdatedUserData({
+                    ...updatedUserData,
+                    ["profile_photo"]: data.split("base64,")[1]
+                });
+                setUserDetails({ ...userData, ["profile_photo"]: data.split("base64,")[1] });
+            }).then(
+
+        )
+    }
+
     const cancelNewPropertyModal = () => {
         setShowNewPropertyModal(false);
     }
-    // function onClickEditInfo() {
+
     const onClickEditInfo = () => {
         console.log('Edit Enabled')
         setIsEnabled(!isEditEnabled);
@@ -38,8 +61,6 @@ const Profile = () => {
     const handleChange = (e) => {
         setUpdatedUserData({
             ...updatedUserData,
-            // dynamically map the name and value of the form data
-            // name attribute has to be set on each element - else it will not work
             [e.target.name]: e.target.value.trim()
         });
     }
@@ -48,14 +69,11 @@ const Profile = () => {
         // fetch the user details for the given id 
         // and set them to userData
 
-        //  getUserProfile('6313358188e367845973f368')
-        var token_data = jwt_decode(Cookies.get('token'));
-        console.log(token_data)
-        getUserProfile(token_data.user_id)
+        getUserProfileApi(getUserId())
             .then((res) => {
                 setUserDetails(res);
                 console.log(res.first_name);
-            });
+            })
     }, []);
 
 
@@ -63,15 +81,16 @@ const Profile = () => {
 
     const markUpdated = () => setUpdated(true);
 
-    const submitForm = () => {
+    const submitForm = async () => {
         setIsEnabled(false);
-        console.log("Form submitted");
+        console.log("Update user data Form submitted");
         console.log(updatedUserData)
         if (updatedUserData === {}) {
             console.log("No updates")
         } else {
             console.log("Updating user data")
-            updateUserProfile(updatedUserData);
+            await updateUserProfileApi(updatedUserData)
+                .then(setUserDetails({ ...userData, updatedUserData }));
         }
     }
 
@@ -80,19 +99,45 @@ const Profile = () => {
         setShowNewPropertyModal(true);
     }
 
+    const [host, setHost] = useState(isHost());
+
+    const onToggleHost = () => {
+        console.log('toggle switch');
+        setHost(!host)
+    }
+
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
-            <div id='profile-container' style={{ width: '100%' }}>
+            <div id='profile-container' style={{ width: '100%', backgroundColor: 'white' }}>
 
                 <div className="container rounded bg-white mt-5 mb-5">
                     <h1 className='profileHeading'>Personal Details</h1>
                     <div id="profile-details" className='row'>
                         <div className="col-md-4">
                             <div id='image-container'>
-                                {/* <UserProfilePhoto profile_photo={userData.profile_photo} /> */}
                                 {renderUserProfilePhoto(userData.profile_photo)}
                             </div>
+                            <br></br>
+                            <br></br>
+                            {isEditEnabled ?
+                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <input
+                                        type='file'
+                                        accept={fileFormats}
+                                        ref={fileRef}
+                                        style={{ display: 'none' }}
+                                        onChange={e => handleFileChange(e)}
+                                    >
+                                    </input>
+                                    <button
+                                        className='btn btn-primary'
+                                        onClick={e => handleUploadProfilePicture()}
+                                    >
+                                        <i className="bi bi-camera"></i> &nbsp;Upload Image
+                                    </button>
+                                </div>
+                                : <></>}
                         </div>
 
                         <div className="col-md-8" style={{ width: '50%' }}>
@@ -133,7 +178,8 @@ const Profile = () => {
                                             name='email_id'
                                             defaultValue={userData.email_id}
                                             onChange={handleChange}
-                                            disabled={(isEditEnabled) ? "" : "disabled"}
+                                            // disabled={(isEditEnabled) ? "" : "disabled"}
+                                            disabled
                                         >
                                         </input>
                                     </div>
@@ -144,6 +190,32 @@ const Profile = () => {
                                             name='phone_no'
                                             defaultValue={userData.phone_no}
                                             onChange={handleChange}
+                                            // disabled={(isEditEnabled) ? "" : "disabled"}
+                                            disabled
+                                        >
+                                        </input>
+                                    </div>
+                                </div>
+
+                                <div className='row'>
+                                    <div className='col-md-6'>
+                                        <label className='form-label control-label'>Description</label>
+                                        <input type='text'
+                                            className='form-control mr-sm-2'
+                                            name='description'
+                                            defaultValue={userData.description}
+                                            onChange={handleChange}
+                                            disabled={(isEditEnabled) ? "" : "disabled"}
+                                        >
+                                        </input>
+                                    </div>
+                                    <div className='col-md-6'>
+                                        <label className='form-label control-label'>Languages</label>
+                                        <input type='text'
+                                            className='form-control mr-sm-2'
+                                            name='languages'
+                                            defaultValue={userData.languages}
+                                            onChange={handleChange}
                                             disabled={(isEditEnabled) ? "" : "disabled"}
                                         >
                                         </input>
@@ -153,14 +225,19 @@ const Profile = () => {
                                 <div className='row'>
                                     <div className='col-md-6'>
                                         <label className='form-label control-label'>Id type</label>
-                                        <input type='text'
-                                            className='form-control mr-sm-2'
-                                            name='id_type'
-                                            defaultValue={userData.id_type}
+                                        <select
+                                            className="form-select"
+                                            aria-label="Select Id Type"
+                                            name="id_type"
+                                            required
                                             onChange={handleChange}
+                                            defaultValue={userData.id_type}
                                             disabled={(isEditEnabled) ? "" : "disabled"}
                                         >
-                                        </input>
+                                            <option value="passport">Passport</option>
+                                            <option value="state id card">State id card</option>
+                                            <option value="driver license">Driver License</option>
+                                        </select>
                                     </div>
                                     <div className='col-md-6'>
 
@@ -177,43 +254,84 @@ const Profile = () => {
                                 </div>
                                 <br></br>
                                 <div className='row'>
-                                    <div className='col-md-6'>
+                                    <div className='col-md-4'>
                                         <div className="form-group" style={{ textAlign: 'center' }}>
-                                            <button type="button"
+                                            <button
+                                                className="btn btn-secondary btn-md"
+                                                type="button"
                                                 id='editButton'
-                                                className="btn btn-danger btn-md"
                                                 onClick={onClickEditInfo}
                                             >
-                                                <i className="bi bi-pencil"></i>
-                                                &nbsp;&nbsp;Edit Info
+                                                <i className="bi bi-pencil"></i> &nbsp;&nbsp;Edit Info
                                             </button>
                                         </div>
                                     </div>
-                                    <div className='col-md-6'>
-                                        <div className="form-group" style={{ textAlign: 'center' }}>
+                                    {
+                                        isEditEnabled ?
+                                            <div className='col-md-4'>
+                                                <div className="form-group" style={{ textAlign: 'center' }}>
+                                                    <button
+                                                        className="btn btn-primary btn-md"
+                                                        type="button"
+                                                        id='update-info'
+                                                        onClick={submitForm}
+                                                    > Update
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            : <div className='col-md-4'></div>
+                                    }
+                                    <div className='col-md-4'>
+                                        {isHost()
+                                            ?
+                                            // Add property button
                                             <button type="button"
                                                 id='update-info'
                                                 className="btn btn-primary btn-md"
-                                                onClick={submitForm}
-                                                disabled={(isEditEnabled) ? "disabled" : ""}
-                                            > Update Info
+                                                onClick={addProperty}
+                                            > Add Property
+                                            </button>
+
+                                            :
+                                            // Host toggle button
+                                            <Form.Check
+                                                type="switch"
+                                                id='host-switch'
+                                                label="Host"
+                                                onClick={e => setHost(!host)}
+                                            />}
+                                    </div>
+                                </div>
+                                {/* <div className='row'>
+                                    {
+                                        isHost() ?
+                                            <div className='col-md-6'>
+                                                <button type="button"
+                                                    id='update-info'
+                                                    className="btn btn-primary btn-md"
+                                                    onClick={addProperty}
+                                                > Add Property
+                                                </button>
+                                            </div> :
+                                            <></>
+                                    }
+                                    {isHost() ? <></> :
+                                        <div className='col-md-6'>
+                                            <button type="button"
+                                                id='become-host'
+                                                className="btn btn-primary btn-md"
+                                            >
+                                                <i className="bi bi-person-up"></i> &nbsp;Become host
                                             </button>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-md-12'>
-                                        <button type="button"
-                                            id='update-info'
-                                            className="btn btn-primary btn-md"
-                                            onClick={addProperty}
-                                        > Add Property
-                                        </button>
-                                    </div>
-                                </div>
+                                    }
+                                </div> */}
+
+
                             </form>
 
                             <AddPropertyModal showNewPropertyModal={showNewPropertyModal} cancelNewPropertyModal={cancelNewPropertyModal} /* user_id='630d9e1a5a8e270b69c8e947' */ />
+                            <BecomeHostModal host={host} setHost={setHost} />
                         </div>
                     </div>
                 </div >
@@ -221,7 +339,6 @@ const Profile = () => {
         </div >
     )
 }
-
 
 function renderUserProfilePhoto(profile_photo) {
 

@@ -23,6 +23,7 @@ function App() {
       display: 'flex'
     , flexDirection: 'row'
     , backgroundImage: window.location.pathname === '/login' ? `url(${background})` : ""
+    // , backgroundColor : 'red'
   }
 
   return (

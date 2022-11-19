@@ -64,7 +64,7 @@ const Payment = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
-            <div id='payment-container' style={{ width: '100%' }}>
+            <div id='payment-container' style={{ width: '100%', backgroundColor: 'white' }}>
                 <div className="container rounded bg-white mt-5 mb-5">
                     <h1 className='paymentHeading'>Payment Details</h1>
                     <div className='row'>

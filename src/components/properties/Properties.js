@@ -58,7 +58,7 @@ const Properties = () => {
         <>
             <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
                 <Sidebar />
-                <div id='properties-container' style={{ width: '100%' }}>
+                <div id='properties-container' style={{ width: '100%', backgroundColor: 'white' }}>
                     <div className="proeprtiesBody" style={{ maxHeight: '2600px' }}>
                         <h1 className='propertiesHeader'>Find your Stays</h1>
                         <br></br>

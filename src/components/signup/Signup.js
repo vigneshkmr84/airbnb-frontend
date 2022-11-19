@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import './Signup.css'
-import { signup } from '../../services/LoginService'
+import { callSignupApi } from '../../services/LoginService'
 import { useNavigate } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import { renderCancelButton, renderSubmitButton } from '../common/IconButtons';
-import { convertBase64 } from '../common/CommonUtils';
+import { convertImageToBase64 } from '../common/CommonUtils';
 
 const Signup = ({ showSignup, setShowSignup }) => {
 
@@ -18,6 +18,8 @@ const Signup = ({ showSignup, setShowSignup }) => {
         password: "",
         id_type: "",
         id_details: "",
+        description: "",
+        languages: "",
     });
 
     const [userData, updateFormData] = useState(userObject);
@@ -36,16 +38,22 @@ const Signup = ({ showSignup, setShowSignup }) => {
         console.log(userData);
         e.preventDefault()
 
-        signup(userData);
-        // setShowSignup(false)
+        await callSignupApi(userData).then((status) => {
+            if (status === 200) {
+                setShowSignup(false)
+            }
+        }).then(
+            navigate('/login')
+        );
 
-        // navigate('/login');
+
+        ;
     }
 
     const addProfilePicture = async (event) => {
         const file = event.target.files[0]
         console.log(file);
-        await convertBase64(file)
+        await convertImageToBase64(file)
             .then((data) => {
                 updateFormData({
                     ...userData,
@@ -120,9 +128,11 @@ const Signup = ({ showSignup, setShowSignup }) => {
                             ></input>
                         </div>
                     </div>
+
                     <div className='row'>
                         <div className='col'>
-                            <select className="form-select"
+                            <select 
+                                className="form-select"
                                 aria-label="Select ID type"
                                 name="id_type"
                                 required
@@ -136,7 +146,6 @@ const Signup = ({ showSignup, setShowSignup }) => {
                         </div>
                     </div>
 
-
                     <div className='row'>
                         <div className='col'>
                             <input type="text"
@@ -148,6 +157,31 @@ const Signup = ({ showSignup, setShowSignup }) => {
                             ></input>
                         </div>
                     </div>
+
+                    <div className='row'>
+                        <div className='col'>
+                            <input type="text"
+                                className='form-control form-control-md'
+                                placeholder='Description about you'
+                                required
+                                name="description"
+                                onChange={handleChange}
+                            ></input>
+                        </div>
+                    </div>
+
+                    <div className='row'>
+                        <div className='col'>
+                            <input type="text"
+                                className='form-control form-control-md'
+                                placeholder='Languages'
+                                required
+                                name="languages"
+                                onChange={handleChange}
+                            ></input>
+                        </div>
+                    </div>
+
                     <div className='row'>
                         <div className='col'>
                             <input

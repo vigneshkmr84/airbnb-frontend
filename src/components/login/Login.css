@@ -1,14 +1,11 @@
 #login-container {
     background-color: rgba(175, 173, 173, 0.904);
-    /* background-image: url('cool-background.png'); */
     border-radius: 15px;
     margin-top: 5%;
     width: 23%;
-    /* height: 50%; */
     height: auto;
     overflow: auto;
-    max-height: 55%;
-
+    max-height: 52%;
 }
 
 div.form-group {

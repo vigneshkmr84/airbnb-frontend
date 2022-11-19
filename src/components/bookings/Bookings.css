@@ -12,4 +12,5 @@
 #bookings-container {
     overflow-y: scroll;
     width: 100%;
+    background-color: white;
 }

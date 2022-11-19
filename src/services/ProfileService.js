@@ -4,7 +4,7 @@ import { getUserId } from '../components/common/CommonUtils';
 
 // Will get the user details for profile page for a single user
 // based on the id 
-export async function getUserProfile(user_id) {
+export async function getUserProfileApi(user_id) {
 
     var response = await getAPICall('/users/' + user_id);
     console.log(response.message);
@@ -13,7 +13,7 @@ export async function getUserProfile(user_id) {
 
 // Based on Form submit will update the user profile
 // update to the user id provided
-export async function updateUserProfile(userData) {
+export async function updateUserProfileApi(userData) {
 
     console.log(userData)
     var response = await postAPICall('/users/' + getUserId() + '/update', userData);

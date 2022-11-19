@@ -6,7 +6,7 @@ import { getPropertyById, getPropertyImages } from '../../../services/Properties
 import PropertyImagesDisplay from './PropertyImagesDisplay';
 import BodyDetailsAccordion from './BodyDetailsAccordion';
 import { addUserReviewForProperty, getReviewsForPropertyId } from '../../../services/ReviewsService';
-import { getUserProfile } from '../../../services/ProfileService';
+import { getUserProfileApi } from '../../../services/ProfileService';
 import { Button, Modal, Spinner } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import { getUserPaymentDetails } from '../../../services/PaymentService';
@@ -130,7 +130,7 @@ const PropertyDetails = () => {
                     setPropertyDetails(data);
                     let host_id = data.host_id;
                     console.log('Fetching host details : ' + host_id);
-                    await getUserProfile(host_id)
+                    await getUserProfileApi(host_id)
                         .then(host_data => {
                             setHostDetails(host_data);
                         })

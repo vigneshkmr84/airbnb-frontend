@@ -16,9 +16,9 @@ const BodyDetailsAccordion = ({ details }) => {
     const property_details = details.property_details;
     const reviews = details.reviews;
     const hostDetails = details.hostDetails;
-
+    console.log(details)
     return (
-        <Accordion defaultActiveKey='description' >
+        <Accordion defaultActiveKey='description' key={details.property_id}>
             <Accordion.Item eventKey='description'>
                 <Accordion.Header><h4>Description</h4></Accordion.Header>
                 <Accordion.Body>
@@ -89,8 +89,8 @@ const BodyDetailsAccordion = ({ details }) => {
                         <a href={'/user/' + hostDetails._id}> {hostDetails.first_name} </a>
                     </h5>
                     {/* <p>{hostDetails.host_details.is_superhost ? <small> Verified Superhost</small> : null} {hostDetails.host_details.is_superhost ? <BsShieldFillCheck /> : null}</p> */}
-                    <p> <b>About me :</b> {hostDetails.host_details.description}</p>
-                    <p> <b>Languages: </b> {hostDetails.host_details.languages.toString()}</p>
+                    <p> <b>About me :</b> {hostDetails.description}</p>
+                    <p> <b>Languages: </b> {hostDetails.languages?.toString()}</p>
                     <p> <b>Host from: </b> {hostDetails.created_at}</p>
 
                 </Accordion.Body>

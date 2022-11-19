@@ -7,6 +7,7 @@ import moment from "moment";
 export function getToken() {
     return Cookies.get('token');
 }
+
 export function getUserId() {
     let token = getToken();
     if (token === null || token === undefined) {
@@ -18,6 +19,19 @@ export function getUserId() {
         return decoded.user_id;
     }
 }
+
+export function isHost() {
+    let token = getToken();
+    if (token === null || token === undefined) {
+        console.log('token missing');
+        return false;
+    }
+    else {
+        let decoded = jwtDecode(token);
+        return decoded.is_host;
+    }
+}
+
 export function makeFirstLetterCaps(inputString) {
     if (inputString !== null || inputString !== undefined) {
         return inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase();
@@ -29,9 +43,6 @@ export function makeFirstLetterCaps(inputString) {
 // parser function to detect new line \\n from mongodb and change it appropriately.
 export const parseLines = (value) => value.replaceAll(/(\\n)/g, "\n");
 // export const parseLines = (value) => value.replaceAll(/(\\n)/g, '{"\n"}');
-
-
-//export makeFirstLetterCaps;
 
 
 export const dateFormat = (date) => {
@@ -51,7 +62,7 @@ export const dateGreaterCheck = (d1, d2) => {
     return d1 > d2;
 }
 
-export const convertBase64 = (file) => {
+export const convertImageToBase64 = (file) => {
     return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
         fileReader.readAsDataURL(file)
@@ -62,4 +73,9 @@ export const convertBase64 = (file) => {
             reject(error);
         }
     })
+}
+
+
+export const removeToken = async () => {
+    Cookies.remove('token');
 }

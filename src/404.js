@@ -2,7 +2,7 @@ import React from 'react'
 
 export const NotFound = () => {
     return (
-        <div style={{ paddingTop: '3%', textAlign: 'center', width: '100%' }}>
+        <div style={{ paddingTop: '3%', textAlign: 'center', width: '100%', backgroundColor: 'white' }}>
             <div className='row'>
                 <h1>404 Not found.</h1>
             </div>
