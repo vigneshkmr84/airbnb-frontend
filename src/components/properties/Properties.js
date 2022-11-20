@@ -15,6 +15,7 @@ const Properties = () => {
 
     const [searchList, setSearchList] = useState([]);
 
+    const [dataReady, setDataReady] = useState(false);
 
     const onSearchSubmit = () => {
         console.log("Search for : " + search);
@@ -43,6 +44,7 @@ const Properties = () => {
                 .then(res => {
                     setAllPropertiesList(res);
                     setSearchList(res);
+                    setDataReady(true);
                 });
         }
 
@@ -68,7 +70,7 @@ const Properties = () => {
                                 <input type="search"
                                     id="search-bar"
                                     className="form-control mr-sm-2"
-                                    placeholder='Search'
+                                    placeholder='Search for properties or location...'
                                     onChange={handleChange}
                                 ></input>
 
@@ -86,23 +88,24 @@ const Properties = () => {
 
                         </div>
                         <div className='propertiesBody'>
-                            <div className='card-group'>
-                                {searchList ?
-                                    searchList.map((property) => {
-                                        return (
-                                            <BookmarksCard
-                                                key={property._id}
-                                                property_details={property}
-                                                imageWidth={imageWidth}
-                                                imageHeight={imageHeight}
-                                                flexDirection='row'
-                                            />
-                                        )
-                                    })
-                                    // : <h6>Try searching property name or location</h6>
-                                    : <h6>No data found...</h6>
-                                }
-                            </div>
+                            {!dataReady ? renderSpinner() :
+                                <div className='card-group'>
+                                    {searchList ?
+                                        searchList.map((property) => {
+                                            return (
+                                                <BookmarksCard
+                                                    key={property._id}
+                                                    property_details={property}
+                                                    imageWidth={imageWidth}
+                                                    imageHeight={imageHeight}
+                                                    flexDirection='row'
+                                                />
+                                            )
+                                        })
+                                        : <h6>No data found...</h6>
+                                    }
+                                </div>}
+
 
                             <br></br>
                             <br></br>
@@ -116,4 +119,13 @@ const Properties = () => {
     )
 }
 
+const renderSpinner = () => {
+    return (
+        <div class="d-flex justify-content-center" style={{paddingTop: '10%'}}>
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    )
+}
 export default Properties

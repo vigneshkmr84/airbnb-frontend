@@ -131,7 +131,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
 
                     <div className='row'>
                         <div className='col'>
-                            <select 
+                            <select
                                 className="form-select"
                                 aria-label="Select ID type"
                                 name="id_type"

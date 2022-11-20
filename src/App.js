@@ -20,9 +20,10 @@ import Bookings from './components/bookings/Bookings';
 function App() {
 
   const appStyle = {
-      display: 'flex'
+    display: 'flex'
     , flexDirection: 'row'
-    , backgroundImage: window.location.pathname === '/login' ? `url(${background})` : ""
+    // , backgroundImage: window.location.pathname === '/login' ? `url(${background})` : ""
+    , backgroundImage: `url(${background})`,
     // , backgroundColor : 'red'
   }
 

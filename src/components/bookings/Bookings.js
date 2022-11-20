@@ -44,7 +44,7 @@ const Bookings = () => {
                                                 setBookmarkItems={setBookingData}
                                                 cardWidth='80%'
                                                 flexDirection='row'
-                                                isBookingType={true}                                            />
+                                                isBookingType={true} />
                                             <br></br>
                                         </div>)
                                 }
