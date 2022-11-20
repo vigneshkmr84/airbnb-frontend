@@ -51,13 +51,11 @@
 }
 
 #delete-button {
-    /* float: right; */
-    /* right: 0px; */
-    /* position: relative; */
     text-align: right;
 }
 
 #bookmark-container {
     overflow-y: scroll;
     width: 100%;
+    background-color: white;
 }

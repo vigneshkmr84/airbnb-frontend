@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
 import { callToBecomeHost } from '../../services/LoginService'
-import { renderCancelButton, renderSubmitButton } from '../common/IconButtons'
+import { renderCancelButton, renderSubmitButton } from '../common/CommonElements'
 import { useNavigate } from 'react-router-dom'
 import { removeToken } from '../common/CommonUtils'
 import Toast from '../toast/Toast';

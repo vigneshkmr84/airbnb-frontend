@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import './Payment.css'
 import { useState } from "react";
 import { addPaymentDetails } from '../../services/PaymentService';
-import { renderCancelButton, renderSubmitButton } from '../common/IconButtons';
+import { renderCancelButton, renderSubmitButton } from '../common/CommonElements';
 
 const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
 

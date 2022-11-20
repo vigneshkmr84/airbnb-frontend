@@ -9,7 +9,7 @@ const unauthorized = 401;
 
 
 export async function getAPICall(uri) {
-    // const navigate = useNavigate();
+
     try {
 
         let finalURL = baseUrl + uri;

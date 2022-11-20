@@ -3,7 +3,7 @@ import './Signup.css'
 import { callSignupApi } from '../../services/LoginService'
 import { useNavigate } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
-import { renderCancelButton, renderSubmitButton } from '../common/IconButtons';
+import { renderCancelButton, renderSubmitButton } from '../common/CommonElements';
 import { convertImageToBase64 } from '../common/CommonUtils';
 
 const Signup = ({ showSignup, setShowSignup }) => {

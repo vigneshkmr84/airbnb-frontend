@@ -6,7 +6,7 @@ import { addNewProperty, addPropertyImages } from '../../services/PropertiesServ
 import moment from 'moment-timezone';
 import { getUserId as getUserIdFromCookies } from '../common/CommonUtils';
 import Toast from '../../components/toast/Toast';
-import { renderCancelButton, renderSubmitButton } from '../common/IconButtons';
+import { renderCancelButton, renderSubmitButton } from '../common/CommonElements';
 
 const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
 

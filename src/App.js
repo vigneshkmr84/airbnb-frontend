@@ -5,10 +5,6 @@ import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
 import { ToastContainer } from 'react-toastify';
 import { Routes, Route, } from "react-router-dom";
-// import background from './components/login/cool-background.png'
-import background from './components/login/blue-background.png'
-import { NotFound } from './404';
-
 
 import Profile from './components/profile/Profile';
 import Payment from './components/payments/Payment';
@@ -16,6 +12,10 @@ import Bookmark from './components/bookmarks/Bookmark';
 import Properties from './components/properties/Properties';
 import PropertyDetails from './components/properties/propertydetails/PropertyDetails';
 import Bookings from './components/bookings/Bookings';
+import { NotFound } from './404';
+
+// import background from './components/login/blue-background.png'
+import background from './components/login/cool-background-grey.png'
 
 function App() {
 
@@ -49,8 +49,6 @@ function App() {
         draggable
         pauseOnHover
       />
-      {/* <Link to='/login'> Login</Link>
-        <Link to='/signup'> Signup</Link> */}
 
       <Routes>
         <Route path='/' index element={<Properties />} />
@@ -70,7 +68,6 @@ function App() {
 
 
     </div>
-    // </Router>
   );
 }
 

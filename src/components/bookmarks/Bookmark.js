@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom'
 import SinglePropertyCard from './SinglePropertyCard'
 import { getUserId } from '../common/CommonUtils'
 import './Bookmark.css'
+import { renderSpinner } from '../common/CommonElements'
 
 const Bookmark = () => {
 
     // setting default bookmarked items as empty array[]
     const [bookmarkItems, setBookmarkItems] = useState([]);
+
+    const [isDataReady, setIsDataReady] = useState(false);
 
     useEffect(() => {
         let user_id = getUserId();
@@ -17,6 +20,7 @@ const Bookmark = () => {
         getUserBookmarks(user_id)
             .then((res) => {
                 setBookmarkItems(res);
+                setIsDataReady(true);
             });
     }, []);
 
@@ -29,7 +33,7 @@ const Bookmark = () => {
             <div id='bookmark-container'>
                 <h1 className='bookmarkHeading'>Favourites</h1>
                 <br></br>
-                {
+                {!isDataReady ? renderSpinner() :
                     bookmarkItems.length === 0 ?
                         <h3 className='emptyFavourites'>
                             Oops...You don't have any Favourites. Start <Link to='/home'>Browsing</Link>

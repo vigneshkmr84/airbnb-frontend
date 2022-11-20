@@ -8,6 +8,10 @@ export function getToken() {
     return Cookies.get('token');
 }
 
+export function deleteToken() {
+    Cookies.remove('token');
+    return true;
+}
 export function getUserId() {
     let token = getToken();
     if (token === null || token === undefined) {

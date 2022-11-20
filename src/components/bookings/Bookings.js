@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { getUserBookings } from '../../services/BookingService';
 import SinglePropertyCard from '../bookmarks/SinglePropertyCard';
+import { renderSpinner } from '../common/CommonElements';
 import Sidebar from '../sidebar/Sidebar'
 import './Bookings.css'
 
@@ -10,12 +11,14 @@ const Bookings = () => {
     const [bookingData, setBookingData] = useState([]);
     const imageSize = '250px';
 
+    const [isDataReady, setIsDataReady] = useState(false);
+
     useEffect(() => {
         console.log('Fetching bookings data');
         getUserBookings()
             .then(res => {
                 setBookingData(res);
-                console.log(res);
+                setIsDataReady(true)
             })
     }, []);
 
@@ -30,7 +33,7 @@ const Bookings = () => {
                     </div>
 
                     <div className='bookingsBody'>
-                        {
+                        {!isDataReady ? renderSpinner() :
                             bookingData.length === 0
                                 ? renderEmptyBookingsData()
                                 : bookingData?.map(booking => {

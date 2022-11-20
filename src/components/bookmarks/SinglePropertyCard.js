@@ -2,7 +2,7 @@ import React from 'react'
 import { deleteBooking } from '../../services/BookingService'
 import { deleteBookmark } from '../../services/BookmarkService'
 import { dateFormat, getUserId } from '../common/CommonUtils'
-import { renderCancelButton } from '../common/IconButtons'
+import { renderCancelButton } from '../common/CommonElements'
 import { renderRating } from '../properties/propertydetails/PropertyDetails'
 import './Bookmark.css'
 

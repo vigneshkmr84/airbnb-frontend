@@ -6,6 +6,7 @@ import BookmarksCard from './BookmarksCard';
 import Footer from '../footer/Footer';
 import { searchProperty } from '../../services/SearchService';
 import './Search.css';
+import { renderSpinner } from '../common/CommonElements';
 
 const Properties = () => {
 
@@ -119,13 +120,5 @@ const Properties = () => {
     )
 }
 
-const renderSpinner = () => {
-    return (
-        <div class="d-flex justify-content-center" style={{paddingTop: '10%'}}>
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    )
-}
+
 export default Properties

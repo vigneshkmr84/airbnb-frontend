@@ -13,7 +13,7 @@ import { getUserPaymentDetails } from '../../../services/PaymentService';
 import { createBooking } from '../../../services/BookingService';
 import HandleReserve from './HandleReserve';
 import { getUserId } from '../../common/CommonUtils';
-import { renderCancelButton, renderSubmitButton } from '../../common/IconButtons';
+import { renderCancelButton, renderSubmitButton } from '../../common/CommonElements';
 
 
 
