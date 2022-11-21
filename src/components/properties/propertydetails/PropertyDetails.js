@@ -16,7 +16,6 @@ import { getUserId } from '../../common/CommonUtils';
 import { renderCancelButton, renderSubmitButton } from '../../common/CommonElements';
 
 
-
 const PropertyDetails = () => {
     let property_id = useParams();
 
@@ -27,17 +26,17 @@ const PropertyDetails = () => {
 
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
-    const [reviewForm, setReviewForm] = useState({
-        rating: 1,
-        comments: "",
-    });
+
+    const defaultReviewData = { rating: 1, comments: "" }
+    const [reviewForm, setReviewForm] = useState(defaultReviewData);
+    const [reviewFormErrors, setReviewFormErrors] = useState({});
 
     const [userPaymentNickNames, setUserPaymentNickNames] = useState(null);
 
     const handleClose = () => setShow(false);
+
     const onClickHandleReserveToggle = () => {
         console.log("Show enabled");
-        // getUserPaymentDetails('630d9e1a5a8e270b69c8e947', true)
         getUserPaymentDetails(getUserId(), true)
             .then((res) => {
                 setUserPaymentNickNames(res)
@@ -46,8 +45,6 @@ const PropertyDetails = () => {
         console.log(userPaymentNickNames);
         setShow(true)
     };
-
-    // console.log(property_id);
 
     const initialBookindData = Object.freeze({
         start_date: '',
@@ -69,24 +66,11 @@ const PropertyDetails = () => {
         total_price: 0,
     })
 
-    // submit button toggle based on input validation
-    const isSubmitEnabled =
-        (initialBookindData.start_date !== "")
-        && (initialBookindData.end_date !== "")
-        && (initialBookindData.no_of_people !== "")
-        && (initialBookindData.guest_message !== "");
-
     const handleBookingFormChange = (e) => {
-        /*         console.log(e.target.value);
-                console.log(isNaN(+e.target.value)); */
         setBookingFormData({
             ...bookingFormData,
             [e.target.name]: e.target.value.trim()
         });
-
-        /* propertyDetails.cost_per_day * (moment.duration(
-            moment(bookingFormData.end_date) - moment(bookingFormData.start_date)
-        ).days() + 1) */
 
         let difference =
             moment.duration(
@@ -98,26 +82,53 @@ const PropertyDetails = () => {
             cost: (difference * propertyDetails.cost_per_day),
             nights: difference,
             taxes: Math.round(bookingFare.cost * tax_rate * 100) / 100,
-            // total_price: Math.round(bookingFare.cost + bookingFare.taxes * 100)/100,
             total_price: Math.round((difference * propertyDetails.cost_per_day) * (1 + tax_rate) * 100) / 100
         })
     }
 
     const submitReview = () => {
         console.log('Review submitted');
-        console.log(reviewForm);
-        addUserReviewForProperty(reviewForm, property_id.id)
+
+        setReviewFormErrors(validateReviewForm(reviewForm))
+
+        if (Object.keys(validateReviewForm(reviewForm)).length === 0) {
+            console.log('valid form')
+            addUserReviewForProperty(reviewForm, property_id.id)
+                .then(setReviewForm(defaultReviewData))
+                .then(setShowReviewModal(false))
+        } else {
+            console.log('invalid review form');
+            console.log(reviewForm);
+        }
     }
-    const onSubmitBooking = (e) => {
+
+    const validateReviewForm = (values) => {
+        const errors = {};
+        if (!values.rating) {
+            errors.rating = "Rating is needed";
+        }
+
+        if (!values.comments) {
+            errors.comments = "Comments are required";
+        }
+
+        return errors
+    }
+
+    const onSubmitBooking = () => {
         console.log('Booking Form Submitted');
         // console.log(bookingFormData)
         var formData = bookingFormData;
-        formData.property_id = property_id.id
-        console.log(formData)
-        createBooking(formData)
+        formData.property_id = property_id.id;
+        console.log(formData);
+        createBooking(formData);
 
         // Call reserve Property API
     }
+
+    useEffect(() => {
+
+    }, [reviewFormErrors])
 
     // fetching the property details
     useEffect(() => {
@@ -149,7 +160,6 @@ const PropertyDetails = () => {
                 .then((res) => {
                     setPropertyTopReviews(res);
                     console.log('Retrieved Top 5 Reviews');
-                    console.log(res)
                 });
         }
 
@@ -174,13 +184,12 @@ const PropertyDetails = () => {
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
             {propertyDetails && hostDetails && propertyTopReviews &&
-                <div id='property-details-container' style={{ width: '100%' }}>
+                <div id='property-details-container'>
                     <div className="container rounded bg-white mt-5 mb-5" >
                         <h1 className='propertyDetailsHeader'>{propertyDetails.name}</h1>
                         <div className='propertyDetailsBody'>
 
                             <div className='imagesBody'>
-                                {/* {loading ? <p>Loading....</p> : <PropertyImagesDisplay />} */}
                                 {loading ? <Spinner animation="grow" /> : <PropertyImagesDisplay propertyImages={propertyImages} />}
 
                             </div>
@@ -213,9 +222,9 @@ const PropertyDetails = () => {
                                     />
                                 </div>
 
-                                <div className='container'>
+                                <div className='container' style={{ width: '70%', paddingTop: '3%' }}>
 
-                                    <div className='row' style={{ width: '60%' }}>
+                                    <div className='row' style={{ textAlign: 'center' }}>
 
                                         <div className='col'>
                                             {renderUpdateButton(propertyDetails.host_id)}
@@ -231,7 +240,7 @@ const PropertyDetails = () => {
                                             </button>
                                         </div>
 
-                                        {renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, reviewForm, setReviewForm)}
+                                        {renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, reviewForm, setReviewForm, reviewFormErrors)}
 
                                         <div className='col'>
                                             <button
@@ -284,14 +293,8 @@ export function renderRating(rating, isBookingType) {
         rating !== 0 ? <b><i className="bi bi-star-fill"></i> {rating}</b> : <small><b>No Ratings</b></small>
     )
 }
-/* export function renderRating(rating, isBookingType) {
-    return (
-        rating !== 0 ? <b style={{ textAlign: isBookingType === true ? 'right' : 'none' }}><i className="bi bi-star-fill"></i> {rating}</b> : <small><b>No Ratings</b></small>
-    )
-} */
 
-
-function renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, reviewForm, setReviewForm) {
+function renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, reviewForm, setReviewForm, reviewFormErrors) {
     console.log('Review popup opened')
     return (
         <Modal show={showReviewModal} id='modal-id'>
@@ -299,42 +302,48 @@ function renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, re
                 <Modal.Title>Write a Review</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <label className="form-check-label"> Rating </label>
-                <select
-                    className="form-select"
-                    value={reviewForm.rating}
-                    name='rating'
-                    required
-                    onChange={(e) => setReviewForm({ ...reviewForm, rating: e.target.value })}
-                >
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                </select>
-                <label className="form-check-label"> Review </label>
-                <textarea
-                    className='form-control'
-                    placeholder='Add a review...'
-                    name="comments"
-                    value={reviewForm.comments}
-                    required
-                    onChange={(e) => setReviewForm({ ...reviewForm, comments: e.target.value })}
-                >
-                </textarea>
+                <div className='container' style={{ width: '95%' }}>
+                    <label className="form-check-label"> Rating </label>
+                    <select
+                        className="form-select"
+                        value={reviewForm.rating}
+                        name='rating'
+                        required
+                        onChange={(e) => setReviewForm({ ...reviewForm, rating: e.target.value })}
+                    >
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                    </select>
+                    <br></br>
+                    <label className="form-check-label"> Comments </label>
+                    <textarea
+                        className='form-control'
+                        placeholder='Add your comments...'
+                        name="comments"
+                        value={reviewForm.comments}
+                        required
+                        onChange={(e) => setReviewForm({ ...reviewForm, comments: e.target.value })}
+                    >
+                    </textarea>
+                    <small className="error">{reviewFormErrors.comments}</small>
+                </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    variant="secondary"
-                    onClick={() => setShowReviewModal(false)}>
-                    {renderCancelButton()}
-                </Button>
-                <Button
-                    variant="primary"
-                    onClick={submitReview}>
-                    {renderSubmitButton()}
-                </Button>
+                <div style={{ textAlign: 'center', width: '100%' }}>
+                    <Button
+                        variant="secondary"
+                        onClick={() => setShowReviewModal(false)}>
+                        {renderCancelButton()}
+                    </Button>
+                    <Button
+                        variant="primary"
+                        onClick={e => submitReview()} style={{ marginLeft: '8%' }}>
+                        {renderSubmitButton()}
+                    </Button>
+                </div>
             </Modal.Footer>
         </Modal>
     )

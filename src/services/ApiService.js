@@ -1,5 +1,5 @@
 import Toast from '../components/toast/Toast';
-import Cookies from 'js-cookie';
+import { deleteToken, getToken } from '../components/common/CommonUtils';
 
 const baseUrl = 'http://localhost:3000'
 var Headers = { 'Content-Type': 'application/json' }
@@ -15,7 +15,7 @@ export async function getAPICall(uri) {
         let finalURL = baseUrl + uri;
         console.log("Making GET API call to : " + finalURL);
         var response;
-        Headers['Authorization'] = 'Bearer ' +  Cookies.get('token');
+        Headers['Authorization'] = 'Bearer ' + getToken();
         console.log(Headers);
         await fetch(finalURL, {
             method: 'GET',
@@ -31,10 +31,9 @@ export async function getAPICall(uri) {
             Toast(response.message, 'error');
 
         if (response.status === unauthorized) {
-            Toast(response.message, 'error');
-            Cookies.remove('token');
-            // navigate('/login');
+            deleteToken();
             window.location.href = '/login';
+            Toast(response.message, 'error');
         }
 
         return response;

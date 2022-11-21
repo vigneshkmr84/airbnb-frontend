@@ -10,7 +10,6 @@
 #credit-card-details {
     border: 2px solid #768a9f;
     width: 40%;
-    /* background-color: #c0c2c5; */
     border-radius: 8px;
     color: #f2fcfa;
 }
@@ -110,8 +109,6 @@
     margin-right: 1%;
 }
 
-/* style={{ backgroundColor: '#80808047', borderRadius: '5px', paddingTop: '10px' }} */
-
 #paypal_details {
     background-color: #80808047;
     border-radius: 5px;
@@ -125,6 +122,6 @@
     float: right;
 }
 
-/* .row-centered {
-    text-align: center;
-} */
+.error {
+    color: red;
+}

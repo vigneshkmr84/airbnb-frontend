@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Signup.css'
 import { callSignupApi } from '../../services/LoginService'
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { convertImageToBase64 } from '../common/CommonUtils';
 const Signup = ({ showSignup, setShowSignup }) => {
 
     const fileFormats = 'image/*, .heic';
+    const navigate = useNavigate();
 
     const userObject = Object.freeze({
         first_name: "",
@@ -22,32 +23,43 @@ const Signup = ({ showSignup, setShowSignup }) => {
         languages: "",
     });
 
-    const [userData, updateFormData] = useState(userObject);
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const [userData, setUserData] = useState(userObject);
 
     const handleChange = (e) => {
-        updateFormData({
+        setUserData({
             ...userData,
             [e.target.name]: e.target.value.trim()
         })
     }
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        console.log(formErrors);
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            console.log(formErrors)
+        }
+    }, [formErrors]);
 
     const onSignupFormSubmit = async (e) => {
         console.log("Submitted Form")
-        console.log(userData);
+        // console.log(userData);
         e.preventDefault()
-
-        await callSignupApi(userData).then((status) => {
-            if (status === 200) {
-                setShowSignup(false)
-            }
-        }).then(
-            navigate('/login')
-        );
-
-
-        ;
+        setFormErrors(validateForm(userData));
+        setIsSubmit(true);
+        if (Object.keys(validateForm(userData)).length === 0) {
+            await callSignupApi(userData)
+                .then((status) => {
+                    if (status === 200) {
+                        setShowSignup(false)
+                    }
+                }).then(
+                    navigate('/login')
+                )
+        } else {
+            console.log('invalid form');
+        }
     }
 
     const addProfilePicture = async (event) => {
@@ -55,24 +67,62 @@ const Signup = ({ showSignup, setShowSignup }) => {
         console.log(file);
         await convertImageToBase64(file)
             .then((data) => {
-                updateFormData({
+                setUserData({
                     ...userData,
-                    ["profile_photo"]: data.split("base64,")[1]
+                    profile_photo: data.split("base64,")[1]
                 })
             })
     }
 
-    const isEnabled = (userData.first_name !== "") && (userData.last_name !== "")
-        && (userData.email_id !== "") && (userData.phone_no !== "") && (userData.password !== "")
-        && (userData.id_type !== "") && (userData.id_details !== "");
+    const validateForm = (values) => {
+        const errors = {};
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+        const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
+        if (!values.first_name) {
+            errors.first_name = "First name is required"
+        }
+        if (!values.last_name) {
+            errors.last_name = "Last name is required"
+        }
+        if (!values.email_id) {
+            errors.email_id = "Email is required"
+        } else if (!emailRegex.test(values.email_id)) {
+            errors.email_id = "Invalid Email"
+        }
 
+        if (!values.phone_no) {
+            errors.phone_no = "Phone no is required"
+        }
+        if (!values.password) {
+            errors.password = "Invalid Password"
+        } else if (!passwordRegex.test(values.password)) {
+            errors.password = "Min 8 chars - atleast 1 number, 1 alphabet and 1 special char"
+        }
+        if (!values.id_type) {
+            errors.id_type = "Invalid id type"
+        }
+        if (!values.id_details) {
+            errors.id_details = "Id details is required"
+        }
+        if (!values.description) {
+            errors.description = "Description is required"
+        }
+        if (!values.languages) {
+            errors.languages = "Language is required"
+        }
+        if (!values.profile_photo) {
+            errors.profile_photo = "Profile Picture is required"
+        }
+
+        return errors;
+    }
 
     return (
 
-        <Modal show={showSignup} id='newPaymentModalId' backdrop='static' keyboard={false}>
+        <Modal show={showSignup} id='newPaymentModalId' backdrop='static' keyboard={true}>
             <Modal.Header /* closeButton */>
-                <Modal.Title style={{ textAlign: 'center' }}>Create a new account</Modal.Title>
+                <Modal.Title style={{ textAlign: 'center' }}>Register</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className='container'>
@@ -85,6 +135,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 name="first_name"
                                 onChange={handleChange}
                             ></input>
+                            <small className="error">{formErrors.first_name}</small>
                         </div>
                         <div className="col">
                             <input type="text"
@@ -94,6 +145,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 name='last_name'
                                 onChange={handleChange}
                             ></input>
+                            <small className='error'>{formErrors.last_name}</small>
                         </div>
                     </div>
                     <div className='row'>
@@ -105,6 +157,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 name="email_id"
                                 onChange={handleChange}
                             ></input>
+                            <small className="error">{formErrors.email_id}</small>
                         </div>
                         <div className="col">
                             <input type="tel"
@@ -114,6 +167,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 name="phone_no"
                                 onChange={handleChange}
                             ></input>
+                            <small className="error">{formErrors.phone_no}</small>
                         </div>
                     </div>
                     <div className='row'>
@@ -126,6 +180,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                 onChange={handleChange}
                             ></input>
+                            <small className="error">{formErrors.password}</small>
                         </div>
                     </div>
 
@@ -143,6 +198,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 <option value="state id card">State id card</option>
                                 <option value="driver license">Driver License</option>
                             </select>
+                            <small className="error">{formErrors.id_type}</small>
                         </div>
                     </div>
 
@@ -155,6 +211,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 name="id_details"
                                 onChange={handleChange}
                             ></input>
+                            <small className="error">{formErrors.id_details}</small>
                         </div>
                     </div>
 
@@ -167,6 +224,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 name="description"
                                 onChange={handleChange}
                             ></input>
+                            <small className="error">{formErrors.description}</small>
                         </div>
                     </div>
 
@@ -179,6 +237,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 name="languages"
                                 onChange={handleChange}
                             ></input>
+                            <small className="error">{formErrors.languages}</small>
                         </div>
                     </div>
 
@@ -193,23 +252,13 @@ const Signup = ({ showSignup, setShowSignup }) => {
                                 name="profile_picture"
                                 onChange={e => addProfilePicture(e)}
                             ></input>
+                            <small className="error">{formErrors.profile_photo}</small>
                         </div>
                     </div>
-                    {/* <div className='row'>
-                        <div className='col'>
-
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col'>
-
-                        </div>
-                    </div> */}
                 </div>
 
-
-
             </Modal.Body>
+
             <Modal.Footer style={{ justifyContent: 'center' }}>
                 <button
                     className='btn btn-secondary btn-md'

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../sidebar/Sidebar'
-import './Properties.css';
-import { getAllProperties } from '../../services/PropertiesService';
 import BookmarksCard from './BookmarksCard';
 import Footer from '../footer/Footer';
-import { searchProperty } from '../../services/SearchService';
-import './Search.css';
 import { renderSpinner } from '../common/CommonElements';
+import { searchProperty } from '../../services/SearchService';
+import { getAllProperties } from '../../services/PropertiesService';
+
+import './Search.css';
+import './Properties.css';
+
 
 const Properties = () => {
 
@@ -88,11 +90,13 @@ const Properties = () => {
                             </div>
 
                         </div>
-                        <div className='propertiesBody'>
-                            {!dataReady ? renderSpinner() :
-                                <div className='card-group'>
-                                    {searchList ?
-                                        searchList.map((property) => {
+
+                        {!dataReady ? renderSpinner() :
+                            <div className='propertiesBody'>
+                                {searchList.length !== 0 ?
+
+                                    <div className='card-group'>
+                                        {searchList?.map((property) => {
                                             return (
                                                 <BookmarksCard
                                                     key={property._id}
@@ -102,16 +106,18 @@ const Properties = () => {
                                                     flexDirection='row'
                                                 />
                                             )
-                                        })
-                                        : <h6>No data found...</h6>
-                                    }
-                                </div>}
+                                        })}
+                                    </div>
+                                    : <h4 style={{ textAlign: 'center', paddingTop: '5%' }}>No Properties found...</h4>
+                                }
+
+                            </div>}
 
 
+                        {/* <br></br>
                             <br></br>
                             <br></br>
-                            <br></br>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

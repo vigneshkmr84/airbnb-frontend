@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal } from "react-bootstrap";
-import './Payment.css'
-import { useState } from "react";
 import { addPaymentDetails } from '../../services/PaymentService';
 import { renderCancelButton, renderSubmitButton } from '../common/CommonElements';
+import './Payment.css'
 
 const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
 
@@ -13,11 +12,64 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
     const [newPaymentDetails, setNewPaymentDetails] = useState({});
     const [paymentType, setPaymentType] = useState('');
 
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    useEffect(() => {
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            console.log(newPaymentDetails)
+        }
+    }, [formErrors]);
+
+    const validateForm = (values, payment_type) => {
+        const errors = {}
+        const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+        if (!payment_type) {
+            errors.payment_type = "Payment Type is required"
+        }
+
+        if (payment_type === 'credit') {
+
+            if (!values.card_type) {
+                errors.card_type = "Card Type is required"
+            }
+
+            if (!values.card_no) {
+                errors.card_no = "Card no is required"
+            }
+
+            if (!values.cvv) {
+                errors.cvv = "CVV is required"
+            } else if (values.cvv.length > 4 && values.cvv.length < 3) {
+                errors.cvv = "Cvv should be 3 or 4 char only"
+            }
+
+            if (!values.expiry_date) {
+                errors.expiry_date = "Expiry date is required"
+            }
+
+            if (!values.nick_name) {
+                errors.nick_name = "Nick name is required"
+            }
+        } else {
+            if (!values.account_name) {
+                errors.account_name = "Valid Paypal email-id is required"
+            } else if (!emailRegex.test(values.account_name)) {
+                errors.account_name = "Invalid Email"
+            }
+
+            if (!values.nick_name) {
+                errors.nick_name = "Nick name is required"
+            }
+        }
+
+        return errors;
+    }
 
     const handlePaymentTypeChange = (event) => {
         console.log("Actual value received : " + event.target.value)
-        console.log('Card ' + displayCard);
-        console.log('Paypal ' + displayPaypal);
+
         setPaymentType(event.target.value.trim());
         if (event.target.value.trim() === 'credit') {
             setDisplayCard(true);
@@ -31,8 +83,6 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
             setDisplayPaypal(false);
             setDisplayCard(false);
         }
-        console.log('Card ' + displayCard);
-        console.log('Paypal ' + displayPaypal);
     }
 
     const handleChange = (e) => {
@@ -44,18 +94,26 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
         });
     }
 
-    /* const closeButtonClickHandler = () => {
-        // onClose is the variable 
-        // which holds the reference 
-        // to the function in parent ie. cancelNewCardModal
-        onClose()
-    } */
-
-    const submitNewPayment = () => {
+    const submitNewPayment = async (e) => {
         console.log("Submit Payment");
+        e.preventDefault()
+        setFormErrors(validateForm(newPaymentDetails, paymentType))
+        setIsSubmit(true);
         console.log(newPaymentDetails);
-        addPaymentDetails(user_id, paymentType, newPaymentDetails);
-        onClose();
+
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            console.log('Valid details')
+            await addPaymentDetails(user_id, paymentType, newPaymentDetails)
+                .then((status) => {
+                    if (status === 200) {
+                        onClose()
+                    }
+                })
+        } else {
+            console.log('invalid form');
+            console.log(Object.keys(formErrors).length)
+            console.log(formErrors)
+        }
 
     }
 
@@ -65,7 +123,7 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
                 <Modal.Title style={{ textAlign: 'center' }}>Add New Payment</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="form-group">
+                <div className="container">
                     <label className='form-label'>Payment Type </label>
                     <select className="form-select"
                         aria-label="Select Payment Type"
@@ -80,8 +138,8 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
                     </select>
                 </div>
 
-                {displayCard ? <NewCardPaypment handleChange={handleChange} /> : null}
-                {displayPaypal ? <NewPaypalPaypment handleChange={handleChange} /> : null}
+                {displayCard ? <NewCardPaypment handleChange={handleChange} formErrors={formErrors} /> : null}
+                {displayPaypal ? <NewPaypalPaypment handleChange={handleChange} formErrors={formErrors} /> : null}
 
             </Modal.Body>
             <Modal.Footer style={{ justifyContent: 'center' }}>
@@ -96,11 +154,11 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
     )
 }
 
-const NewPaypalPaypment = ({ handleChange }) => {
+const NewPaypalPaypment = ({ handleChange, formErrors }) => {
 
-    // const [account_name, setAccountName] = useState('');
     return (
-        <form className='form-group container was-validated' id='newpaypal-container' noValidate >
+        // <form className='form-group container was-validated' id='newpaypal-container' noValidate >
+        <>
             <div className='form-group'>
                 <label className='form-label control-label'>Paypal Account Email-id</label>
                 <input type="email"
@@ -110,6 +168,7 @@ const NewPaypalPaypment = ({ handleChange }) => {
                     name="account_name"
                     onChange={handleChange}
                 ></input>
+                <small className="error">{formErrors.account_name}</small>
             </div>
 
             <div className='form-group'>
@@ -121,17 +180,17 @@ const NewPaypalPaypment = ({ handleChange }) => {
                     name="nick_name"
                     onChange={handleChange}
                 ></input>
+                <small className="error">{formErrors.nick_name}</small>
             </div>
-        </form>
+            {/* </form> */}
+        </>
     )
 };
 
-const NewCardPaypment = ({ handleChange }) => {
+const NewCardPaypment = ({ handleChange, formErrors }) => {
     return (
-        <form className='form-group container was-validated'
-            id='newcard-container'
-            noValidate
-        >
+        // <form className='form-group container was-validated' id='newcard-container' noValidate >
+        <>
             <div className="form-group">
                 <label className='form-label'>Card Type</label>
                 <select className="form-select"
@@ -158,7 +217,7 @@ const NewCardPaypment = ({ handleChange }) => {
                     name="card_no"
                     onChange={handleChange}
                 ></input>
-
+                <small className="error">{formErrors.card_no}</small>
             </div>
             <div className="form-group">
                 <label className='form-label'>Cvv</label>
@@ -169,6 +228,7 @@ const NewCardPaypment = ({ handleChange }) => {
                     name='cvv'
                     onChange={handleChange}
                 ></input>
+                <small className="error">{formErrors.cvv}</small>
             </div>
             <div className="form-group">
                 <label className='form-label'>Expiry Date </label>
@@ -180,6 +240,7 @@ const NewCardPaypment = ({ handleChange }) => {
                     name="expiry_date"
                     onChange={handleChange}
                 ></input>
+                <small className="error">{formErrors.expiry_date}</small>
             </div>
 
             <div className="form-group">
@@ -191,9 +252,11 @@ const NewCardPaypment = ({ handleChange }) => {
                     name="nick_name"
                     onChange={handleChange}
                 ></input>
+                <small className="error">{formErrors.nick_name}</small>
             </div>
             <br></br>
-        </form >
+            {/* </form > */}
+        </>
     )
 };
 
