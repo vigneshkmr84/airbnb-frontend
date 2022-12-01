@@ -56,6 +56,8 @@ const PropertyDetails = () => {
     const [showReviewModal, setShowReviewModal] = useState(false);
 
     const [bookingFormData, setBookingFormData] = useState(initialBookindData);
+    const [errorBookingFormData, setErrorBookingFormData] = useState({});
+
     const tax_rate = 0.05;
 
     const [bookingFare, setBookingFare] = useState({
@@ -105,7 +107,7 @@ const PropertyDetails = () => {
     const validateReviewForm = (values) => {
         const errors = {};
         if (!values.rating) {
-            errors.rating = "Rating is needed";
+            errors.rating = "Rating is required";
         }
 
         if (!values.comments) {
@@ -115,13 +117,44 @@ const PropertyDetails = () => {
         return errors
     }
 
+    const validateReserveForm = (values) => {
+        const errors = {};
+        if (!values.start_date) {
+            errors.start_date = "Checkout date is required";
+        }
+
+        if (!values.end_date) {
+            errors.end_date = "Checkout date is required";
+        }
+
+        if (!values.no_of_people) {
+            errors.no_of_people = "Total guests is required";
+        }
+
+        if (!values.payment_type) {
+            errors.payment_type = "Payment Method is required";
+        }
+
+        if (!values.payment_details_id) {
+            errors.payment_details_id = "Payment Id is required";
+        }
+
+        return errors
+    }
+
     const onSubmitBooking = () => {
         console.log('Booking Form Submitted');
-        // console.log(bookingFormData)
         var formData = bookingFormData;
+        setErrorBookingFormData(validateReserveForm(formData))
         formData.property_id = property_id.id;
         console.log(formData);
-        createBooking(formData);
+        if (Object.keys(errorBookingFormData).length === 0) {
+            createBooking(formData);
+        } else {
+            console.log('invalid booking form');
+            console.log(errorBookingFormData);
+        }
+
 
         // Call reserve Property API
     }
@@ -260,6 +293,7 @@ const PropertyDetails = () => {
                                         userPaymentNickNames={userPaymentNickNames}
                                         bookingFormData={bookingFormData}
                                         onSubmitBooking={onSubmitBooking}
+                                        errorBookingFormData={errorBookingFormData}
                                     />
                                 </div>
 

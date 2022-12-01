@@ -1,7 +1,7 @@
 import React from 'react'
 import { Accordion, Offcanvas } from 'react-bootstrap';
 
-const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDetails, bookingFare, userPaymentNickNames, bookingFormData, onSubmitBooking }) => {
+const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDetails, bookingFare, userPaymentNickNames, bookingFormData, onSubmitBooking, errorBookingFormData }) => {
     return (
         <Offcanvas
             show={show}
@@ -21,7 +21,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                 </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-                <form className='container was-validated' id='reserveForm'>
+                <div className='container' id='reserveForm'>
 
                     <div className='row'>
                         <div className='col-md-6'>
@@ -33,6 +33,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                                 onChange={handleBookingFormChange}
                                 name='start_date'
                             />
+                            <small className='error'>{errorBookingFormData.start_date}</small>
                         </div>
 
                         <div className='col-md-6'>
@@ -45,6 +46,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                                 onChange={handleBookingFormChange}
                                 name='end_date'
                             />
+                            <small className='error'>{errorBookingFormData.end_date}</small>
                         </div>
                     </div>
                     <div className='row' >
@@ -58,6 +60,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                                 min={1}
                                 max={propertyDetails.no_of_people}
                             />
+                            <small className='error'>{errorBookingFormData.no_of_people}</small>
                         </div>
                     </div>
                     <div className='row' >
@@ -85,6 +88,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                                 <option value="credit">Credit / Debit Card</option>
                                 <option value="paypal">Paypal</option>
                             </select>
+                            <small className='error'>{errorBookingFormData.payment_type}</small>
                         </div>
                     </div>
                     <div className='row' >
@@ -115,10 +119,11 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                                         )
                                 }
                             </select>
+                            <small className='error'>{errorBookingFormData.payment_details_id}</small>
                         </div>
                     </div>
                     <div className='row' style={{ textAlign: 'center' }}>
-                        <div className='col-lg-6' /* style={{ textAlign: 'center' }} */>
+                        <div className='col-lg-6'>
                             <button
                                 className="btn btn-danger btn-md"
                                 type="button"
@@ -127,7 +132,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                             > Cancel
                             </button>
                         </div>
-                        <div className='col-lg-6' /* style={{ textAlign: 'center' }} */>
+                        <div className='col-lg-6'>
                             <button
                                 className="btn btn-primary btn-md"
                                 type="button"
@@ -207,7 +212,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                                                     </div>
 
                                                 </div> */}
-                </form>
+                </div>
             </Offcanvas.Body>
         </Offcanvas>
     )
