@@ -14,15 +14,15 @@ const Properties = () => {
 
     const [propertiesList, setAllPropertiesList] = useState([]);
 
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState({ house_type: "", location: "" });
 
     const [searchList, setSearchList] = useState([]);
 
     const [dataReady, setDataReady] = useState(false);
 
     const onSearchSubmit = () => {
-        console.log("Search for : " + search);
-        if (search === "" || search === null)
+        console.log("Search for : ", search);
+        /* if (search === "" || search === null)
             setSearchList(propertiesList);
         else {
             async function getData() {
@@ -32,12 +32,28 @@ const Properties = () => {
                     })
             }
             getData();
+        } */
+
+        if (search.house_type === "" && search.location === "") {
+            setSearchList(propertiesList);
+        } else {
+            async function getData() {
+                await searchProperty(search)
+                    .then(res => {
+                        setSearchList(res);
+                    })
+            }
+            getData();
         }
+
 
     }
 
-    const handleChange = (e) => {
-        setSearch(e.target.value.trim());
+    const handleSearchInputChange = (e) => {
+        setSearch({
+            ...search,
+            [e.target.name]: e.target.value.trim()
+        });
     }
 
     useEffect(() => {
@@ -69,19 +85,37 @@ const Properties = () => {
                         <br></br>
                         <div id='search-container' >
 
-                            <div className='input-group'>
-                                <input type="search"
-                                    id="search-bar"
-                                    className="form-control mr-sm-2"
-                                    placeholder='Search for properties or location...'
-                                    onChange={handleChange}
-                                ></input>
+                            <div className='input-group row' style={{ width: '70%' }}>
+                                {/* <div className='row'> */}
+                                <div className='col col-md-4'>
+                                    <input type="search"
+                                        id="search-bar"
+                                        className="form-control mr-sm-2"
+                                        placeholder='Property Location'
+                                        name="location"
+                                        onChange={handleSearchInputChange}
+                                    ></input>
+                                </div>
+                                <div className='col col-md-4'>
+                                    <input type="search"
+                                        id="search-bar"
+                                        className="form-control mr-sm-2"
+                                        placeholder='Property type'
+                                        name="house_type"
+                                        onChange={handleSearchInputChange}
+                                    ></input>
+                                </div>
+                                <div className='col col-md-4'>
+                                    <button className="btn btn-secondary"
+                                        id='search-button'
+                                        onClick={onSearchSubmit}>
+                                        {/* <i className="bi bi-search"></i> */}
+                                        Search
+                                    </button>
+                                </div>
+                                {/* </div> */}
 
-                                <button className="btn btn-secondary"
-                                    id='search-button'
-                                    onClick={onSearchSubmit}>
-                                    <i className="bi bi-search"></i>
-                                </button>
+
 
                             </div>
 

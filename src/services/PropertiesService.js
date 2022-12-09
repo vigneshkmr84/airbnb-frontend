@@ -2,14 +2,14 @@ import { postAPICall, getAPICall } from './ApiService'
 
 export async function getAllProperties() {
 
-    var response = await getAPICall('/property');
+    var response = await getAPICall('/properties');
     // console.log(response.message);
     return response.message;
 }
 
 
 export async function getPropertyById(property_id) {
-    var response = await getAPICall('/property?_id=' + property_id);
+    var response = await getAPICall('/properties?_id=' + property_id);
     if (response.message.length === 1) {
         return response.message[0];
     } else
@@ -17,7 +17,7 @@ export async function getPropertyById(property_id) {
 }
 
 export async function getPropertyImages(property_id) {
-    var response = await getAPICall('/property/' + property_id + '/images');
+    var response = await getAPICall('/properties/' + property_id + '/images');
     sleep(3000)
     console.log(response.message.images);
     return response.message;
@@ -31,14 +31,14 @@ export const sleep = (milliseconds) => {
 
 export async function addNewProperty(newProperty) {
 
-    var response = await postAPICall('/property', newProperty)
+    var response = await postAPICall('/properties', newProperty)
     return response
 }
 
 
 export async function addPropertyImages(propertyImages, id) {
     console.log('setting property images')
-    var response = await postAPICall('/property/' + id + '/images', propertyImages);
+    var response = await postAPICall('/properties/' + id + '/images', propertyImages);
     console.log(response.message);
 
     return response;

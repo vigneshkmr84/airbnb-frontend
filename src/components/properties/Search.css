@@ -9,7 +9,6 @@
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     height: 50px;
-    /* width: 40%; */
 }
 
 div.input-group {
@@ -21,7 +20,7 @@ div.input-group {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     height: 50px;
-    width: 50px;
+    width: 90px;
     border-color: #ced4da;
 }
 
