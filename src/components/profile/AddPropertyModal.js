@@ -60,12 +60,80 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
     }
 
     const [propertyImages, setPropertyImages] = useState([]);
-    const stringFieldsToValidate = ["name", "description", "one_liner", "location", "img", "cancellation_policy", "host_id", "house_type"];
 
     const [formData, setFormData] = useState(emptyFormData);
+    const [propertyDataErrors, setPropertyDataErrors] = useState({});
 
-    const validateForm = () => {
-        console.log("Validating Form");
+    const validateForm = (values) => {
+        const errors = {}
+        if (!values.name) {
+            errors.name = "Name is required"
+        }
+
+        if (!values.description) {
+            errors.description = "Description is required"
+        }
+
+        if (!values.one_liner) {
+            errors.one_liner = "One Liner is required"
+        }
+
+        if (!values.location) {
+            errors.location = "Location is required"
+        }
+
+        if (!values.house_type) {
+            errors.house_type = "House Type is required"
+        }
+
+        if (!values.cost_per_day) {
+            errors.cost_per_day = "Cost is required"
+        }
+
+        if (!values.service_cost) {
+            errors.service_cost = "Service Cost is required"
+        }
+
+        if (!values.cleaning_cost) {
+            errors.cleaning_cost = "Cleaning Cost is required"
+        }
+
+        if (!values.latitude) {
+            errors.latitude = "Latitude is required"
+        }
+
+        if (!values.longitude) {
+            errors.longitude = "Longitude is required"
+        }
+
+        if (!values.guests) {
+            errors.guests = "Guests is required"
+        }
+
+        if (!values.bedroom) {
+            errors.bedroom = "Bedroom is required"
+        }
+
+        if (!values.bathroom) {
+            errors.bathroom = "Bathroom is required"
+        }
+
+        if (!values.checkin_time) {
+            errors.checkin_time = "Checkin time required"
+        }
+
+        if (!values.checkout_time) {
+            errors.checkout_time = "Checkout required"
+        }
+
+        if (!values.img) {
+            errors.img = "Image is required"
+        }
+
+        if (!values.cancellation_policy) {
+            errors.cancellation_policy = "Cancellation Policy is required"
+        }
+
         return true;
     }
 
@@ -83,7 +151,9 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
         newData.host_id = getUserIdFromCookies();
 
         console.log(newData);
-        if (validateForm()) {
+        setPropertyDataErrors(validateForm(newData));
+
+        if (Object.keys(propertyDataErrors).length === 0) {
             addNewProperty(newData, propertyImages)
                 .then(async res => {
                     console.log(res)
@@ -98,7 +168,9 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
             cancelNewPropertyModal();
             // setFormData(emptyFormData);
         } else {
-            Toast('Invalid Property Details', 'error');
+            // Toast('Invalid Property Details', 'error');
+            console.log('Invalid property details form.')
+            console.log(propertyDataErrors);
         }
     }
 
@@ -108,7 +180,7 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
                 <Modal.Title style={{ textAlign: 'center' }}>List a Property</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <StepProgress formData={formData} setFormData={setFormData} propertyImages={propertyImages} setPropertyImages={setPropertyImages} />
+                <StepProgress formData={formData} setFormData={setFormData} propertyImages={propertyImages} setPropertyImages={setPropertyImages} propertyDataErrors={propertyDataErrors} />
             </Modal.Body>
             <Modal.Footer style={{ justifyContent: 'center' }}>
 

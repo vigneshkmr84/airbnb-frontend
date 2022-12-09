@@ -6,7 +6,7 @@ description
 single_line_description
 location (coordinates)
 checkin & checkout time */
-const Step1 = ({ formData, setFormData }) => {
+const Step1 = ({ formData, setFormData, propertyDataErrors }) => {
     return (
         <div className='basic-details-container'>
             <div className='row'>
@@ -20,6 +20,7 @@ const Step1 = ({ formData, setFormData }) => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     />
+                    <small className='error'>{propertyDataErrors.name}</small>
                 </div>
             </div>
             <div className='row'>
@@ -33,9 +34,10 @@ const Step1 = ({ formData, setFormData }) => {
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                     />
+                    <small className='error'>{propertyDataErrors.location}</small>
                 </div>
             </div>
-            
+
             {/* Latitude and longitude */}
             <div className='row'>
                 <div className='col col-md-6'>
@@ -48,6 +50,7 @@ const Step1 = ({ formData, setFormData }) => {
                         value={formData.latitude}
                         onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
                     />
+                    <small className='error'>{propertyDataErrors.latitude}</small>
                 </div>
                 <div className='col col-md-6'>
                     <label className='form-label'>Longitude </label>
@@ -59,6 +62,7 @@ const Step1 = ({ formData, setFormData }) => {
                         value={formData.longitude}
                         onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
                     />
+                    <small className='error'>{propertyDataErrors.longitude}</small>
                 </div>
             </div>
             <div className='row'>
@@ -77,6 +81,7 @@ const Step1 = ({ formData, setFormData }) => {
                         <option value="bunglow">Bunglow</option>
                         <option value="apartment">Apartment</option>
                     </select>
+                    <small className='error'>{propertyDataErrors.house_type}</small>
                 </div>
             </div>
             <div className='row'>
@@ -90,6 +95,7 @@ const Step1 = ({ formData, setFormData }) => {
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     />
+                    <small className='error'>{propertyDataErrors.description}</small>
                 </div>
             </div>
             <div className='row'>
@@ -103,6 +109,7 @@ const Step1 = ({ formData, setFormData }) => {
                         value={formData.one_liner}
                         onChange={(e) => setFormData({ ...formData, one_liner: e.target.value })}
                     />
+                    <small className='error'>{propertyDataErrors.one_liner}</small>
                 </div>
             </div>
         </div>

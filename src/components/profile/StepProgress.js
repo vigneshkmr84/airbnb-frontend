@@ -7,7 +7,7 @@ import Step5 from './Step5';
 import Step6 from './Step6';
 import Step7 from './Step7';
 
-const StepProgress = ({ formData, setFormData, propertyImages, setPropertyImages }) => {
+const StepProgress = ({ formData, setFormData, propertyImages, setPropertyImages, propertyDataErrors }) => {
     const [page, setPage] = useState(0);
 
     const formTitle = ['Basic details', 'Cost details ($)', 'Guests', 'Amenities', 'House rules', 'Photos', 'Cancellation Policy'];
@@ -17,7 +17,7 @@ const StepProgress = ({ formData, setFormData, propertyImages, setPropertyImages
 
         switch (page) {
             case 0:
-                return <Step1 formData={formData} setFormData={setFormData} />;
+                return <Step1 formData={formData} setFormData={setFormData} propertyDataErrors={propertyDataErrors} />;
             case 1:
                 return <Step2 formData={formData} setFormData={setFormData} />;
             case 2:
