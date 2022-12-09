@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Signup.css'
 import { callSignupApi } from '../../services/LoginService'
 import { useNavigate } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
 import { renderCancelButton, renderSubmitButton } from '../common/CommonElements';
 import { convertImageToBase64 } from '../common/CommonUtils';
 
@@ -21,6 +21,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
         id_details: "",
         description: "",
         languages: "",
+        is_host: false,
     });
 
     const [formErrors, setFormErrors] = useState({});
@@ -49,6 +50,7 @@ const Signup = ({ showSignup, setShowSignup }) => {
         setFormErrors(validateForm(userData));
         setIsSubmit(true);
         if (Object.keys(validateForm(userData)).length === 0) {
+            console.log(userData);
             await callSignupApi(userData)
                 .then((status) => {
                     if (status === 200) {
@@ -254,6 +256,17 @@ const Signup = ({ showSignup, setShowSignup }) => {
                             ></input>
                             <small className="error">{formErrors.profile_photo}</small>
                         </div>
+                    </div>
+                    <div className='row'>
+                        <Form.Check
+                            type="switch"
+                            id='host-switch'
+                            label="Signup as a Host"
+                            onClick={(e) => setUserData({
+                                ...userData,
+                                is_host: !userData.is_host
+                            })}
+                        />
                     </div>
                 </div>
 
