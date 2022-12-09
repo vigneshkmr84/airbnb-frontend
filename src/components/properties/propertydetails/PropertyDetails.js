@@ -101,6 +101,7 @@ const PropertyDetails = () => {
         } else {
             console.log('invalid review form');
             console.log(reviewForm);
+            console.log(reviewFormErrors);
         }
     }
 
@@ -217,7 +218,7 @@ const PropertyDetails = () => {
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
             {propertyDetails && hostDetails && propertyTopReviews &&
-                <div id='property-details-container'>
+                <div id='property-details-container' style={{backgroundColor: 'white'}}>
                     <div className="container rounded bg-white mt-5 mb-5" >
                         <h1 className='propertyDetailsHeader'>{propertyDetails.name}</h1>
                         <div className='propertyDetailsBody'>
@@ -329,7 +330,6 @@ export function renderRating(rating, isBookingType) {
 }
 
 function renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, reviewForm, setReviewForm, reviewFormErrors) {
-    console.log('Review popup opened')
     return (
         <Modal show={showReviewModal} id='modal-id'>
             <Modal.Header closeButton>

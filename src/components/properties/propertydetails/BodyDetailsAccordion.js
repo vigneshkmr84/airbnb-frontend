@@ -16,7 +16,7 @@ const BodyDetailsAccordion = ({ details }) => {
     const property_details = details.property_details;
     const reviews = details.reviews;
     const hostDetails = details.hostDetails;
-    console.log(details)
+
     return (
         <Accordion defaultActiveKey='description' key={details.property_id}>
             <Accordion.Item eventKey='description'>

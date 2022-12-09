@@ -5,7 +5,7 @@
 #property-details-container {
     overflow: hidden;
     overflow-y: scroll;
-    background-color: white;
+    /* background-color: white; */
     width: 100%;
 }
 

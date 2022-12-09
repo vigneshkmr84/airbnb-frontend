@@ -42,7 +42,6 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                                 className='form-control mr-sm-2'
                                 placeholder='Check-out'
                                 min={new Date(new Date().valueOf() + 86400000).toISOString().slice(0, 10)}
-                                // defaultValue={new Date(new Date().valueOf() + 2 * 86400000).toISOString().slice(0, 10)}
                                 onChange={handleBookingFormChange}
                                 name='end_date'
                             />
@@ -58,7 +57,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                                 onChange={handleBookingFormChange}
                                 name='no_of_people'
                                 min={1}
-                                max={propertyDetails.no_of_people}
+                                max={propertyDetails.guests}
                             />
                             <small className='error'>{errorBookingFormData.no_of_people}</small>
                         </div>
@@ -148,17 +147,13 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                     <div className='row'>
 
                     </div>
-                    <div className='row'>
+                    {/* <div className='row'>
                         <Accordion>
                             <Accordion.Item eventKey='description'>
                                 <Accordion.Header><h6>Fare Splitup</h6></Accordion.Header>
                                 <Accordion.Body>
                                     <p>Service Cost :  ${propertyDetails.service_cost}</p>
                                     <p>Cleaning Cost : ${propertyDetails.cleaning_cost}</p>
-                                    {/* <p> {bookingFare.nights} x ${propertyDetails.cost_per_day} : ${bookingFare.cost} </p>
-                                                                <p>Taxes: ${bookingFare.taxes}</p>
-                                                                <p>Total Cost: ${bookingFare.total_price}</p> */}
-
                                     {
                                         !isNaN(parseFloat(bookingFare.nights)) ?
                                             <>
@@ -174,44 +169,7 @@ const HandleReserve = ({ show, handleClose, handleBookingFormChange, propertyDet
                             </Accordion.Item>
 
                         </Accordion>
-                    </div>
-                    {/* <div className='row'>
-                                                    <div className='col-lg-12' id='calculatedValues'>
-                                                        <div className='row'>
-                                                            <div className='col-md-6'>
-                                                                ${propertyDetails.cost_per_day} x 12 nights
-                                                            </div>
-                                                            <div className='col-md-6'>
-                                                                $1514
-                                                            </div>
-                                                        </div>
-                                                        <div className='row'>
-                                                            <div className='col-md-6'>
-                                                                Cleaning fee
-                                                            </div>
-                                                            <div className='col-md-6'>
-                                                                ${propertyDetails.cleaning_cost}
-                                                            </div>
-                                                        </div>
-                                                        <div className='row'>
-                                                            <div className='col-md-6'>
-                                                                Service fee
-                                                            </div>
-                                                            <div className='col-md-6'>
-                                                                ${propertyDetails.cost_per_day}
-                                                            </div>
-                                                        </div>
-                                                        <div className='row'>
-                                                            <div className='col-md-6'>
-                                                                <b>Total (before taxes)</b>
-                                                            </div>
-                                                            <div className='col-md-6'>
-                                                                <b>${propertyDetails.cost_per_day}*2 + {propertyDetails.cleaning_cost} + {propertyDetails.service_cost}</b>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div> */}
+                    </div> */}
                 </div>
             </Offcanvas.Body>
         </Offcanvas>

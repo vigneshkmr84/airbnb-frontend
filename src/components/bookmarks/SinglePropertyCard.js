@@ -16,9 +16,9 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
         let items = bookmarkItems;
         if (status === 200) {
             console.log('filtering elements');
-            items?.filter(el => el._id !== _id)
+            items = bookmarkItems?.filter(el => el._id !== _id)
         }
-        console.log(items);
+        // console.log(items);
         setBookmarkItems(items);
     }
 
@@ -111,11 +111,16 @@ export const renderBookings = (bookingData, onClickDeleteBooking) => {
                                 <small style={{ color: 'green' }}><b>Trip Completed</b></small>
                             </div>
                         </div>
-                        : <></>
+                        : new Date().getTime() > new Date(bookingData.start_date).getTime()
+                            && new Date().getTime() < new Date(bookingData.end_date).getTime() ?
+                            <div className='row'>
+                                <div className='col-md-12'>
+                                    <small style={{ color: '##0016ff' }}><b>Ongoing Trip</b></small>
+                                </div>
+                            </div>
+                            : <></>
             }
-            {
 
-            }
             {/* Do not show Cancel button if it's already canceled */}
             {
                 isCancelable(bookingData)
@@ -142,6 +147,10 @@ const isCancelable = (bookingData) => {
     // trip already completed / already canceled
     return (
         bookingData.canceled || new Date().getTime() > new Date(bookingData.end_date).getTime()
+        || (
+            new Date(bookingData.end_date).getTime() > new Date().getTime() && 
+            new Date(bookingData.start_date).getTime() < new Date().getTime()
+        )
     )
 }
 
