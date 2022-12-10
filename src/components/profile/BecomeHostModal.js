@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { removeToken } from '../common/CommonUtils'
 import Toast from '../toast/Toast';
 
-const BecomeHostModal = ({ host, setHost }) => {
+const BecomeHostModal = ({ showHostConfirmation, setShowHostConfirmation }) => {
 
     const navigate = useNavigate();
 
@@ -15,14 +15,14 @@ const BecomeHostModal = ({ host, setHost }) => {
         await callToBecomeHost()
             .then(
                 await removeToken()
-                    .then(setHost(false))
+                    .then(setShowHostConfirmation(false))
                     .then(navigate('/login'))
                     .then(Toast('Successfully Logged out', 'success'))
             )
     }
 
     return (
-        <Modal show={host} id='becomeHostId' backdrop='static' keyboard={true}>
+        <Modal show={showHostConfirmation} id='becomeHostId' backdrop='static' keyboard={true}>
             <Modal.Header closeButton>
                 <Modal.Title style={{ textAlign: 'center' }}>Become a host</Modal.Title>
             </Modal.Header>
@@ -46,7 +46,7 @@ const BecomeHostModal = ({ host, setHost }) => {
 
                 <button
                     className='btn btn-secondary btn-md'
-                    onClick={() => setHost(!host)}>
+                    onClick={() => setShowHostConfirmation(!showHostConfirmation)}>
                     {renderCancelButton()}
 
                 </button>

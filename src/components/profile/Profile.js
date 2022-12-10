@@ -102,11 +102,8 @@ const Profile = () => {
     }
 
     const [host, setHost] = useState(isHost());
+    const [showHostConfirmation, setShowHostConfirmation] = useState(false);
 
-    const onToggleHost = () => {
-        console.log('toggle switch');
-        setHost(!host)
-    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
@@ -301,7 +298,7 @@ const Profile = () => {
                                                     type="switch"
                                                     id='host-switch'
                                                     label="Host"
-                                                    onClick={e => setHost(!host)}
+                                                    onClick={e => setShowHostConfirmation(!showHostConfirmation)}
                                                 />}
                                         </div>
                                     </div>
@@ -334,7 +331,7 @@ const Profile = () => {
                                 </form>
 
                                 <AddPropertyModal showNewPropertyModal={showNewPropertyModal} cancelNewPropertyModal={cancelNewPropertyModal} /* user_id='630d9e1a5a8e270b69c8e947' */ />
-                                <BecomeHostModal host={host} setHost={setHost} />
+                                <BecomeHostModal showHostConfirmation={showHostConfirmation} setShowHostConfirmation={setShowHostConfirmation} />
                             </div>
                         </div>
                     }

@@ -115,7 +115,7 @@ export const renderBookings = (bookingData, onClickDeleteBooking) => {
                             && new Date().getTime() < new Date(bookingData.end_date).getTime() ?
                             <div className='row'>
                                 <div className='col-md-12'>
-                                    <small style={{ color: '##0016ff' }}><b>Ongoing Trip</b></small>
+                                    <small style={{ color: '#0016ff' }}><b>Ongoing Trip</b></small>
                                 </div>
                             </div>
                             : <></>
