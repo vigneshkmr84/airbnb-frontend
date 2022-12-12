@@ -265,32 +265,28 @@ const PropertyDetails = () => {
 
                                 <div className='container' style={{ width: '70%', paddingTop: '3%' }}>
 
-                                    <div className='row' style={{ textAlign: 'center' }}>
+                                    <div style={{ textAlign: 'center', display: 'flex', justifyContent: 'space-around' }}>
 
-                                        <div className='col'>
-                                            {renderUpdateButton(propertyDetails.host_id, setUpdatePropertyClicked, submitDelteProperty)}
-                                        </div>
+                                        {renderUpdateButton(propertyDetails.host_id, setUpdatePropertyClicked, submitDelteProperty)}
 
+                                        {renderDeleteButton(propertyDetails.host_id, submitDelteProperty)}
 
-                                        <div className='col'>
-                                            <button
-                                                className='btn btn-primary btn-lg'
-                                                onClick={() => setShowReviewModal(true)}
-                                                id='reviewToggleButton'>
-                                                Review
-                                            </button>
-                                        </div>
+                                        <button
+                                            className='btn btn-primary btn-lg'
+                                            onClick={() => setShowReviewModal(true)}
+                                            id='reviewToggleButton'>
+                                            Review
+                                        </button>
 
                                         {renderReviewPopup(showReviewModal, submitReview, setShowReviewModal, reviewForm, setReviewForm, reviewFormErrors)}
 
-                                        <div className='col'>
-                                            <button
-                                                className='btn btn-primary btn-lg'
-                                                onClick={onClickHandleReserveToggle}
-                                                id='reserveToggleButton'>
-                                                Reserve
-                                            </button>
-                                        </div>
+                                        <button
+                                            className='btn btn-primary btn-lg'
+                                            onClick={onClickHandleReserveToggle}
+                                            id='reserveToggleButton'>
+                                            Reserve
+                                        </button>
+
                                     </div>
                                     <HandleReserve
                                         show={show}
@@ -319,20 +315,27 @@ const PropertyDetails = () => {
 function renderUpdateButton(host_id, setUpdatePropertyClicked, submitDelteProperty) {
     return (
         host_id === getUserId() ?
-            <>
-                <button
-                    className='btn btn-primary btn-lg'
-                    onClick={e => setUpdatePropertyClicked(true)}
-                    id='updateToggleButton'>
-                    <i className="bi bi-pencil"></i> Update
-                </button>
-                <button
-                    className='btn btn-primary btn-lg'
-                    onClick={e => submitDelteProperty()}
-                    id='updateToggleButton'>
-                    <i className="bi bi-pencil"></i> Delete
-                </button>
-            </>
+            <button
+                className='btn btn-primary btn-lg'
+                onClick={e => setUpdatePropertyClicked(true)}
+                id='updateToggleButton'>
+                <i className="bi bi-pencil"></i> Update
+            </button>
+            :
+            <></>
+    )
+}
+
+
+function renderDeleteButton(host_id, submitDelteProperty) {
+    return (
+        host_id === getUserId() ?
+            <button
+                className='btn btn-primary btn-lg'
+                onClick={e => submitDelteProperty()}
+                id='updateToggleButton'>
+                <i class="bi bi-trash"></i> Delete
+            </button>
             :
             <></>
     )
