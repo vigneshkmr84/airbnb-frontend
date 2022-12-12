@@ -1,4 +1,5 @@
-import { postAPICall, getAPICall } from './ApiService'
+import { postAPICall, getAPICall, deleteAPICall } from './ApiService'
+import Toast from '../components/toast/Toast';
 
 export async function getAllProperties() {
 
@@ -16,6 +17,15 @@ export async function getPropertyById(property_id) {
         return {};
 }
 
+
+export async function deleteProperty(property_id) {
+    await deleteAPICall('/properties/' + property_id)
+        .then((res) => {
+            if (res.status === 200)
+                Toast('Successfully Deleted', 'success');
+        });
+
+}
 export async function getPropertyImages(property_id) {
     var response = await getAPICall('/properties/' + property_id + '/images');
     sleep(3000)

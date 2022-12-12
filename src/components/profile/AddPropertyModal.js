@@ -8,9 +8,9 @@ import { getUserId as getUserIdFromCookies } from '../common/CommonUtils';
 import Toast from '../../components/toast/Toast';
 import { renderCancelButton, renderSubmitButton } from '../common/CommonElements';
 
-const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
+const AddPropertyModal = ({ propertyDetails, showNewPropertyModal, cancelNewPropertyModal }) => {
 
-    const emptyFormData =
+    /* const emptyFormData =
     {
         name: "",
         description: "",
@@ -25,8 +25,8 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
         guests: 1,
         bedroom: 1,
         bathroom: 1,
-        checkin_time: moment(new Date(2000, 1, 1, 0, 0, 0)),
-        checkout_time: moment(new Date(2000, 1, 1, 0, 0, 0)),
+        checkin_time: 11,
+        checkout_time: 16,
         house_rules: [],
         amenities: [
             {
@@ -57,11 +57,12 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
         img: "",
         cancellation_policy: "",
         host_id: "",
-    }
+    } */
 
     const [propertyImages, setPropertyImages] = useState([]);
 
-    const [formData, setFormData] = useState(emptyFormData);
+    // const [formData, setFormData] = useState(emptyFormData);
+    const [formData, setFormData] = useState(propertyDetails);
     const [propertyDataErrors, setPropertyDataErrors] = useState({});
 
     const validateForm = (values) => {
@@ -141,34 +142,37 @@ const AddPropertyModal = ({ showNewPropertyModal, cancelNewPropertyModal }) => {
     const submitProperty = () => {
         console.log('Adding new property');
 
-        console.log(propertyImages)
-        let in_time = parseInt(formData.checkin_time.format("HHmm"));
+        // console.log(propertyImages)
+        /* let in_time = parseInt(formData.checkin_time.format("HHmm"));
         let out_time = parseInt(formData.checkout_time.format("HHmm"));
 
         let newData = formData;
         newData.checkin_time = in_time;
         newData.checkout_time = out_time;
-        newData.host_id = getUserIdFromCookies();
+        newData.host_id = getUserIdFromCookies(); */
 
-        console.log(newData);
-        setPropertyDataErrors(validateForm(newData));
+        formData.host_id = getUserIdFromCookies();
+        console.log(formData);
+        setPropertyDataErrors(validateForm(formData));
 
-        if (Object.keys(propertyDataErrors).length === 0) {
-            addNewProperty(newData, propertyImages)
+        if (Object.keys(validateForm(formData)).length === 0) {
+            addNewProperty(formData, propertyImages)
                 .then(async res => {
                     console.log(res)
                     console.log('Submitting property images')
-                    var response2 = await addPropertyImages(propertyImages, res.message)
-                    if (response2.status === 200) {
-                        Toast('Successfully Added', 'success');
-                    } else {
-                        Toast('Error in submitting property', 'error');
-                    }
+                    await addPropertyImages(propertyImages, res.message)
+                        .then(res2 => {
+                            if (res2.status === 200) {
+                                Toast('Successfully Added', 'success');
+                            } else {
+                                Toast('Error in submitting property', 'error');
+                            }
+                        })
+
                 })
             cancelNewPropertyModal();
             // setFormData(emptyFormData);
         } else {
-            // Toast('Invalid Property Details', 'error');
             console.log('Invalid property details form.')
             console.log(propertyDataErrors);
         }

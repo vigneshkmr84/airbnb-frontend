@@ -99,6 +99,34 @@ export async function deleteAPICall(uri, body) {
         return Internal_Server_Error;
     }
 }
-const exportedFunctions = { getAPICall, postAPICall, deleteAPICall }
+
+export async function putAPICall(uri, body) {
+    try {
+
+        let finalURL = baseUrl + uri;
+        console.log("Making Delete API call to : " + finalURL);
+        var response;
+        await fetch(finalURL, {
+            method: 'PUT',
+            headers: Headers,
+            body: JSON.stringify(body)
+        })
+            .then(response => response.json())
+            .then((json) => {
+                response = json;
+            });
+
+        // handle the common error here
+        if (errorCodes.includes(response.status))
+            Toast(response.message, 'error');
+
+        return response;
+    } catch (error) {
+        console.log("Error occurred in making DELETE api call : " + error);
+        return Internal_Server_Error;
+    }
+}
+
+const exportedFunctions = { getAPICall, postAPICall, deleteAPICall, putAPICall }
 
 export default exportedFunctions

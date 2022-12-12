@@ -5,6 +5,7 @@ import { getUserProfileApi, updateUserProfileApi } from '../../services/ProfileS
 import { convertImageToBase64, getUserId, isHost } from '../common/CommonUtils'
 import Form from 'react-bootstrap/Form';
 import BecomeHostModal from './BecomeHostModal'
+import moment from 'moment-timezone';
 
 import './Profile.css'
 import defaultUserImage from './user-profile.jpg'
@@ -22,6 +23,56 @@ const Profile = () => {
         id_details: '',
         id_type: '',
     }
+
+    const emptyPropertyDetails =
+    {
+        name: "",
+        description: "",
+        one_liner: "",
+        location: "",
+        house_type: "villa",
+        cost_per_day: 0,
+        service_cost: 0,
+        cleaning_cost: 0,
+        latitude: 0,
+        longitude: 0,
+        guests: 1,
+        bedroom: 1,
+        bathroom: 1,
+        checkin_time: 11,
+        checkout_time: 16,
+        house_rules: [],
+        amenities: [
+            {
+                category: "living",
+                amenities: []
+            },
+            {
+                category: "kitchen",
+                amenities: []
+            },
+            {
+                category: "bedroom",
+                amenities: []
+            },
+            {
+                category: "bathroom",
+                amenities: []
+            },
+            {
+                category: "garage",
+                amenities: []
+            },
+            {
+                category: "others",
+                amenities: []
+            },
+        ],
+        img: "",
+        cancellation_policy: "",
+        host_id: "",
+    }
+
     const [userData, setUserDetails] = useState(defaultUserDetails);
 
     const [showNewPropertyModal, setShowNewPropertyModal] = useState(false);
@@ -101,7 +152,7 @@ const Profile = () => {
         setShowNewPropertyModal(true);
     }
 
-    const [host, setHost] = useState(isHost());
+    // const [host, setHost] = useState(isHost());
     const [showHostConfirmation, setShowHostConfirmation] = useState(false);
 
 
@@ -302,35 +353,10 @@ const Profile = () => {
                                                 />}
                                         </div>
                                     </div>
-                                    {/* <div className='row'>
-                                    {
-                                        isHost() ?
-                                            <div className='col-md-6'>
-                                                <button type="button"
-                                                    id='update-info'
-                                                    className="btn btn-primary btn-md"
-                                                    onClick={addProperty}
-                                                > Add Property
-                                                </button>
-                                            </div> :
-                                            <></>
-                                    }
-                                    {isHost() ? <></> :
-                                        <div className='col-md-6'>
-                                            <button type="button"
-                                                id='become-host'
-                                                className="btn btn-primary btn-md"
-                                            >
-                                                <i className="bi bi-person-up"></i> &nbsp;Become host
-                                            </button>
-                                        </div>
-                                    }
-                                </div> */}
-
 
                                 </form>
 
-                                <AddPropertyModal showNewPropertyModal={showNewPropertyModal} cancelNewPropertyModal={cancelNewPropertyModal} /* user_id='630d9e1a5a8e270b69c8e947' */ />
+                                <AddPropertyModal propertyDetails={emptyPropertyDetails} showNewPropertyModal={showNewPropertyModal} cancelNewPropertyModal={cancelNewPropertyModal} />
                                 <BecomeHostModal showHostConfirmation={showHostConfirmation} setShowHostConfirmation={setShowHostConfirmation} />
                             </div>
                         </div>

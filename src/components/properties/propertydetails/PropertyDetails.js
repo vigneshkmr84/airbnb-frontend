@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './PropertyDetails.css';
 import Sidebar from '../../sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
-import { getPropertyById, getPropertyImages } from '../../../services/PropertiesService';
+import { deleteProperty, getPropertyById, getPropertyImages } from '../../../services/PropertiesService';
 import PropertyImagesDisplay from './PropertyImagesDisplay';
 import BodyDetailsAccordion from './BodyDetailsAccordion';
 import { addUserReviewForProperty, getReviewsForPropertyId } from '../../../services/ReviewsService';
@@ -10,10 +10,11 @@ import { getUserProfileApi } from '../../../services/ProfileService';
 import { Button, Modal, Spinner } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import { getUserPaymentDetails } from '../../../services/PaymentService';
-import { createBooking } from '../../../services/BookingService';
+import { createBooking, deleteBooking } from '../../../services/BookingService';
 import HandleReserve from './HandleReserve';
 import { getUserId } from '../../common/CommonUtils';
 import { renderCancelButton, renderSubmitButton } from '../../common/CommonElements';
+import AddPropertyModal from '../../profile/AddPropertyModal';
 
 
 const PropertyDetails = () => {
@@ -32,6 +33,7 @@ const PropertyDetails = () => {
     const [reviewFormErrors, setReviewFormErrors] = useState({});
 
     const [userPaymentNickNames, setUserPaymentNickNames] = useState(null);
+    const [updatePropertyClicked, setUpdatePropertyClicked] = useState(false);
 
     const handleClose = () => setShow(false);
 
@@ -45,6 +47,11 @@ const PropertyDetails = () => {
         console.log(userPaymentNickNames);
         setShow(true)
     };
+
+    const submitDelteProperty = () => {
+        console.log("Delete property");
+        deleteProperty(property_id.id);
+    }
 
     const initialBookindData = Object.freeze({
         start_date: '',
@@ -218,7 +225,7 @@ const PropertyDetails = () => {
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
             {propertyDetails && hostDetails && propertyTopReviews &&
-                <div id='property-details-container' style={{backgroundColor: 'white'}}>
+                <div id='property-details-container' style={{ backgroundColor: 'white' }}>
                     <div className="container rounded bg-white mt-5 mb-5" >
                         <h1 className='propertyDetailsHeader'>{propertyDetails.name}</h1>
                         <div className='propertyDetailsBody'>
@@ -261,7 +268,7 @@ const PropertyDetails = () => {
                                     <div className='row' style={{ textAlign: 'center' }}>
 
                                         <div className='col'>
-                                            {renderUpdateButton(propertyDetails.host_id)}
+                                            {renderUpdateButton(propertyDetails.host_id, setUpdatePropertyClicked, submitDelteProperty)}
                                         </div>
 
 
@@ -298,8 +305,7 @@ const PropertyDetails = () => {
                                     />
                                 </div>
 
-                                {/* uncomment the reservation form */}
-                                {/* <div id='reservationFormDiv' className='col-6 col-lg-4'> </div> */}
+                                {updatePropertyClicked ? <AddPropertyModal propertyDetails={propertyDetails} showNewPropertyModal={setUpdatePropertyClicked} cancelNewPropertyModal={e => setUpdatePropertyClicked(false)} /> : <></>}
                             </div>
                         </div>
                         <div></div>
@@ -310,15 +316,23 @@ const PropertyDetails = () => {
     )
 }
 
-function renderUpdateButton(host_id) {
+function renderUpdateButton(host_id, setUpdatePropertyClicked, submitDelteProperty) {
     return (
         host_id === getUserId() ?
-            <button
-                className='btn btn-primary btn-lg'
-                // onClick={() => setShowReviewModal(true)}
-                id='updateToggleButton'>
-                <i className="bi bi-pencil"></i> Update
-            </button>
+            <>
+                <button
+                    className='btn btn-primary btn-lg'
+                    onClick={e => setUpdatePropertyClicked(true)}
+                    id='updateToggleButton'>
+                    <i className="bi bi-pencil"></i> Update
+                </button>
+                <button
+                    className='btn btn-primary btn-lg'
+                    onClick={e => submitDelteProperty()}
+                    id='updateToggleButton'>
+                    <i className="bi bi-pencil"></i> Delete
+                </button>
+            </>
             :
             <></>
     )

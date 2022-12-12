@@ -1,4 +1,4 @@
-import { postAPICall, getAPICall, deleteAPICall } from './ApiService';
+import { postAPICall, getAPICall, deleteAPICall, putAPICall } from './ApiService';
 import Toast from '../components/toast/Toast';
 import { getUserId } from '../components/common/CommonUtils';
 
@@ -11,15 +11,32 @@ export async function getUserBookings() {
 // create user booking
 export async function createBooking(body) {
 
-    var response = await postAPICall('/bookings', body);
-    if (response.status === 200)
-        Toast('Successfully Booked', 'success');
+    await postAPICall('/bookings', body)
+        .then((res) => {
+            if (res.status === 200)
+                Toast('Successfully Booked', 'success');
+        });
+    ;
+
 }
 
 // For a given user delete a booking
-export async function deleteBooking(body, booking_id) {
+export async function deleteBooking(booking_id) {
 
-    var response = await deleteAPICall(`/bookings/${booking_id}`);
-    if (response.status === 200)
-        Toast('Successfully Canceled', 'success');
+    await deleteAPICall(`/bookings/${booking_id}`)
+        .then((res) => {
+            if (res.status === 200)
+                Toast('Successfully Canceled', 'success');
+        });
+
+}
+
+
+export async function updateBooking(booking_id, body) {
+
+    await putAPICall(`/bookings/${booking_id}`, body)
+        .then((res) => {
+            if (res.status === 200)
+                Toast('Successfully Updated', 'success')
+        });
 }

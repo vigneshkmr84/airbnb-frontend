@@ -18,7 +18,7 @@ const BodyDetailsAccordion = ({ details }) => {
     const hostDetails = details.hostDetails;
 
     return (
-        <Accordion defaultActiveKey='description' key={details.property_id}>
+        <Accordion defaultActiveKey='description'>
             <Accordion.Item eventKey='description'>
                 <Accordion.Header><h4>Description</h4></Accordion.Header>
                 <Accordion.Body>
@@ -48,20 +48,14 @@ const BodyDetailsAccordion = ({ details }) => {
 
                 </Accordion.Body>
             </Accordion.Item>
+
             <Accordion.Item eventKey='pricing'>
                 <Accordion.Header><h4>Pricing <AiOutlineDollarCircle /></h4></Accordion.Header>
                 <Accordion.Body>
                     {renderPricing(property_details)}
                 </Accordion.Body>
             </Accordion.Item>
-            <Accordion.Item eventKey='cancellation_policy'>
-                <Accordion.Header><h4>Cancellation Policy <FcCancel /></h4></Accordion.Header>
-                <Accordion.Body>
 
-                    <p>{parseLines(property_details.cancellation_policy)}</p>
-
-                </Accordion.Body>
-            </Accordion.Item>
             <Accordion.Item eventKey='amenities'>
                 <Accordion.Header><h4>What this place offers ?</h4></Accordion.Header>
                 <Accordion.Body>
@@ -70,18 +64,25 @@ const BodyDetailsAccordion = ({ details }) => {
 
                 </Accordion.Body>
             </Accordion.Item>
+
+            <Accordion.Item eventKey='cancellation_policy'>
+                <Accordion.Header><h4>Cancellation Policy <FcCancel /></h4></Accordion.Header>
+                <Accordion.Body>
+
+                    <p>{parseLines(property_details.cancellation_policy)}</p>
+
+                </Accordion.Body>
+            </Accordion.Item>
+
             <Accordion.Item eventKey='reviews'>
                 <Accordion.Header><h4>What others have to say about the place ? <MdOutlineRateReview /></h4></Accordion.Header>
                 <Accordion.Body>
 
-                    {
-                        renderReviews(reviews)
-
-                    }
+                    {renderReviews(reviews)}
 
                 </Accordion.Body>
             </Accordion.Item>
-            <Accordion.Item eventKey='host_details'>
+            <Accordion.Item eventKey='know_your_hosts'>
                 <Accordion.Header><h4>Know your Host...</h4></Accordion.Header>
                 <Accordion.Body>
 
@@ -95,7 +96,7 @@ const BodyDetailsAccordion = ({ details }) => {
 
                 </Accordion.Body>
             </Accordion.Item>
-            <Accordion.Item eventKey='nearby_places'>
+            <Accordion.Item eventKey='nearby_places' key="nearby_places">
                 <Accordion.Header><h4>Nearby Attractions</h4></Accordion.Header>
                 <Accordion.Body>
 
@@ -138,7 +139,8 @@ function generateSubAmenities(categoryArray) {
             return (
                 <li key={index}>
                     <small>{makeFirstLetterCaps(item)}</small>
-                </li>)
+                </li>
+            )
         })
     )
 }
@@ -183,9 +185,7 @@ function renderReviews(reviews) {
     return (
         reviews.length !== 0 ?
             reviews?.map((review, index) => {
-                return (
-                    <p key={index}><small><b>{review.user_name}</b>: {parseLines(review.comments)}</small></p>
-                )
+                return (<p key={index}><small><b>{review.user_name}</b>: {parseLines(review.comments)}</small></p>)
             })
             : "Not yet Reviewed"
     )

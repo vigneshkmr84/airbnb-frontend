@@ -25,7 +25,8 @@ const SinglePropertyCard = ({ property_details, imageSize, cardWidth, flexDirect
     const onClickDeleteBooking = async (e, _id) => {
         console.log('Deleting bookmark : ', _id);
         console.log(bookmarkItems);
-        deleteBooking(getUserId(), _id);
+        deleteBooking(_id);
+        // deleteBookmark(getUserId(), _id);
     }
 
     return (
@@ -148,7 +149,7 @@ const isCancelable = (bookingData) => {
     return (
         bookingData.canceled || new Date().getTime() > new Date(bookingData.end_date).getTime()
         || (
-            new Date(bookingData.end_date).getTime() > new Date().getTime() && 
+            new Date(bookingData.end_date).getTime() > new Date().getTime() &&
             new Date(bookingData.start_date).getTime() < new Date().getTime()
         )
     )

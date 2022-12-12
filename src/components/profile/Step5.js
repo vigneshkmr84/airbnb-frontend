@@ -25,6 +25,7 @@ const Step5 = ({ formData, setFormData }) => {
 
     const setCheckinTime = (e) => {
         console.log(e);
+        console.log(e.target.value);
         setFormData({ ...formData, checkin_time: e })
         console.log(formData.checkin_time)
     }
@@ -35,6 +36,14 @@ const Step5 = ({ formData, setFormData }) => {
         console.log(formData.checkout_time)
     }
 
+    const renderCheckinTimeOptions = () => {
+        let arr = []
+        for (let i = 0; i < 23; i++) {
+            arr.push(<option key={i} value={i}>{i}</option>)
+        }
+        return (arr)
+    }
+
     return (
         <div>
             <div className='row'>
@@ -42,7 +51,7 @@ const Step5 = ({ formData, setFormData }) => {
                     <label>Checkin time</label>
                 </div>
                 <div className='col'>
-                    <TimePicker
+                    {/* <TimePicker
                         placeholder="Select Time"
                         showSecond={false}
                         focusOnOpen={true}
@@ -51,7 +60,18 @@ const Step5 = ({ formData, setFormData }) => {
                         value={formData.checkin_time}
                         onChange={e => setCheckinTime(e)}
                         style={{ width: 100 }}
-                    />
+                    /> */}
+                    <select className="form-select input-sm"
+                        aria-label="Select Payment Type"
+                        name="checkin_time"
+                        required
+                        value={formData.checkin_time}
+                        onChange={(e) => setFormData({ ...formData, checkin_time: e.target.value })}
+                        defaultValue={11}
+                        style={{ width: '50%' }}
+                    >
+                        {renderCheckinTimeOptions()}
+                    </select>
 
                 </div>
             </div>
@@ -60,7 +80,7 @@ const Step5 = ({ formData, setFormData }) => {
                     <label>Checkout time</label>
                 </div>
                 <div className='col'>
-                    <TimePicker
+                    {/* <TimePicker
                         placeholder="Select Time"
                         showSecond={false}
                         focusOnOpen={true}
@@ -69,7 +89,19 @@ const Step5 = ({ formData, setFormData }) => {
                         value={formData.checkout_time}
                         onChange={e => setCheckoutTime(e)}
                         style={{ width: 100 }}
-                    />
+                    /> */}
+
+                    <select className="form-select input-sm"
+                        aria-label="Select Payment Type"
+                        name="checkin_time"
+                        value={formData.checkout_time}
+                        required
+                        onChange={(e) => setFormData({ ...formData, checkout_time: e.target.value })}
+                        defaultValue={16}
+                        style={{ width: '50%' }}
+                    >
+                        {renderCheckinTimeOptions()}
+                    </select>
 
                 </div>
             </div>
@@ -103,5 +135,7 @@ const Step5 = ({ formData, setFormData }) => {
         </div>
     )
 }
+
+
 
 export default Step5
