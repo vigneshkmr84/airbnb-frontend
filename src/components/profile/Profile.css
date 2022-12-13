@@ -2,6 +2,15 @@
     padding-top: 3%;
 }
 
+#profile-container {
+    overflow-y: scroll;
+    width: 100%;
+    background-color: white;
+    width: 100%;
+    /* style={{ width: '100%', backgroundColor: 'white' }} */
+
+}
+
 .profileHeading {
     display: flex;
     justify-content: center;

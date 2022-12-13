@@ -101,7 +101,7 @@ const AddNewPayment = ({ showNewPaymentModal, onClose, user_id }) => {
         setIsSubmit(true);
         console.log(newPaymentDetails);
 
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
+        if (Object.keys(validateForm(newPaymentDetails, paymentType)).length === 0 && isSubmit) {
             console.log('Valid details')
             await addPaymentDetails(user_id, paymentType, newPaymentDetails)
                 .then((status) => {

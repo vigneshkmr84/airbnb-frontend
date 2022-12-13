@@ -1,5 +1,6 @@
 import { postAPICall, getAPICall, deleteAPICall } from './ApiService'
 import Toast from '../components/toast/Toast';
+import { getUserId } from '../components/common/CommonUtils';
 
 export async function getAllProperties() {
 
@@ -52,4 +53,17 @@ export async function addPropertyImages(propertyImages, id) {
     console.log(response.message);
 
     return response;
+}
+
+export async function getPropertiesListByHostId() {
+    let response;
+
+    await getAPICall(`/${getUserId()}/properties`)
+        .then((res) => {
+            console.log(res.message)
+            if (res.status === 200)
+                response = res.message
+        })
+
+    return response
 }

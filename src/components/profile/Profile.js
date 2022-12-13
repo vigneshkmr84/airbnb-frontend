@@ -10,6 +10,8 @@ import moment from 'moment-timezone';
 import './Profile.css'
 import defaultUserImage from './user-profile.jpg'
 import { renderSpinner } from '../common/CommonElements'
+import ShowHostProperties from './HostProperties/ShowHostProperties'
+import { getPropertiesListByHostId } from '../../services/PropertiesService'
 
 const Profile = () => {
 
@@ -73,6 +75,8 @@ const Profile = () => {
         host_id: "",
     }
 
+    const [is_host, setIsHost] = useState(isHost() || false);
+
     const [userData, setUserDetails] = useState(defaultUserDetails);
 
     const [showNewPropertyModal, setShowNewPropertyModal] = useState(false);
@@ -82,6 +86,8 @@ const Profile = () => {
     const [isEditEnabled, setIsEnabled] = useState(false);
 
     const [dataReady, setDataReady] = useState(false);
+
+    const [propertiesList, setPropertiesList] = useState([]);
 
     const fileRef = useRef(null);
 
@@ -129,6 +135,12 @@ const Profile = () => {
             })
     }, []);
 
+    useEffect(() => {
+        getPropertiesListByHostId()
+            .then((res) => {
+                setPropertiesList(res)
+            })
+    }, [])
 
     const [updated, setUpdated] = useState(false);
 
@@ -159,207 +171,219 @@ const Profile = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Sidebar />
-            <div id='profile-container' style={{ width: '100%', backgroundColor: 'white' }}>
+            <div id='profile-container' >
 
                 <div className="container rounded bg-white mt-5 mb-5">
                     <h1 className='profileHeading'>Personal Details</h1>
                     {
-                        !dataReady ? renderSpinner() : <div id="profile-details" className='row'>
-                            <div className="col-md-4">
-                                <div id='image-container'>
-                                    {renderUserProfilePhoto(userData.profile_photo)}
-                                </div>
-                                <br></br>
-                                <br></br>
-                                {isEditEnabled ?
-                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                        <input
-                                            type='file'
-                                            accept={fileFormats}
-                                            ref={fileRef}
-                                            style={{ display: 'none' }}
-                                            onChange={e => handleFileChange(e)}
-                                        >
-                                        </input>
-                                        <button
-                                            className='btn btn-primary'
-                                            onClick={e => handleUploadProfilePicture()}
-                                        >
-                                            <i className="bi bi-camera"></i> &nbsp;Upload Image
-                                        </button>
-                                    </div>
-                                    : <></>}
-                            </div>
-
-                            <div className="col-md-8" style={{ width: '50%' }}>
-                                <form
-                                    onChange={markUpdated}>
-                                    <div className='row'>
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>First name</label>
-                                            <input type='text'
-                                                className='form-control mr-sm-2'
-                                                name='first_name'
-                                                defaultValue={userData.first_name}
-                                                onChange={handleChange}
-                                                disabled={(isEditEnabled) ? "" : "disabled"}
-                                            >
-
-                                            </input>
+                        !dataReady ? renderSpinner() :
+                            <>
+                                <div id="profile-details" className='row'>
+                                    <div className="col-md-4">
+                                        <div id='image-container'>
+                                            {renderUserProfilePhoto(userData.profile_photo)}
                                         </div>
-
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>Last name</label>
-                                            <input type='text'
-                                                className='form-control mr-sm-2'
-                                                name='last_name'
-                                                defaultValue={userData.last_name}
-                                                onChange={handleChange}
-                                                disabled={(isEditEnabled) ? "" : "disabled"}
-                                            >
-                                            </input>
-                                        </div>
-                                    </div>
-
-                                    <div className='row'>
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>Email Id</label>
-                                            <input type='text'
-                                                className='form-control mr-sm-2'
-                                                name='email_id'
-                                                defaultValue={userData.email_id}
-                                                onChange={handleChange}
-                                                // disabled={(isEditEnabled) ? "" : "disabled"}
-                                                disabled
-                                            >
-                                            </input>
-                                        </div>
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>Phone no</label>
-                                            <input type='tel'
-                                                className='form-control mr-sm-2'
-                                                name='phone_no'
-                                                defaultValue={userData.phone_no}
-                                                onChange={handleChange}
-                                                // disabled={(isEditEnabled) ? "" : "disabled"}
-                                                disabled
-                                            >
-                                            </input>
-                                        </div>
-                                    </div>
-
-                                    <div className='row'>
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>Description</label>
-                                            <input type='text'
-                                                className='form-control mr-sm-2'
-                                                name='description'
-                                                defaultValue={userData.description}
-                                                onChange={handleChange}
-                                                disabled={(isEditEnabled) ? "" : "disabled"}
-                                            >
-                                            </input>
-                                        </div>
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>Languages</label>
-                                            <input type='text'
-                                                className='form-control mr-sm-2'
-                                                name='languages'
-                                                defaultValue={userData.languages}
-                                                onChange={handleChange}
-                                                disabled={(isEditEnabled) ? "" : "disabled"}
-                                            >
-                                            </input>
-                                        </div>
-                                    </div>
-
-                                    <div className='row'>
-                                        <div className='col-md-6'>
-                                            <label className='form-label control-label'>Id type</label>
-                                            <select
-                                                className="form-select"
-                                                aria-label="Select Id Type"
-                                                name="id_type"
-                                                required
-                                                onChange={handleChange}
-                                                defaultValue={userData.id_type}
-                                                disabled={(isEditEnabled) ? "" : "disabled"}
-                                            >
-                                                <option value="passport">Passport</option>
-                                                <option value="state id card">State id card</option>
-                                                <option value="driver license">Driver License</option>
-                                            </select>
-                                        </div>
-                                        <div className='col-md-6'>
-
-                                            <label className='form-label control-label'>Valid Id no</label>
-                                            <input type='text'
-                                                className='form-control mr-sm-2'
-                                                name='id_details'
-                                                defaultValue={userData.id_details}
-                                                onChange={handleChange}
-                                                disabled={(isEditEnabled) ? "" : "disabled"}
-                                            >
-                                            </input>
-                                        </div>
-                                    </div>
-                                    <br></br>
-                                    <div className='row'>
-                                        <div className='col-md-4'>
-                                            <div className="form-group" style={{ textAlign: 'center' }}>
-                                                <button
-                                                    className="btn btn-secondary btn-md"
-                                                    type="button"
-                                                    id='editButton'
-                                                    onClick={onClickEditInfo}
+                                        <br></br>
+                                        <br></br>
+                                        {isEditEnabled ?
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                <input
+                                                    type='file'
+                                                    accept={fileFormats}
+                                                    ref={fileRef}
+                                                    style={{ display: 'none' }}
+                                                    onChange={e => handleFileChange(e)}
                                                 >
-                                                    <i className="bi bi-pencil"></i> &nbsp;&nbsp;Edit Info
+                                                </input>
+                                                <button
+                                                    className='btn btn-primary'
+                                                    onClick={e => handleUploadProfilePicture()}
+                                                >
+                                                    <i className="bi bi-camera"></i> &nbsp;Upload Image
                                                 </button>
                                             </div>
-                                        </div>
-                                        {
-                                            isEditEnabled ?
+                                            : <></>}
+                                    </div>
+
+                                    <div className="col-md-8" style={{ width: '50%' }}>
+                                        <form
+                                            onChange={markUpdated}>
+                                            <div className='row'>
+                                                <div className='col-md-6'>
+                                                    <label className='form-label control-label'>First name</label>
+                                                    <input type='text'
+                                                        className='form-control mr-sm-2'
+                                                        name='first_name'
+                                                        defaultValue={userData.first_name}
+                                                        onChange={handleChange}
+                                                        disabled={(isEditEnabled) ? "" : "disabled"}
+                                                    >
+
+                                                    </input>
+                                                </div>
+
+                                                <div className='col-md-6'>
+                                                    <label className='form-label control-label'>Last name</label>
+                                                    <input type='text'
+                                                        className='form-control mr-sm-2'
+                                                        name='last_name'
+                                                        defaultValue={userData.last_name}
+                                                        onChange={handleChange}
+                                                        disabled={(isEditEnabled) ? "" : "disabled"}
+                                                    >
+                                                    </input>
+                                                </div>
+                                            </div>
+
+                                            <div className='row'>
+                                                <div className='col-md-6'>
+                                                    <label className='form-label control-label'>Email Id</label>
+                                                    <input type='text'
+                                                        className='form-control mr-sm-2'
+                                                        name='email_id'
+                                                        defaultValue={userData.email_id}
+                                                        onChange={handleChange}
+                                                        // disabled={(isEditEnabled) ? "" : "disabled"}
+                                                        disabled
+                                                    >
+                                                    </input>
+                                                </div>
+                                                <div className='col-md-6'>
+                                                    <label className='form-label control-label'>Phone no</label>
+                                                    <input type='tel'
+                                                        className='form-control mr-sm-2'
+                                                        name='phone_no'
+                                                        defaultValue={userData.phone_no}
+                                                        onChange={handleChange}
+                                                        // disabled={(isEditEnabled) ? "" : "disabled"}
+                                                        disabled
+                                                    >
+                                                    </input>
+                                                </div>
+                                            </div>
+
+                                            <div className='row'>
+                                                <div className='col-md-6'>
+                                                    <label className='form-label control-label'>Description</label>
+                                                    <input type='text'
+                                                        className='form-control mr-sm-2'
+                                                        name='description'
+                                                        defaultValue={userData.description}
+                                                        onChange={handleChange}
+                                                        disabled={(isEditEnabled) ? "" : "disabled"}
+                                                    >
+                                                    </input>
+                                                </div>
+                                                <div className='col-md-6'>
+                                                    <label className='form-label control-label'>Languages</label>
+                                                    <input type='text'
+                                                        className='form-control mr-sm-2'
+                                                        name='languages'
+                                                        defaultValue={userData.languages}
+                                                        onChange={handleChange}
+                                                        disabled={(isEditEnabled) ? "" : "disabled"}
+                                                    >
+                                                    </input>
+                                                </div>
+                                            </div>
+
+                                            <div className='row'>
+                                                <div className='col-md-6'>
+                                                    <label className='form-label control-label'>Id type</label>
+                                                    <select
+                                                        className="form-select"
+                                                        aria-label="Select Id Type"
+                                                        name="id_type"
+                                                        required
+                                                        onChange={handleChange}
+                                                        defaultValue={userData.id_type}
+                                                        disabled={(isEditEnabled) ? "" : "disabled"}
+                                                    >
+                                                        <option value="passport">Passport</option>
+                                                        <option value="state id card">State id card</option>
+                                                        <option value="driver license">Driver License</option>
+                                                    </select>
+                                                </div>
+                                                <div className='col-md-6'>
+
+                                                    <label className='form-label control-label'>Valid Id no</label>
+                                                    <input type='text'
+                                                        className='form-control mr-sm-2'
+                                                        name='id_details'
+                                                        defaultValue={userData.id_details}
+                                                        onChange={handleChange}
+                                                        disabled={(isEditEnabled) ? "" : "disabled"}
+                                                    >
+                                                    </input>
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div className='row'>
                                                 <div className='col-md-4'>
                                                     <div className="form-group" style={{ textAlign: 'center' }}>
                                                         <button
-                                                            className="btn btn-primary btn-md"
+                                                            className="btn btn-secondary btn-md"
                                                             type="button"
-                                                            id='update-info'
-                                                            onClick={submitForm}
-                                                        > Update
+                                                            id='editButton'
+                                                            onClick={onClickEditInfo}
+                                                        >
+                                                            <i className="bi bi-pencil"></i> &nbsp;&nbsp;Edit Info
                                                         </button>
                                                     </div>
                                                 </div>
-                                                : <div className='col-md-4'></div>
-                                        }
-                                        <div className='col-md-4'>
-                                            {isHost()
-                                                ?
-                                                // Add property button
-                                                <button type="button"
-                                                    id='update-info'
-                                                    className="btn btn-primary btn-md"
-                                                    onClick={addProperty}
-                                                > Add Property
-                                                </button>
+                                                {
+                                                    isEditEnabled ?
+                                                        <div className='col-md-4'>
+                                                            <div className="form-group" style={{ textAlign: 'center' }}>
+                                                                <button
+                                                                    className="btn btn-primary btn-md"
+                                                                    type="button"
+                                                                    id='update-info'
+                                                                    onClick={submitForm}
+                                                                > Update
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        : <div className='col-md-4'></div>
+                                                }
+                                                <div className='col-md-4'>
+                                                    {isHost()
+                                                        ?
+                                                        // Add property button
+                                                        <button type="button"
+                                                            id='update-info'
+                                                            className="btn btn-primary btn-md"
+                                                            onClick={addProperty}
+                                                        > Add Property
+                                                        </button>
 
-                                                :
-                                                // Host toggle button
-                                                <Form.Check
-                                                    type="switch"
-                                                    id='host-switch'
-                                                    label="Host"
-                                                    onClick={e => setShowHostConfirmation(!showHostConfirmation)}
-                                                />}
-                                        </div>
+                                                        :
+                                                        // Host toggle button
+                                                        <Form.Check
+                                                            type="switch"
+                                                            id='host-switch'
+                                                            label="Host"
+                                                            onClick={e => setShowHostConfirmation(!showHostConfirmation)}
+                                                        />}
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                        <AddPropertyModal propertyDetails={emptyPropertyDetails} showNewPropertyModal={showNewPropertyModal} cancelNewPropertyModal={cancelNewPropertyModal} />
+                                        <BecomeHostModal showHostConfirmation={showHostConfirmation} setShowHostConfirmation={setShowHostConfirmation} />
                                     </div>
+                                </div>
 
-                                </form>
+                                {
+                                    is_host ?
+                                        <div className='container' id="host-proeprties-container">
+                                            <ShowHostProperties propertiesList={propertiesList} />
+                                        </div>
+                                        : <> </>
+                                }
 
-                                <AddPropertyModal propertyDetails={emptyPropertyDetails} showNewPropertyModal={showNewPropertyModal} cancelNewPropertyModal={cancelNewPropertyModal} />
-                                <BecomeHostModal showHostConfirmation={showHostConfirmation} setShowHostConfirmation={setShowHostConfirmation} />
-                            </div>
-                        </div>
+                            </>
                     }
                 </div >
             </div >
