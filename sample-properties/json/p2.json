@@ -1,11 +1,14 @@
 {
-    "host_id": "63083a889346efce3db6a4e9",
+    "host_id": "6397ee6f819ccb51a8b120d0",
     "name": "Aurora Lodge Houseboat 4 - 8 people",
     "description": "The Aurora Lodge is a 2200 square foot houseboat located on Vee Lake, 20 minute drive outside of Yellowknife. The lodge has two rooms, each with a queen size bed and a personal heater. The living area includes the kitchen, bar and lounge area with a wood burning fireplace. There’s also 2 decks and the entire lake, for aurora viewing. Message us to inquire about our VIP Packages and activities. NOTE: We have indoor dog.",
-    "location": "Yellowknife, Northwest Territories, Canada",
+    "location": "Wellington",
     "cost_per_day": 164,
     "cleaning_cost": 95,
     "service_cost": 110,
+    "latitude": -41.2874531569372,
+    "longitude": 174.7666100041055,
+    "house_type": "villa",
     "amenities": [
         {
             "category": "bedroom",
@@ -30,10 +33,9 @@
     "guests": 4,
     "bedroom": 2,
     "bathroom": 1,
-    "checkin_time": 1110,
-    "checkout_time": 1460,
+    "checkin_time": 16,
+    "checkout_time": 11,
     "cancellation_policy": "Review the Host’s full cancellation policy which applies even if you cancel for illness or disruptions caused by COVID-19.",
-    "host_is_superhost": false,
     "house_rules": [
         "No Smoking"
     ],

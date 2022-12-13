@@ -1,11 +1,14 @@
 {
-    "host_id": "63083a889346efce3db6a4e9",
+    "host_id": "6397f096819ccb51a8b120dc",
     "name": "Entire villa hosted by Brynjar",
     "description": "New built villa on one floor, only 7 minutes drive from Akureyri center. The villa is located in Vaðlaheiði and offers a scenic view over the fjord and Akureyri. Three bedrooms, large living room, and modern kitchen with all the usual equipments, terrace, hot tub, free internet, washing machine, TV, streaming options (Netflix), heated floors.The property offers the optimal mix between country relaxation and urban activities in Akureyri.",
-    "location": "Akureyri, Iceland",
+    "location": "Iceland",
     "cost_per_day": 342,
     "cleaning_cost": 110,
     "service_cost": 40,
+    "latitude": 64.10934103015879,
+    "longitude": -21.853476016491758,
+    "house_type": "house",
     "amenities": [
         {
             "category": "bedroom",
@@ -30,10 +33,9 @@
     "guests": 6,
     "bedroom": 3,
     "bathroom": 3,
-    "checkin_time": 910,
-    "checkout_time": 960,
+    "checkin_time": 17,
+    "checkout_time": 10,
     "cancellation_policy": "Review the Host’s full cancellation policy which applies even if you cancel for illness or disruptions caused by COVID-19.",
-    "host_is_superhost": true,
     "house_rules": [
         "No Smoking"
     ],
